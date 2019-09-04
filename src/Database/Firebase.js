@@ -1,19 +1,17 @@
 import * as firebase from 'firebase';
+import firebaseConfig from '../firebaseConfig';
 
-var config = {
-    apiKey: " AIzaSyDfU143hZGnDdy0R5EC1SVhp15ZixYLWE0 ",
-    authDomain: "testereact-59b3b.firebaseapp.com",
-    databaseURL: "https://testereact-59b3b.firebaseio.com",
-    storageBucket: "testereact-59b3b.appspot.com"
-}; 
-
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseConfig);
 
 class FirebaseDatabase {
     _db = firebase.database();
 
-    getLastAnamnesis = (userId) => {
-        return this._db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
+    getLastAnamnesis = async (userId) => {
+        const snapshot = await this._db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
+        return snapshot;
+        // const record = snapshot.val();
+        // records.timestamp = snapshot.key;
+        // return record;
     }
 
     getAnamneses = (userId) => {
