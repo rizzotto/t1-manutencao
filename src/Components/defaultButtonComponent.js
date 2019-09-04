@@ -8,21 +8,21 @@ import {
 
 export default class DefaultButtonComponent extends Component {
     
+    defaultAction = () => {
+        console.alert("Funcionalidade não implementada");
+    }
+
     render() {
-        defaultAction = () => {
-            console.alert("Funcionalidade não implementada");
-        }
         
-        let action = this.props.action || defaultAction;
+        let action = this.props.action || this.defaultAction;
 
         return (
             <TouchableOpacity 
                 onPress={action}
                 style={[
                     styles.buttonStyle, 
-                    this.props.style, 
-                    styles.buttonColor, 
-                    this.props.color]} >
+                    this.props.style,
+                    ]} >
                 <Text style={styles.textStyle}>
                     {this.props.text}
                 </Text>
@@ -40,12 +40,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
+        backgroundColor: '#FFC170',
         borderRadius: 5,
         width: buttonWidth
-    },
-
-    buttonColor: {
-        backgroundColor: '#FFC170'
     },
 
     textStyle: {
