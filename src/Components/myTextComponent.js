@@ -14,6 +14,7 @@ export default class MyTextComponent extends Component {
 
 const styles = StyleSheet.create({
     textStyle: {
-        fontSize: 20
+        fontSize: 20,
+        margin: 20
     }
 })
