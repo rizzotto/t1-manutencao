@@ -8,6 +8,22 @@ import {
 
 export default class DefaultButtonComponent extends Component {
     
+    /*
+    Props:
+    action
+    style
+    textStyle
+    text
+
+        Example:
+        <DefaultButtonComponent 
+            text={"Botão"} 
+            action={this.action}
+            style={styles.buttonStyle} 
+            textStyle={styles.textStyle} 
+        /> 
+*/
+
     defaultAction = () => {
         console.alert("Funcionalidade não implementada");
     }
@@ -19,11 +35,8 @@ export default class DefaultButtonComponent extends Component {
         return (
             <TouchableOpacity 
                 onPress={action}
-                style={[
-                    styles.buttonStyle, 
-                    this.props.style,
-                    ]} >
-                <Text style={styles.textStyle}>
+                style={[styles.buttonStyle, this.props.style]} >
+                <Text style={[styles.textStyle, this.props.textStyle]}>
                     {this.props.text}
                 </Text>
             </TouchableOpacity>
