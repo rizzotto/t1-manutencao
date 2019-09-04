@@ -6,8 +6,11 @@ firebase.initializeApp(firebaseConfig);
 class FirebaseDatabase {
     _db = firebase.database();
 
-    getLastAnamnesis = (userId) => {
-        return this._db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
+    getLastAnamnesis = async (userId) => {
+        const snapshot = await this._db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
+        const value = snapshot.val();
+
+        return this._mapAnamneses(value)[0];
     }
 
     /**
@@ -15,8 +18,11 @@ class FirebaseDatabase {
      * @param userId ID do usuário
      * @returns Object
      */
-    getAnamneses = (userId) => {
-        return this._db.ref(`${userId}/anamneses`).orderByKey().once("value");
+    getAnamneses = async (userId) => {
+        const snapshot = await this._db.ref(`${userId}/anamneses`).orderByKey().once("value");
+        const value = snapshot.val();
+
+        return this._mapAnamneses(value);
     }
 
     /**
@@ -24,9 +30,22 @@ class FirebaseDatabase {
      * @param userId ID do usuário
      * @returns Object
      */
-    saveAnamnesis = (userId, record, date) => {
+    saveAnamnesis = (userId, data) => {
+        const date = data.creationDate;
+        data.creationDate = null;
+
         const timestamp = date.getTime();
-        return this._db.ref(`${userId}/anamneses/${timestamp}`).set(record);
+        return this._db.ref(`${userId}/anamneses/${timestamp}`).set(data);
+    }
+
+    _mapAnamneses = (value) => {
+        return Object.keys(value)
+            .map((timestamp) => {
+                const record = value[timestamp];
+                record.creationDate = new Date(parseInt(timestamp));
+                return record;
+            })
+            .sort((a, b) => a.creationDate < b.creationDate);
     }
 }
 
