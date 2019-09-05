@@ -6,6 +6,11 @@ firebase.initializeApp(firebaseConfig);
 class FirebaseDatabase {
     _db = firebase.database();
 
+    /**
+     * Retorna a última anamnese do usuário
+     * @param userId ID do usuário
+     * @returns Object
+     */
     getLastAnamnesis = async (userId) => {
         const snapshot = await this._db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
         const value = snapshot.val();
@@ -14,7 +19,7 @@ class FirebaseDatabase {
     }
 
     /**
-     * Retorna a anamnese atual do usuário
+     * Retorna todas as anamneses do usuário
      * @param userId ID do usuário
      * @returns Object
      */
@@ -28,6 +33,8 @@ class FirebaseDatabase {
     /**
      * Salva a anamnese inserida pelo usuário
      * @param userId ID do usuário
+     * @param data Objeto contendo os dados da anamnese 
+     * (é necessário ter o atributo creationDate, ex.: x.creationDate = new Date())
      * @returns Object
      */
     saveAnamnesis = (userId, data) => {
