@@ -4,9 +4,11 @@ export default class detailedRecordComponent extends Component {
     /*
      Props:
      styleView
+     styleTitle
+     styleDescription
      titleText
      descriptionText
-    
+     
         Example:
         <DetailedRecordComponent
             titleText={"Peso:"} 
@@ -26,7 +28,7 @@ export default class detailedRecordComponent extends Component {
                     {
                         this.props.descriptionText &&
 
-                         <Text style={[this.props.style,this.props.styleTitle]}>
+                         <Text style={[styles.content,this.props.styleDescription]}>
                          {this.props.descriptionText}
                          </Text>
                     }
@@ -46,18 +48,6 @@ export default class detailedRecordComponent extends Component {
             fontSize: 15,
             marginLeft: 8,
             marginRight: 8
-        },
-        founded: {
-            fontSize: 15,
-            color: 'gray',
-            marginLeft: 8,
-            marginRight: 8,
-            marginBottom: 5
-        },
-        hr: {
-            marginTop: 7,
-            borderBottomColor: 'gainsboro',
-            borderBottomWidth: 2
         }
     }) 
     
