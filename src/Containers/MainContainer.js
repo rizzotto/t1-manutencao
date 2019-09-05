@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { View, TextInput } from "react-native";
 import MyLabel from '../Components/myTextComponent';
 import DefaultButton from '../Components/defaultButtonComponent';
+import DetailedRecordComponent from '../Components/detailedRecordComponent';
 
 
 export default class QuestionContainer extends Component {
@@ -10,8 +11,15 @@ export default class QuestionContainer extends Component {
         
         return (
             <View style={{alignItems:"center"}}>
-                <MyLabel text={"Como voce esta se sentindo hoje?"}/>
-                <DefaultButton text={"Botão"} action={this.action} style={{backgroundColor: "#C0C0C0"}}></DefaultButton>
+                <DetailedRecordComponent
+                    titleText={"Peso: "} 
+                    descriptionText={"56 kg"}
+                    createdAt={"16/08/2019"}
+                    emailText={"cassandra.gomes@gmail.com"}
+                    birthDate={"20/08/1990"}
+                    weightText={"65 kg"}
+                    heightText={"170 cm"}
+                /> 
             </View>
         )
     }

@@ -5,84 +5,37 @@ export default class detailedRecordComponent extends Component {
      Props:
      styleView
      titleText
-     createdAt
-     emailText
-     birthDate
-     weightText
-     heightText
+     descriptionText
     
         Example:
         <DetailedRecordComponent
-            titleText={"Cassandra Valentina Gomes"} 
-            createdAt={"16/08/2019"}
-            emailText={"cassandra.gomes@gmail.com"}
-            birthDate={"20/08/1990"}
-            weightText={"65 kg"}
-            heightText={"170 cm"}
+            titleText={"Peso:"} 
+            desciptionText={"57 kg"}
         /> 
     */
         render(){
             return (
                 <View style={this.props.styleView}>
-    
                     {
                         this.props.titleText &&
     
-                        <Text style={[styles.title, this.props.styleTitle]} >
+                        <Text style={[styles.label, this.props.styleTitle]} >
                             {this.props.titleText}
                         </Text>
                     }
-                    
                     {
-                        this.props.createdAt && 
+                        this.props.descriptionText &&
 
-                        <Text style={styles.founded}>
-                            Ficha criada em:{this.props.createdAt}
-                        </Text>
-
+                         <Text style={[this.props.style,this.props.styleTitle]}>
+                         {this.props.descriptionText}
+                         </Text>
                     }
-                    <Text style={styles.label}>E-mail:</Text>
-                    {
-                        this.props.emailText && 
-                        
-                        <Text style={styles.content}>
-                            {this.props.emailText}
-                        </Text>
-
-                    }
-
-                    <Text style={styles.label}>Data de Nascimento:</Text>
-                    {
-                        this.props.birthDate && 
-                        
-                        <Text style={styles.content}>
-                            {this.props.birthDate}
-                        </Text>
-
-                    }
-                    <Text style={styles.label}>Peso e Altura:</Text>
-                    {
-                        this.props.weightText && 
-                        this.props.heightText &&
-                        
-                        <Text style={styles.content}>
-                            {this.props.weightText}, {this.props.heightText}
-                        </Text>
-
-                    }   
-
-                    <View style={styles.hr}/>
                 </View>
             )
         }
     }
 
     const styles = StyleSheet.create({
-        title: {
-            fontSize: 40,
-            marginLeft: 8,
-            marginRight: 8
-        },
         label: {
             fontSize: 15,
             fontWeight: 'bold',
