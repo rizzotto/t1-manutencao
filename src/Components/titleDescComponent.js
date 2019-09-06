@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View } from "react-native";
 
-export default class titleDescComponent extends Component {
+export default class TitleDescComponent extends Component {
 /*
  Props:
  styleView

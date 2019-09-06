@@ -3,7 +3,8 @@ import {
     TouchableOpacity, 
     StyleSheet,
     Text,
-    Dimensions
+    Dimensions,
+    View
 } from "react-native";
 
 export default class DefaultButtonComponent extends Component {
@@ -25,7 +26,7 @@ export default class DefaultButtonComponent extends Component {
 */
 
     defaultAction = () => {
-        console.alert("Funcionalidade não implementada");
+        console.warn("Funcionalidade não implementada");
     }
 
     render() {
@@ -33,13 +34,15 @@ export default class DefaultButtonComponent extends Component {
         let action = this.props.action || this.defaultAction;
 
         return (
-            <TouchableOpacity 
-                onPress={action}
-                style={[styles.buttonStyle, this.props.style]} >
-                <Text style={[styles.textStyle, this.props.textStyle]}>
-                    {this.props.text}
-                </Text>
-            </TouchableOpacity>
+            <View style={this.props.viewStyle}>
+                <TouchableOpacity 
+                    onPress={action}
+                    style={[styles.buttonStyle, this.props.style]} >
+                    <Text style={[styles.textStyle, this.props.textStyle]}>
+                        {this.props.text}
+                    </Text>
+                </TouchableOpacity>
+            </View>
         )
     }
 }
