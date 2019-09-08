@@ -7,22 +7,15 @@ export default class TextInsertContainer extends Component{
 
     render(){
         return(
-            <View>
-                <TitleDescComponent titleText={this.props.tdTitle} 
-                    descriptionText={this.props.tdDesc} 
+            <View> 
+                <TitleDescComponent titleText={this.props.title} 
+                    descriptionText={this.props.description} 
                     styleTitle={styles.title}
-                    styleView={{
-                        justifyContent: 'flex-start',
-                        marginTop: 36
-                    }}
+                    styleView={styles.titleView}
                 />
                 <DefautlButtonComponent 
                     text={this.props.buttonText}
-                    viewStyle={{
-                        flex: 1,
-                        justifyContent: 'flex-end',
-                        marginBottom: 36
-                    }}
+                    viewStyle={styles.buttonView}
                 />
             </View>
         )
@@ -33,5 +26,14 @@ const styles = StyleSheet.create({
     title: {
         marginLeft: 8,
         marginRight: 8
+    },
+    titleView: {
+        justifyContent: 'flex-start',
+        marginTop: 25
+    },
+    buttonView: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 40
     }
 })
