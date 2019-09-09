@@ -1,7 +1,10 @@
+/* eslint prettier/prettier: 0 */
+/* eslint react/self-closing-comp: 0 */
+
 import React, {Component} from 'react';
 import { View, TextInput, StyleSheet } from "react-native";
-import MyLabel from '../Components/myTextComponent'
-import ItemListComponent from '../Components/itemListComponent'
+import ItemListComponent from '../Components/itemListComponent';
+import ClosedListComponent from '../Components/closedListComponent';
 
 
 export default class QuestionContainer extends Component {
@@ -16,6 +19,7 @@ export default class QuestionContainer extends Component {
         return (
             <View style={styles.container}>
                 <ItemListComponent onPress={this.alert} text={"Teste"}></ItemListComponent>
+                <ClosedListComponent></ClosedListComponent>
             </View>
         )
     }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, TouchableWithoutFeedback, View, Dimensions } from "react-native";
 
-export default class MyTextComponent extends Component {
+export default class ItemListComponent extends Component {
 
     render(){
         return (
