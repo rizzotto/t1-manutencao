@@ -30,6 +30,7 @@ export default class TextInsertContainer extends Component{
 
 const styles = StyleSheet.create({
     title: {
+        fontSize: 36,
         marginLeft: 8,
         marginRight: 8
     },
