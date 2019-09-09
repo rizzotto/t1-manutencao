@@ -3,6 +3,21 @@ import { View, FlatList, ScrollView, StyleSheet } from 'react-native';
 import { ListItemSubitems, Button, TitleDescription } from '../Components';
 import AppStyle from '../styles';
 
+/**
+ * Container para listagem e seleção de itens/subitens.
+ * 
+ * Parâmetros:
+ *   - `title: string`: título exibido acima da listagem;
+ *   - `description: string`: descrição exibida acima da listagem;
+ *   - `items: Object`: lista com os itens e subitens exibidos:
+ *     - `title: string`: título de destaque do item;
+ *     - `subitems: string[]`: lista com os subitens;
+ *     - `selectedSubitems: number[]`: lista com os índices dos subitens selecionados;
+ *   - `requiresAllSelected: boolean`: se `true`, o usuário terá de selecionar pelo menos um subitem em cada item; senão, o usuário pode continuar tendo selecionado qualquer quantidade de itens e subitens, inclusive nenhum;
+ *   - `onComplete: (...) => void`: callback chamado quando a seleção de itens é finalizada:
+ *     - `{ selectedSubitems: number[][] }`: objeto passado como parâmetro que contém os índices dos subitens selecionados em cada item;
+ *   - `style`: estilos aplicados no container.
+ */
 export default class ListSubitems extends Component {
     constructor(props) {
         super(props)
