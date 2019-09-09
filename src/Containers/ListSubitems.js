@@ -13,15 +13,6 @@ export default class ListSubitems extends Component {
     }
 
     /**
-     * Computa se todos os itens possuem pelo menos um subitem selecionado.
-     * @param {number[][]} sections lista com sublistas com os índices dos itens selecionados em cada seção
-     * @returns {boolean} `true` se há pelos menos um item selecionado em cada seção (subitem selecionado em cada item)
-     */
-    _checkAllSectionsSelected = (sections) => {
-        return sections.every(sub => sub.length > 0);
-    }
-
-    /**
      * Trata o evento de seleção de um subitem, atualizando os subitens selecionados.
      */
     _onToggleSubitem = (section, row) => {
@@ -29,9 +20,6 @@ export default class ListSubitems extends Component {
 
         // se a linha já está selecionada, deseleciona; senão, seleciona (apenas um subitem selecionado por vez)
         selected[section] = selected[section].includes(row) ? [] : [row];
-
-        // computa se cada item tem pelo menos um subitem selecionado
-        const allSectionsSelected = this._checkAllSectionsSelected(selected);
 
         this.setState({ ...this.state, selected });
     }
@@ -50,8 +38,8 @@ export default class ListSubitems extends Component {
     _getButtonState = () => {
         // se todos os itens tiverem que ter um subitem selecionado
         if (this.props.requiresAllSelected) {
-            // então o botão estará habilitado quando todos os itens estiverem selecionados
-            const allSelected = this._checkAllSectionsSelected(this.state.selected);
+            // então o botão estará habilitado quando todos os itens estiverem selecionados (pelo menos um subitem selecionado)
+            const allSelected = this.state.selected.every(sub => sub.length > 0);
             return { text: "Continuar", enabled: allSelected };
         } else {
             // senão, o usuário pode selecionar subitens em apenas alguns itens (ou até mesmo em nenhum)
