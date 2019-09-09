@@ -1,3 +1,9 @@
+/**
+ * Container para tela com título, input de texto e botão para ação.
+ * Utiliza os componentes:
+ *
+ */
+
 import React, {Component} from 'react';
 import { View, StyleSheet } from "react-native";
 import TitleDescComponent from "../Components/titleDescComponent";
