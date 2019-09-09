@@ -20,18 +20,18 @@ export default class TextInputComponent extends Component {
 
 const styles = StyleSheet.create({
   textInput: {
-    height: 45,    
     width: 300,
     textAlign: 'left',
     borderBottomWidth: 1.5,
     borderColor: 'green',
+    padding:-10,
   },
   error: {
-    height: 45,
     width: 300,
     textAlign: 'left',
     borderBottomWidth: 1.5,
     borderColor: 'lightgray',
+    padding:-10,
 
   }
 })

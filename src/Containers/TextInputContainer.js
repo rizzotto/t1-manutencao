@@ -5,8 +5,7 @@ import TextInputComponent from '../Components/TextInputComponent';
 //import console = require('console');
 
 
-export default class ContainerTextInput extends React.Component {
-  /**
+ /**
  * props for a textInput container
  * - description: the text behind
  * - type: can be: 
@@ -21,6 +20,8 @@ export default class ContainerTextInput extends React.Component {
  *        gray: not valid
  * example: <TextInputContainer type= {'numeric'} description={'Cellphone number'}/>
  */
+export default class ContainerTextInput extends React.Component {
+ 
   constructor() {
     super()
     this.state = {
@@ -143,7 +144,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    
   }
 
 });
