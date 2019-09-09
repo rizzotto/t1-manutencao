@@ -3,7 +3,6 @@ import { View, TextInput } from "react-native";
 import MyLabel from '../Components/myTextComponent';
 import DefaultButton from '../Components/defaultButtonComponent';
 
-
 export default class QuestionContainer extends Component {
 
     render(){
