@@ -6,6 +6,21 @@ import TextInputComponent from '../Components/TextInputComponent';
 
 
 export default class ContainerTextInput extends React.Component {
+  /**
+ * props for a textInput container
+ * - description: the text behind
+ * - type: can be: 
+ *      'alphanum': only numbers and letters
+ *      'alpha': only letter
+ *      'numeric: only numbers
+ *      'email': email validation
+ *      'date': date validation
+ *      '': all
+ * bottom border:
+ *        green: valid
+ *        gray: not valid
+ * example: <TextInputContainer type= {'numeric'} description={'Cellphone number'}/>
+ */
   constructor() {
     super()
     this.state = {
@@ -113,7 +128,7 @@ export default class ContainerTextInput extends React.Component {
     return (
       <View style={styles.container}>
         <TextInputComponent 
-        keyboardType={this.props.type=='numeric'?'numeric':'default'} 
+        keyboardType={this.props.type==='numeric'?'numeric':'default'} 
         onChangeText={(text) => this.onChangeText(text, this.props.type)} 
         value={this.state.text} 
         inputMessage={this.props.description} 
