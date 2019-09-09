@@ -42,7 +42,7 @@ export default class ListItemSubitems extends Component {
 
     render() {
         const { title, subitems, selectedSubitems = [], style } = this.props;
-        const hasSelectedItems = selectedSubitems.length != 0
+        const hasSelectedItems = selectedSubitems.length != 0;
 
         return (
             <View style={[styles.container, style]}>
