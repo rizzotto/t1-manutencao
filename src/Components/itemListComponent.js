@@ -1,16 +1,21 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, TouchableWithoutFeedback, View, Dimensions } from "react-native";
+import {Text, StyleSheet, TouchableOpacity, View, Dimensions } from "react-native";
+import CheckImage from './CheckImage';
 
 export default class ItemListComponent extends Component {
 
     render(){
+        const { selected } = this.props;
+        const styles = createStyles(selected);
+
         return (
             <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.props.onPress}>
+                <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
                     <Text style={styles.textStyle}>
                         {this.props.text}
                     </Text>
-                </TouchableWithoutFeedback>
+                    {selected && <CheckImage style={styles.image}/>}
+                </TouchableOpacity>
             </View>
         )
     }
@@ -20,14 +25,35 @@ export default class ItemListComponent extends Component {
 const buttonWidth = Math.round(Dimensions.get('window').width);
 
 
-const styles = StyleSheet.create({
-    textStyle: {
-        fontSize: 20,
-        marginLeft: 10
-    },
-    container: {
-        backgroundColor: '#FFF',
-        width: buttonWidth,
-        padding: 7
-    }
-})
+const createStyles = (selected) => {
+    return StyleSheet.create({
+        container: {
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            backgroundColor: selected ? '#bfbfbf' : '#FFF',
+            width: buttonWidth,
+        },
+        textStyle: {
+            flex: 1,
+            flexGrow: 1,
+            fontSize: 20,
+            textAlign: "left",
+            textAlignVertical: "center",
+        },
+        check: {
+            marginLeft: 10
+        },
+        button: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: "center"
+        },
+        image: {
+            marginLeft: 10,
+        }
+    })
+}
+

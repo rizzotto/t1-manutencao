@@ -18,8 +18,7 @@ export default class QuestionContainer extends Component {
     render(){
         return (
             <View style={styles.container}>
-                <ItemListComponent onPress={this.alert} text={"Teste"}></ItemListComponent>
-                <ClosedListComponent></ClosedListComponent>
+                <ItemListComponent onPress={this.alert} text={"Teste"} selected={true}></ItemListComponent>
             </View>
         )
     }

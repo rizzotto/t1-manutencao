@@ -46,8 +46,6 @@ export default class ClosedListComponent extends Component {
     _onPressItem = (id) => {
         // updater functions are preferred for transactional updates
         this.setState((state) => {
-            debugger;
-            // copy the map rather than modifying state.
             const selected = new Map(state.selected);
             selected.set(1, !selected.get(1)); // toggle
             return {selected};
