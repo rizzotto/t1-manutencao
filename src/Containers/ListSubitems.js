@@ -65,6 +65,16 @@ export default class ListSubitems extends Component {
         }
     }
 
+    /**
+     * Lida com o botão de continuar e avisa o pai que a seleção dessa tela foi finalizada. Constrói um objeto com os índices dos subitens selecionados e avisa o pai pela props `onComplete`.
+     */
+    _onButtonPress = () => {
+        if (!this.props.onComplete) return;
+
+        const result = { selectedSubitems: this.state.selected };
+        this.props.onComplete(result);
+    }
+
     render() {
         const { title, description, items, style } = this.props;
         const buttonState = this._getButtonState();
@@ -84,7 +94,7 @@ export default class ListSubitems extends Component {
                         scrollEnabled={false}
                     />
                 </ScrollView>
-                <Button style={styles.button} text={buttonState.text + " - " + buttonState.enabled} />
+                <Button style={styles.button} text={buttonState.text + " - " + buttonState.enabled} action={this._onButtonPress} />
             </View>
         );
     }
