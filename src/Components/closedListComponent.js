@@ -43,13 +43,9 @@ export default class ClosedListComponent extends Component {
             texto: "teste3"
         }];
     
-    _onPressItem = (id) => {
-        // updater functions are preferred for transactional updates
-        this.setState((state) => {
-            const selected = new Map(state.selected);
-            selected.set(1, !selected.get(1)); // toggle
-            return {selected};
-        });
+    _onPressItem = (index) => {
+        console.warn(index)
+        state[index].isSelected = !state[index].isSelected;
     };
 
     render() {
@@ -57,10 +53,10 @@ export default class ClosedListComponent extends Component {
         return (
             <FlatList style={styles.container}
                 data={this.state}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
               <ItemListComponent 
                 text={item.texto} 
-                // onPress={this._onPressItem} 
+                onPress={() => this._onPressItem(index)} 
                 selected={item.isSelected}
                 extraData={this.state}
               />
