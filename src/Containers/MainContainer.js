@@ -3,8 +3,8 @@
 
 import React, {Component} from 'react';
 import { View, TextInput, StyleSheet } from "react-native";
-import ItemListComponent from '../Components/itemListComponent';
-import ClosedListComponent from '../Components/closedListComponent';
+import ItemListComponent from '../Components/ItemListComponent';
+import ClosedListComponent from '../Components/ClosedListComponent';
 
 
 export default class QuestionContainer extends Component {
@@ -18,8 +18,7 @@ export default class QuestionContainer extends Component {
     render(){
         return (
             <View style={styles.container}>
-                {/* <ItemListComponent onPress={this.alert} text={"Teste"} selected={true}></ItemListComponent> */}
-                <ClosedListComponent></ClosedListComponent>
+                <ClosedListComponent maxSelected={2}></ClosedListComponent>
             </View>
         )
     }
