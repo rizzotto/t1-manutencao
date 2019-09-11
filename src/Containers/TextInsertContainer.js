@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import TitleDescComponent from "../Components/titleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
 import TextInputContaier from "../Containers/TextInputContainer";
@@ -19,7 +19,7 @@ export default class TextInsertContainer extends Component{
      * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
      * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
      * @param inputDescription Descrição do input do TextInputContainer
-     * @param keyboardType Tipo do teclado do input
+     * @param keyboardType Tipo do teclado do TextInputContainer
      * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
      * @param buttonText Texto do botão do container
      * 
@@ -30,22 +30,24 @@ export default class TextInsertContainer extends Component{
 
     render(){
         return(
-            <View> 
-                <TitleDescComponent 
-                    titleText={this.props.title} 
-                    descriptionText={this.props.description} 
-                    styleTitle={[styles.title, this.props.titleDescStyle]} 
-                    styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                />
-                <TextInputContaier 
-                    description={this.props.inputDescription}
-                    keyboardType={this.props.keyboardType}
-                />
-                <DefautlButtonComponent 
-                    text={this.props.buttonText}
-                    viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
-                />
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View> 
+                    <TitleDescComponent 
+                        titleText={this.props.title} 
+                        descriptionText={this.props.description} 
+                        styleTitle={[styles.title, this.props.titleDescStyle]} 
+                        styleView={[styles.titleView, this.props.titleDescViewStyle]}
+                    />
+                    <TextInputContaier 
+                        description={this.props.inputDescription}
+                        keyboardType={this.props.keyboardType}
+                    />
+                    <DefautlButtonComponent 
+                        text={this.props.buttonText}
+                        viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 }
