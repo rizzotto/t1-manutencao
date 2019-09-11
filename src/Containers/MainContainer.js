@@ -3,12 +3,12 @@
 
 import React, {Component} from 'react';
 import { View, TextInput, StyleSheet } from "react-native";
-import ItemListComponent from '../Components/ItemListComponent';
+import MyLabel from '../Components/MyTextComponent';
+import DefaultButton from '../Components/defaultButtonComponent';
 import ClosedListComponent from '../Components/ClosedListComponent';
 
 
 export default class QuestionContainer extends Component {
-
 
     alert(){
         console.warn("sdads")
@@ -35,9 +35,12 @@ export default class QuestionContainer extends Component {
 
 
     render(){
+        
         return (
             <View style={styles.container}>
                 <ClosedListComponent maxSelected={2} listItems={this.list}></ClosedListComponent>
+                <MyLabel text={"Como voce esta se sentindo hoje?"}/>
+                <DefaultButton text={"Botão"}  action={this.action}></DefaultButton>
             </View>
         )
     }
