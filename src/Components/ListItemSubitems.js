@@ -8,10 +8,10 @@ import ItemListComponent from './ItemListComponent';
  * Item de listagem com subitens.
  * 
  * Parâmetros:
- *   - `title`: título usado no topo do item;
- *   - `subitems`: array de strings com subitens exibidos;
- *   - `selectedSubitems`: array com índices dos subitens selecionados (em `subitems`);
- *   - `onSelectionToggle`: função chamada quando um subitem é selecionado (índice passado como parâmetro);
+ *   - `title: string`: título usado no topo do item;
+ *   - `subitems: string[]`: subitens exibidos;
+ *   - `selectedSubitems: number[]`: array com índices dos subitens selecionados (em `subitems`);
+ *   - `onSelectionToggle: (index: number) => void`: função chamada quando um subitem é selecionado (índice passado como parâmetro);
  *   - `style`: estilos aplicados no container.
  */
 export default class ListItemSubitems extends Component {
@@ -42,7 +42,7 @@ export default class ListItemSubitems extends Component {
 
     render() {
         const { title, subitems, selectedSubitems = [], style } = this.props;
-        const hasSelectedItems = selectedSubitems.length != 0
+        const hasSelectedItems = selectedSubitems.length != 0;
 
         return (
             <View style={[styles.container, style]}>
