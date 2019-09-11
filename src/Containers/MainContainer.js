@@ -14,11 +14,30 @@ export default class QuestionContainer extends Component {
         console.warn("sdads")
     }
 
+    list = [
+        {
+            id: '1',
+            isSelected: false,
+            texto: "teste1"
+        }, 
+        {
+            id: '2',
+            isSelected: true,
+            texto: "teste2"
+        },
+        {
+            id: '3',
+            isSelected: false,
+            texto: "teste3"
+            
+        }
+    ];
+
 
     render(){
         return (
             <View style={styles.container}>
-                <ClosedListComponent maxSelected={2}></ClosedListComponent>
+                <ClosedListComponent maxSelected={2} listItems={this.list}></ClosedListComponent>
             </View>
         )
     }
