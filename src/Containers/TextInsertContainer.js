@@ -1,6 +1,6 @@
 /**
  * Container para tela com título, input de texto e botão para ação.
- * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e ...
+ * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * Autores: Bruno Guerra e Eduardo Lessa
  */
 
@@ -8,17 +8,20 @@ import React, {Component} from 'react';
 import { View, StyleSheet } from "react-native";
 import TitleDescComponent from "../Components/titleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
+import TextInputContaier from "../Containers/TextInputContainer";
 
 export default class TextInsertContainer extends Component{
 
     /**
      * Parâmetros
-     * @param title string com o título a ser exibido
-     * @param description string com a descrição doUso do TextInsertContainer título (opcional)
+     * @param title String com o título a ser exibido
+     * @param description String com a descrição doUso do TextInsertContainer título (opcional)
      * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
      * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
+     * @param inputDescription Descrição do input do TextInputContainer
+     * @param keyboardType Tipo do teclado do input
      * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
-     * @param buttonText texto do botão do container
+     * @param buttonText Texto do botão do container
      * 
      * Uso do StyleSheet: StyleSheet.create({ ... });
      * 
@@ -28,10 +31,15 @@ export default class TextInsertContainer extends Component{
     render(){
         return(
             <View> 
-                <TitleDescComponent titleText={this.props.title} 
+                <TitleDescComponent 
+                    titleText={this.props.title} 
                     descriptionText={this.props.description} 
                     styleTitle={[styles.title, this.props.titleDescStyle]} 
                     styleView={[styles.titleView, this.props.titleDescViewStyle]}
+                />
+                <TextInputContaier 
+                    description={this.props.inputDescription}
+                    keyboardType={this.props.keyboardType}
                 />
                 <DefautlButtonComponent 
                     text={this.props.buttonText}
