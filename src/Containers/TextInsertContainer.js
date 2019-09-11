@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import TitleDescComponent from "../Components/titleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
-import TextInputContaier from "../Containers/TextInputContainer";
+import TextInputContainer from "../Containers/TextInputContainer";
 
 export default class TextInsertContainer extends Component{
 
@@ -38,9 +38,9 @@ export default class TextInsertContainer extends Component{
                         styleTitle={[styles.title, this.props.titleDescStyle]} 
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />
-                    <TextInputContaier 
+                    <TextInputContainer
                         description={this.props.inputDescription}
-                        keyboardType={this.props.keyboardType}
+                        type={this.props.keyboardType}
                     />
                     <DefautlButtonComponent 
                         text={this.props.buttonText}
@@ -59,8 +59,7 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     titleView: {
-        justifyContent: 'flex-start',
-        marginTop: 25
+        justifyContent: 'flex-start'
     },
     buttonView: {
         flex: 1,
