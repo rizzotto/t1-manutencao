@@ -97,7 +97,10 @@ export default class ListSubitems extends Component {
                         scrollEnabled={false}
                     />
                 </ScrollView>
-                <Button style={styles.button} text={buttonState.text + " - " + buttonState.enabled} action={this._onButtonPress} />
+                <Button text={buttonState.text}
+                    action={this._onButtonPress}
+                    isDisabled={!buttonState.enabled}
+                />
             </View>
         );
     }
@@ -108,8 +111,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     textContainer: {
-        marginHorizontal: 20,
-        marginVertical: 60
+        marginTop: 10,
+        marginBottom: 60,
     }
 });
 
