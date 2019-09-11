@@ -14,12 +14,13 @@ export default class DefaultButtonComponent extends Component {
     action
     style
     textStyle
-    text
+    isDisabled
 
         Example:
         <DefaultButtonComponent 
             text={"Botão"} 
             action={this.action}
+            disabled={true}
             style={styles.buttonStyle} 
             textStyle={styles.textStyle} 
         /> 
@@ -32,6 +33,10 @@ export default class DefaultButtonComponent extends Component {
     render() {
         
         let action = this.props.action || this.defaultAction;
+        let styleList = [styles.buttonStyle, this.props.style];
+        if (this.props.isDisabled) {
+            styleList.push({backgroundColor: "#C0C0C0"});
+        }
 
         return (
             <View style={this.props.viewStyle}>
