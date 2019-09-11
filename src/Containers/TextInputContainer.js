@@ -11,7 +11,7 @@ import TextInputComponent from '../Components/TextInputComponent';
  * - type: can be: 
  *      'alphanum': only numbers and letters
  *      'alpha': only letter
- *      'numeric: only numbers
+ *      'numeric': only numbers
  *      'email': email validation
  *      'date': date validation
  *      '': all

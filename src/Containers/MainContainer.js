@@ -1,6 +1,9 @@
+/* eslint prettier/prettier: 0 */
+/* eslint react/self-closing-comp: 0 */
+
 import React, {Component} from 'react';
-import { View, TextInput } from "react-native";
-import MyLabel from '../Components/myTextComponent';
+import { View, TextInput, StyleSheet } from "react-native";
+import MyLabel from '../Components/MyTextComponent';
 import DefaultButton from '../Components/defaultButtonComponent';
 
 export default class QuestionContainer extends Component {
@@ -15,3 +18,12 @@ export default class QuestionContainer extends Component {
         )
     }
 }
+
+
+
+
+const styles = StyleSheet.create({
+  container: {
+      alignItems: 'center',
+  },
+})
