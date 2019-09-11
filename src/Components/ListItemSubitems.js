@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import AppStyle from '../styles';
 import { CheckImage } from './';
+import ItemListComponent from './ItemListComponent';
 
 /**
  * Item de listagem com subitens.
@@ -45,7 +46,7 @@ export default class ListItemSubitems extends Component {
 
         return (
             <View style={[styles.container, style]}>
-                <ListItem text={title} pressDisabled={true} selected={hasSelectedItems} />
+                <ItemListComponent text={title} selected={hasSelectedItems} pressDisabled />
                 <Text style={styles.subtitle}>Indique a frequência:</Text>
                 <FlatList style={styles.list}
                     data={subitems}
@@ -74,49 +75,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     }
 });
-
-// ************************************************************
-// TODO substituir por componente 6: item da listagem dos cadastros
-// ************************************************************
-
-const ListItem = ({ text, selected, pressDisabled = false, onPress, style }) => {
-    const styles = createListItemStyles(selected);
-
-    return (
-        <TouchableOpacity style={[styles.container, style]} onPress={onPress} disabled={pressDisabled}>
-            <Text style={styles.text} numberOfLines={0} ellipsizeMode="tail">{text}</Text>
-            { selected && <CheckImage style={styles.check} />}
-        </TouchableOpacity>
-    );
-}
-
-const createListItemStyles = (selected) => {
-    return StyleSheet.create({
-        container: {
-            flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            backgroundColor: selected ? AppStyle.colors.lightGray : AppStyle.colors.background
-        },
-        text: {
-            flex: 1,
-            flexGrow: 1,
-    
-            fontSize: 20,
-            textAlign: "left",
-            textAlignVertical: "center",
-            color: AppStyle.colors.darkText
-        },
-        check: {
-            marginLeft: 10
-        }
-    });
-}
-
-// ************************************************************
-// /TODO substituir por componente 6: item da listagem dos cadastros
-// ************************************************************
 
 /**
  * Subitem usado na listagem.
