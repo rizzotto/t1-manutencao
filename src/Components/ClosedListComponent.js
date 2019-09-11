@@ -8,32 +8,24 @@ export default class ClosedListComponent extends Component {
     /*
     Props:
     maxSelected
+    listItems
 
         Example:
         <ClosedListComponent
             maxSelected={2}
+            listItems=[{
+            isSelected: false,
+            texto: "teste1"
+        },
+        {
+            isSelected: true,
+            texto: "teste2"
+        }]
         /> 
 */
 
     state = {
-        list: [
-            {
-                id: '1',
-                isSelected: false,
-                texto: "teste1"
-            }, 
-            {
-                id: '2',
-                isSelected: true,
-                texto: "teste2"
-            },
-            {
-                id: '3',
-                isSelected: false,
-                texto: "teste3"
-                
-            }
-        ]
+        list: this.props.listItems
     };
 
     maxSelected = this.props.maxSelected;
