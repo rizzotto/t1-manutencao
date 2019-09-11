@@ -2,23 +2,18 @@
 /* eslint react/self-closing-comp: 0 */
 
 import React, {Component} from 'react';
-import { View, TextInput, StyleSheet } from "react-native";
-import ItemListComponent from '../Components/ItemListComponent';
-import ClosedListComponent from '../Components/ClosedListComponent';
-
+import { View, TextInput } from "react-native";
+import MyLabel from '../Components/myTextComponent';
+import DefaultButton from '../Components/defaultButtonComponent';
 
 export default class QuestionContainer extends Component {
 
-
-    alert(){
-        console.warn("sdads")
-    }
-
-
     render(){
+        
         return (
-            <View style={styles.container}>
-                <ClosedListComponent maxSelected={2}></ClosedListComponent>
+            <View style={{alignItems:"center"}}>
+                <MyLabel text={"Como voce esta se sentindo hoje?"}/>
+                <DefaultButton text={"Botão"}  action={this.action}></DefaultButton>
             </View>
         )
     }
