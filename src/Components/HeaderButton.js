@@ -2,6 +2,14 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AppStyle from '../styles';
 
+/**
+ * Botão de cancelar do header.
+ * 
+ * Parâmetros:
+ *   - `text`: texto do botão;
+ *   - `hasColor`: se o botão é colorido (por padrão, `false`);
+ *   - `onPress`: callback chamado quando o botão é clicado.
+ */
 const HeaderButton = ({ text, hasColor, onPress }) => {
     const styles = createStyles(hasColor);
 
