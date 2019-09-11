@@ -9,6 +9,7 @@ import {
 
 export default class DefaultButtonComponent extends Component {
     
+    
     /*
     Props:
     action
@@ -34,7 +35,9 @@ export default class DefaultButtonComponent extends Component {
         
         let action = this.props.action || this.defaultAction;
         let styleList = [styles.buttonStyle, this.props.style];
+        let opacity = 0.5;
         if (this.props.isDisabled) {
+            opacity = 1;
             styleList.push({backgroundColor: "#C0C0C0"});
         }
 
@@ -42,7 +45,8 @@ export default class DefaultButtonComponent extends Component {
             <View style={this.props.viewStyle}>
                 <TouchableOpacity 
                     onPress={action}
-                    style={[styles.buttonStyle, this.props.style]} >
+                    style={styleList}
+                    activeOpacity={opacity} >
                     <Text style={[styles.textStyle, this.props.textStyle]}>
                         {this.props.text}
                     </Text>

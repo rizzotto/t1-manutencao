@@ -32,7 +32,6 @@ export default class ContainerTextInput extends React.Component {
 
   onChangeText = (text, type) => {
     this.setState({ text: text }, () => {
-      //console.warn(this.state.text)
       var reNumeric = /^[0-9]+$/
       var reAlphNum = /^[a-z0-9]+$/i
       var reAlph = /^[a-zA-Z]+$/

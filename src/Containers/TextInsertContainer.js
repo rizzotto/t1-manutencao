@@ -1,34 +1,31 @@
-/**
- * Container para tela com título, input de texto e botão para ação.
- * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
- * Autores: Bruno Guerra e Eduardo Lessa
- */
-
 import React, {Component} from 'react';
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import TitleDescComponent from "../Components/titleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
 import TextInputContainer from "../Containers/TextInputContainer";
 
+/**
+ * @author Bruno Guerra e Eduardo Lessa
+ * @param title String com o título a ser exibido
+ * @param description String com a descrição doUso do TextInsertContainer título (opcional)
+ * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
+ * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
+ * @param inputDescription Descrição do input do TextInputContainer
+ * @param keyboardType Tipo do teclado do TextInputContainer
+ * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
+ * @param buttonText Texto do botão do container
+ * 
+ * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
+ * 
+ * Uso do StyleSheet: StyleSheet.create({ ... });
+ * 
+ * Exemplo de uso: <TextInsertContainer title="Meus dados" buttonText="Enviar"/>
+ */
+
 export default class TextInsertContainer extends Component{
 
-    /**
-     * Parâmetros
-     * @param title String com o título a ser exibido
-     * @param description String com a descrição doUso do TextInsertContainer título (opcional)
-     * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
-     * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
-     * @param inputDescription Descrição do input do TextInputContainer
-     * @param keyboardType Tipo do teclado do TextInputContainer
-     * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
-     * @param buttonText Texto do botão do container
-     * 
-     * Uso do StyleSheet: StyleSheet.create({ ... });
-     * 
-     * Exemplo de uso: <TextInsertContainer title="Meus dados" buttonText="Enviar"/>
-     */
-
     render(){
+
         return(
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View> 
@@ -42,7 +39,8 @@ export default class TextInsertContainer extends Component{
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
-                    <DefautlButtonComponent 
+                    <DefautlButtonComponent
+                        isDisabled={false}
                         text={this.props.buttonText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
                     />
@@ -53,11 +51,6 @@ export default class TextInsertContainer extends Component{
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 36,
-        marginLeft: 8,
-        marginRight: 8
-    },
     titleView: {
         justifyContent: 'flex-start'
     },
