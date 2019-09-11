@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View, Dimensions } from "react-native";
 import CheckImage from './CheckImage';
+import AppStyle from '../styles';
 
 export default class ItemListComponent extends Component {
 
     render(){
-        const { selected } = this.props;
+        const { selected, pressDisabled } = this.props;
         const styles = createStyles(selected);
 
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
+                <TouchableOpacity style={styles.button} onPress={this.props.onPress} disabled={pressDisabled}>
                     <Text style={styles.textStyle}>
                         {this.props.text}
                     </Text>
@@ -32,7 +33,7 @@ const createStyles = (selected) => {
             alignItems: "center",
             paddingHorizontal: 20,
             paddingVertical: 10,
-            backgroundColor: selected ? '#bfbfbf' : '#FFF',
+            backgroundColor: selected ? AppStyle.colors.lightGray : AppStyle.colors.background,
             width: buttonWidth,
         },
         textStyle: {
