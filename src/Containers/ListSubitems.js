@@ -9,7 +9,7 @@ import AppStyle from '../styles';
  * Parâmetros:
  *   - `title: string`: título exibido acima da listagem;
  *   - `description: string`: descrição exibida acima da listagem;
- *   - `items: Object`: lista com os itens e subitens exibidos:
+ *   - `items: Object[]`: lista com os itens e subitens exibidos:
  *     - `title: string`: título de destaque do item;
  *     - `subitems: string[]`: lista com os subitens;
  *     - `selectedSubitems: number[]`: lista com os índices dos subitens selecionados;
