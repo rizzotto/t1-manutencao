@@ -1,7 +1,6 @@
-//ffcc00
 import React, { Component } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions} from 'react-native';
 
  /**
  * props for ProgressBar Component
@@ -9,14 +8,15 @@ import { StyleSheet, View } from 'react-native';
  * example: <ProgressBarComponent width={5/10}/> (estou na tela 5 de um fluxo com 10 telas)
  * example2: <ProgressBarComponent width={0.5}/> (estou na tela 5 de um fluxo com 10 telas)
  */
-export default class TextInputComponent extends Component {
+const screenSize = Math.round(Dimensions.get('window').width);
 
+ export default class TextInputComponent extends Component {
     render() {
-
+        console.warn(screenSize)
         return (
-            <View style={styles.container}>
-                <View style={styles.RectangleShapeViewProgress} width={360*this.props.width}/> 
+            <View>
                 <View style={styles.RectangleShapeView} />
+                <View style={styles.RectangleShapeViewProgress} width={screenSize*this.props.width}/> 
             </View>
         );
     }
@@ -24,27 +24,17 @@ export default class TextInputComponent extends Component {
 
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
-    },
 
     RectangleShapeView: {
-        flex:0,
-        width: 360,
+        width: '100%',
         height: 5,
         backgroundColor: '#E5E5E5',
         position: 'absolute',
-        left:-180,
-        top:0,
-        zIndex: -1,
     },
 
     RectangleShapeViewProgress: {
-        flex:0,
         height: 5,
         backgroundColor: '#FDBB61',
-        position: 'absolute',
-        left:-180,
-        top:0,
+         position: 'absolute',
     }
 });
