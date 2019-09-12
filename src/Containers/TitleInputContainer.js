@@ -10,6 +10,7 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param description String com a descrição doUso do TextInsertContainer título (opcional)
  * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
  * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
+ * @param obrigatoryInput Booleano que indica se o input é obrigatório ou não
  * @param inputDescription Descrição do input do TextInputContainer
  * @param keyboardType Tipo do teclado do TextInputContainer
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
@@ -19,10 +20,10 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * 
  * Uso do StyleSheet: StyleSheet.create({ ... });
  * 
- * Exemplo de uso: <TextInsertContainer title="Meus dados" buttonText="Enviar"/>
+ * Exemplo de uso: <TitleInputContainer title="Meus dados" buttonText="Enviar"/>
  */
 
-export default class TextInsertContainer extends Component{
+export default class TitleInputContainer extends Component{
 
     constructor () {
         super()
@@ -49,12 +50,12 @@ export default class TextInsertContainer extends Component{
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />  
                     <TextInputContainer
-                        parentCall={this.callbackInput}
+                        parentCall={this.props.requiredInput ? this.callbackInput : () => {}}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
                     <DefautlButtonComponent
-                        isDisabled={!this.state.inputState}
+                        isDisabled={this.props.requiredInput ? !this.state.inputState : false}
                         text={this.props.buttonText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
                     />
