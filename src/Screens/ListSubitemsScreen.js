@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { ListSubitems } from '../Containers';
-import createDefaultNavigationOptions from './createDefaultNavigationOptions';
 import { ProgressBar } from '../Components';
+import createDefaultNavigationOptions from './createDefaultNavigationOptions';
 
 /**
  * Tela de listagem com subitens.
@@ -32,7 +32,6 @@ export default class ListSubitemsScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <ProgressBar width={progress} />
                 <ListSubitems {...data}
-                    requiresAllSelected={false}
                     onComplete={this._onComplete} />
             </SafeAreaView>
         );
