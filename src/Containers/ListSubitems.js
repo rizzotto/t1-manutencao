@@ -23,7 +23,7 @@ export default class ListSubitems extends Component {
         super(props)
 
         this.state = {
-            selected: this.props.items.map((item) => item.selectedSubitems)
+            selected: (this.props.items || []).map((item) => item.selectedSubitems)
         }
     }
 

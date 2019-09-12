@@ -19,14 +19,14 @@ export default class ListSubitemsScreen extends Component {
     static navigationOptions = createDefaultNavigationOptions;
 
     _onComplete = ({ selectedSubitems }) => {
-        const onComplete = this.props.onComplete || this.props.navigation.getParam("onComplete");
+        const onComplete = this.getParam("onComplete");
         if (!onComplete) return;
         onComplete(selectedSubitems);
     }
 
     render() {
-        const progress = this.props.progress || this.props.navigation.getParam("progress", 0);
-        const data = this.props.data || this.props.navigation.getParam("data");
+        const progress = this.getParam("progress", 0);
+        const data = this.getParam("data", {});
 
         return (
             <SafeAreaView style={styles.container}>
