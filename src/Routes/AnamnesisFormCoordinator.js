@@ -39,6 +39,9 @@ export default class AnamnesisFormCoordinator extends Component {
         // frequências; a lista de medicamentos em `this.anamnesisRecord.medicines` só é setada
         // quando a tela de frequência completa (`onCompleteMedicinenFrequency`)
         this.selectedMedicines = (this.anamnesisRecord.medicines || []).map(m => m.name);
+
+        // TODO: remover depois de a seleção de medicamentos estiver funcionando
+        this.selectedMedicines = ["Omeprazol", "Ácido acetilsalicílico", "Diclofenaco"];
     }
 
     medicinesFrequencies = [
