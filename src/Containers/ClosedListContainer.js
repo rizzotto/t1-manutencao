@@ -1,18 +1,12 @@
-/* eslint prettier/prettier: 0 */
-/* eslint react/self-closing-comp: 0 */
-
 import React, {Component} from 'react';
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet, ScrollView } from "react-native";
 import ClosedListComponent from '../Components/ClosedListComponent';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import ProgressBarComponent from '../Components/ProgressBarComponent';
+import DefaultButtonComponent from '../Components/defaultButtonComponent';
 
 
-export default class QuestionContainer extends Component {
-
-    alert(){
-        console.warn("sdads")
-    }
+export default class ClosedListContainer extends Component {
 
     list = [
         {
@@ -30,6 +24,81 @@ export default class QuestionContainer extends Component {
             isSelected: false,
             texto: "teste3"
             
+        },
+        {
+            id: '4',
+            isSelected: false,
+            texto: "teste4"
+        }, 
+        {
+            id: '5',
+            isSelected: true,
+            texto: "teste5"
+        },
+        {
+            id: '6',
+            isSelected: false,
+            texto: "teste6"
+            
+        },
+        {
+            id: '4',
+            isSelected: false,
+            texto: "teste4"
+        }, 
+        {
+            id: '5',
+            isSelected: true,
+            texto: "teste5"
+        },
+        {
+            id: '6',
+            isSelected: false,
+            texto: "teste6"
+            
+        },
+        {
+            id: '4',
+            isSelected: false,
+            texto: "teste4"
+        }, 
+        {
+            id: '5',
+            isSelected: true,
+            texto: "teste5"
+        },
+        {
+            id: '190',
+            isSelected: false,
+            texto: "190"
+            
+        }, 
+        {
+            id: '5',
+            isSelected: true,
+            texto: "teste5"
+        },
+        {
+            id: '6',
+            isSelected: false,
+            texto: "teste6"
+            
+        },
+        {
+            id: '4',
+            isSelected: false,
+            texto: "teste4"
+        }, 
+        {
+            id: '5',
+            isSelected: true,
+            texto: "teste5"
+        },
+        {
+            id: '190',
+            isSelected: false,
+            texto: "190"
+            
         }
     ];
 
@@ -38,14 +107,25 @@ export default class QuestionContainer extends Component {
         
         return (
             <View style={styles.container}>
-                {/* <View style={styles.test}> */}
+                <View style={styles.header}>
                     <ProgressBarComponent width={0.5}/>
-                {/* </View> */}
-                <TitleDescComponent 
-                    titleText={"Medicamentos"} 
-                    descriptionText={"Informe os medicamentos que que você usa atualmente"}
-                /> 
-                <ClosedListComponent maxSelected={2} listItems={this.list}></ClosedListComponent>
+                    <TitleDescComponent 
+                        titleText={"Medicamentos"} 
+                        descriptionText={"Informe os medicamentos que que você usa atualmente"}
+                    />
+                </View> 
+                <ScrollView style={styles.content}>
+                    <ClosedListComponent maxSelected={2} listItems={this.list}/>
+                </ScrollView>
+                <View style={styles.bottom}>
+                    <DefaultButtonComponent 
+                    text={"Próximo"} 
+                    action={this.action}
+                    disabled={true}
+                    style={styles.buttonStyle} 
+                    textStyle={styles.textStyle}
+                    />     
+                </View> 
             </View>
         )
     }
@@ -55,10 +135,19 @@ export default class QuestionContainer extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    //   alignItems: 'center',
-  },
-  test: {
-      backgroundColor: '#3d3d'
-  }
+    container: {
+        flex:1,
+        // backgroundColor: '#3d3d',
+    },
+    header: {
+    },
+    content: {
+        marginTop:'15%',
+        marginBottom:'3%',
+    },
+    bottom: {
+        marginBottom:'10%',
+        alignContent:'flex-end'
+    },
+
 })
