@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import TextInputComponent from '../Components/TextInputComponent';
-//import console = require('console');
 
 
  /**
@@ -30,6 +29,16 @@ export default class ContainerTextInput extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot){
+    if(this.state.validate != prevState.validate){
+      this.parentCall();
+    }
+  }
+
+  parentCall = () => {
+    this.props.parentCall(this.state.validate);
+  }
+
   onChangeText = (text, type) => {
     this.setState({ text: text }, () => {
       var reNumeric = /^[0-9]+$/
@@ -40,13 +49,11 @@ export default class ContainerTextInput extends React.Component {
 
       if (type === 'numeric') {
         if (reNumeric.test(this.state.text)) {
-          //console.warn(this.state.text)
           this.setState({
             validate: true
           })
         }
         else {
-          //console.warn('not valid')
           this.setState({
             validate: false
           })
@@ -55,13 +62,11 @@ export default class ContainerTextInput extends React.Component {
 
       else if (type === 'date') {
         if (reDate.test(this.state.text)) {
-            //console.warn('valid')
             this.setState({
               validate: true
             })
         }
         else {
-          //console.warn('not valid')
           this.setState({
             validate: false
           })
@@ -71,13 +76,11 @@ export default class ContainerTextInput extends React.Component {
 
       else if(type === 'email'){
         if(reEmail.test(this.state.text)){
-          //console.warn('valid')
           this.setState({
             validate: true
           })
         }
         else{
-          //console.warn('not valid')
           this.setState({
             validate: false
           })
@@ -86,13 +89,11 @@ export default class ContainerTextInput extends React.Component {
 
       else if (type === 'alphanumeric') {
         if (reAlphNum.test(this.state.text)) {
-          //console.warn('valid')
           this.setState({
             validate: true
           })
         }
         else {
-          //console.warn('not valid')
           this.setState({
             validate: false
           })
@@ -101,13 +102,11 @@ export default class ContainerTextInput extends React.Component {
 
       else if (type === 'alpha') {
         if (reAlph.test(this.state.text)) {
-          //console.warn('valid')
           this.setState({
             validate: true
           })
         }
         else {
-          //console.warn('not valid')
           this.setState({
             validate: false
           })
@@ -115,7 +114,6 @@ export default class ContainerTextInput extends React.Component {
       }
 
       else {
-        //console.warn('valid')
         this.setState({
           validate: true
         })

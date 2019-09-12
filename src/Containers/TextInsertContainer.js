@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
-import TitleDescComponent from "../Components/titleDescComponent";
+import TitleDescComponent from "../Components/TitleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
 import TextInputContainer from "../Containers/TextInputContainer";
 
@@ -24,6 +24,19 @@ import TextInputContainer from "../Containers/TextInputContainer";
 
 export default class TextInsertContainer extends Component{
 
+    constructor () {
+        super()
+        this.state = {
+            inputState: false
+        }
+    }
+
+    callbackInput = (isInputValid) => {
+        this.setState(
+            {inputState: isInputValid}
+        );
+    }
+
     render(){
 
         return(
@@ -34,13 +47,14 @@ export default class TextInsertContainer extends Component{
                         descriptionText={this.props.description} 
                         styleTitle={[styles.title, this.props.titleDescStyle]} 
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                    />
+                    />  
                     <TextInputContainer
+                        parentCall={this.callbackInput}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
                     <DefautlButtonComponent
-                        isDisabled={false}
+                        isDisabled={!this.state.inputState}
                         text={this.props.buttonText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
                     />
