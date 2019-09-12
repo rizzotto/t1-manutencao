@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, Dimensions } from "react-native";
+import AppStyle from '../styles';
 /**
  * @param styleView estilo da view que comporta o título e a descrição
  * @param styleTitle estilo do texto do título
@@ -49,12 +50,13 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20, 
         marginBottom: 0,
-        marginTop: 50,
-        fontWeight: 'bold',
+        marginTop: 60,
+        fontWeight: '600',
+        color: AppStyle.colors.darkText
         },
     description: {
         fontSize: 15,
-        color: '#BFBFBF',
+        color: AppStyle.colors.darkGray,
         marginLeft: 20,
         marginRight: 20, 
     },
