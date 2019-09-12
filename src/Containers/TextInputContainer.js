@@ -36,7 +36,7 @@ export default class ContainerTextInput extends React.Component {
   }
 
   parentCall = () => {
-    this.props.parentCall(this.state.validate);
+    this.props.parentCall(this.state.validate, this.state.text);
   }
 
   onChangeText = (text, type) => {

@@ -15,6 +15,7 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param keyboardType Tipo do teclado do TextInputContainer
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
+ * @param altBtnText Texto alternativo do botão
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -25,17 +26,54 @@ import TextInputContainer from "../Containers/TextInputContainer";
 
 export default class TitleInputContainer extends Component{
 
-    constructor () {
+    constructor (props) {
         super()
         this.state = {
-            inputState: false
+            inputState: false,
+            inputValue: "",
+            disabledButton: props.requiredInput,
+            btnText: props.requiredInput ? props.buttonText : props.altBtnText
         }
     }
 
-    callbackInput = (isInputValid) => {
+    /**
+     * @function btnStateCheck
+     * Verifica o states do botão, realizando mudanças caso seja necessário
+     */
+    btnStateCheck = () => {
+        if(this.props.requiredInput){
+            if(this.state.inputValue == ""){
+                this.setState({disabledButton: true});
+            }
+            else{
+                this.setState({disabledButton: !this.state.inputState});
+            }
+        }
+        else{
+            if(this.state.inputValue == ""){
+                this.setState({btnText: this.props.altBtnText, disabledButton: false});
+            }
+            else{
+                this.setState({disabledButton: !this.state.inputState, btnText: this.props.buttonText});
+            }
+        }
+    }
+
+    /**
+     * @function callbackInput
+     * @param isInputValid boolean indica se o valor do input é valido conforme configuração
+     * @param inputText string valor atual do input
+     * Atualiza os states referentes ao botão e posteriormente, chama a função btnStateCheck
+     */
+    callbackInput = (isInputValid, inputText) => {
         this.setState(
-            {inputState: isInputValid}
-        );
+            {
+                inputState: isInputValid,
+                inputValue: inputText
+            },
+        () => {
+            this.btnStateCheck();
+        })
     }
 
     render(){
@@ -50,13 +88,13 @@ export default class TitleInputContainer extends Component{
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />  
                     <TextInputContainer
-                        parentCall={this.props.requiredInput ? this.callbackInput : () => {}}
+                        parentCall={this.callbackInput}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
                     <DefautlButtonComponent
-                        isDisabled={this.props.requiredInput ? !this.state.inputState : false}
-                        text={this.props.buttonText}
+                        isDisabled={this.state.disabledButton}
+                        text={this.state.btnText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
                     />
                 </View>
