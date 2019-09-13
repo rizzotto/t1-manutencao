@@ -3,6 +3,7 @@ import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-nati
 import TitleDescComponent from "../Components/TitleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
 import TextInputContainer from "../Containers/TextInputContainer";
+import ProgressBarComponent from "../Components/ProgressBarComponent";
 
 /**
  * @author Bruno Guerra e Eduardo Lessa
@@ -10,12 +11,14 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param description String com a descrição doUso do TextInsertContainer título (opcional)
  * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
  * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
- * @param obrigatoryInput Booleano que indica se o input é obrigatório ou não
+ * @param requiredInput Booleano que indica se o input é obrigatório ou não
  * @param inputDescription Descrição do input do TextInputContainer
  * @param keyboardType Tipo do teclado do TextInputContainer
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
+ * @param totalPages Quantidade total de páginas para a progress bar. Se vazio, será assumido 0 (zero) páginas
+ * @param currentPage Número da página atual para o cálculo da progress bar.
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -77,10 +80,18 @@ export default class TitleInputContainer extends Component{
     }
 
     render(){
+        
+        let totalPages = this.props.totalPages;
+        let currentPage = this.props.currentPage;
+        let widthProgressBar = currentPage / totalPages;
+        if(totalPages === undefined){
+            widthProgressBar = 0
+        }
 
         return(
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View> 
+                    <ProgressBarComponent width={widthProgressBar}/>
                     <TitleDescComponent 
                         titleText={this.props.title} 
                         descriptionText={this.props.description} 
@@ -105,11 +116,12 @@ export default class TitleInputContainer extends Component{
 
 const styles = StyleSheet.create({
     titleView: {
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        marginTop: 10,
     },
     buttonView: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: 40
+        marginBottom: 20
     }
 })

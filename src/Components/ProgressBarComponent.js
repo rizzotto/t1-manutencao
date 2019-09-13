@@ -10,9 +10,8 @@ import { StyleSheet, View, Dimensions} from 'react-native';
  */
 const screenSize = Math.round(Dimensions.get('window').width);
 
- export default class TextInputComponent extends Component {
+ export default class ProgressBarComponent extends Component {
     render() {
-        console.warn(screenSize)
         return (
             <View>
                 <View style={styles.RectangleShapeView} />
