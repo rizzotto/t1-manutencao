@@ -32,7 +32,7 @@ export default class TitleInputContainer extends Component{
             inputState: false,
             inputValue: "",
             disabledButton: props.requiredInput,
-            btnText: props.requiredInput ? props.buttonText : props.altBtnText
+            btnText: props.requiredInput ? props.buttonText : (props.altBtnText) ? props.altBtnText : props.buttonText
         }
     }
 
@@ -51,7 +51,7 @@ export default class TitleInputContainer extends Component{
         }
         else{
             if(this.state.inputValue == ""){
-                this.setState({btnText: this.props.altBtnText, disabledButton: false});
+                this.setState({btnText: this.props.altBtnText ? this.props.altBtnText : this.props.buttonText, disabledButton: false});
             }
             else{
                 this.setState({disabledButton: !this.state.inputState, btnText: this.props.buttonText});

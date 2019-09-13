@@ -14,6 +14,7 @@ import TextInputComponent from '../Components/TextInputComponent';
  *      'email': email validation
  *      'date': date validation
  *      '': all
+ * - parentCall: callback function that recieves the validate and text states. if not being used, can be set to () => {}
  * bottom border:
  *        green: valid
  *        gray: not valid
@@ -30,13 +31,15 @@ export default class ContainerTextInput extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
-    if(this.state.validate != prevState.validate){
+    if(this.state.validate != prevState.validate || prevState.text == "" && this.state.text.length >= 1 || prevState.text != "" && this.state.text == ""){
       this.parentCall();
     }
   }
 
   parentCall = () => {
-    this.props.parentCall(this.state.validate, this.state.text);
+    if(this.props.parentCall != undefined){
+      this.props.parentCall(this.state.validate, this.state.text);
+    }
   }
 
   onChangeText = (text, type) => {
