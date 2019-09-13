@@ -17,6 +17,7 @@ import ProgressBarComponent from "../Components/ProgressBarComponent";
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
+ * @param btnAction Ação (função) que o botão deve executar quando clicado
  * @param totalPages Quantidade total de páginas para a progress bar. Se vazio, será assumido 0 (zero) páginas
  * @param currentPage Número da página atual para o cálculo da progress bar.
  * 
@@ -78,7 +79,7 @@ export default class TitleInputContainer extends Component{
             this.btnStateCheck();
         })
     }
-
+    
     render(){
         
         let totalPages = this.props.totalPages;
@@ -107,6 +108,7 @@ export default class TitleInputContainer extends Component{
                         isDisabled={this.state.disabledButton}
                         text={this.state.btnText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
+                        action={this.props.btnAction}
                     />
                 </View>
             </TouchableWithoutFeedback>

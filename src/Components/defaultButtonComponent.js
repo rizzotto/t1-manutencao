@@ -43,7 +43,8 @@ export default class DefaultButtonComponent extends Component {
 
         return (
             <View style={this.props.viewStyle}>
-                <TouchableOpacity 
+                <TouchableOpacity
+                    disabled={this.props.isDisabled} 
                     onPress={action}
                     style={styleList}
                     activeOpacity={opacity} >
