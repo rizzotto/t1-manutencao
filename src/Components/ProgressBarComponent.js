@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, View, Dimensions} from 'react-native';
+import AppStyle from '../styles';
 
  /**
  * props for ProgressBar Component
@@ -27,13 +28,13 @@ const styles = StyleSheet.create({
     RectangleShapeView: {
         width: '100%',
         height: 5,
-        backgroundColor: '#E5E5E5',
+        backgroundColor: AppStyle.colors.lightGray,
         position: 'absolute',
     },
 
     RectangleShapeViewProgress: {
         height: 5,
-        backgroundColor: '#FDBB61',
+        backgroundColor: AppStyle.colors.main,
          position: 'absolute',
     }
 });
