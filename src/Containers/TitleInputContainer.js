@@ -16,7 +16,7 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
- * @param btnAction Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
+ * @param btnAction (Opcional) Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -110,7 +110,7 @@ export default class TitleInputContainer extends Component{
                         isDisabled={this.state.disabledButton}
                         text={this.state.btnText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
-                        action={this.dataToScreen}
+                        action={this.props.btnAction ? this.props.btnAction : this.dataToScreen}
                     />
                 </View>
             </TouchableWithoutFeedback>
