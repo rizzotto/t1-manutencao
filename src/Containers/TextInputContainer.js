@@ -31,22 +31,29 @@ export default class ContainerTextInput extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
-    if(this.props.parentCall !== undefined){
+    if(this.props.validateCallback !== undefined){
       if(this.state.validate != prevState.validate || prevState.text == "" && this.state.text.length >= 1 || prevState.text != "" && this.state.text == ""){
-        this.parentCall();
+        this.validateCallback();
       }
     }
   }
 
-  parentCall = () => {
-      this.props.parentCall(this.state.validate, this.state.text);
+  validateCallback = () => {
+      this.props.validateCallback(this.state.validate);
+  }
+
+  textCallback = () => {
+    this.props.textCallback(this.state.text);
   }
 
   onChangeText = (text, type) => {
     this.setState({ text: text }, () => {
+      if(this.props.textCallback !== undefined){
+        this.textCallback();
+      }
       var reNumeric = /^[0-9]+$/
-      var reAlphNum = /^[a-z0-9]+$/i
-      var reAlph = /^[a-zA-Z]+$/
+      var reAlphNum = /^[a-z0-9 ]+$/i
+      var reAlph = /^[a-zA-Z ]+$/
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
       var reEmail =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 

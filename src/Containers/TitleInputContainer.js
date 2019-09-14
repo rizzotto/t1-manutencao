@@ -3,7 +3,6 @@ import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-nati
 import TitleDescComponent from "../Components/TitleDescComponent";
 import DefautlButtonComponent from "../Components/defaultButtonComponent";
 import TextInputContainer from "../Containers/TextInputContainer";
-import ProgressBarComponent from "../Components/ProgressBarComponent";
 
 /**
  * @author Bruno Guerra e Eduardo Lessa
@@ -18,8 +17,6 @@ import ProgressBarComponent from "../Components/ProgressBarComponent";
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
  * @param btnAction Ação (função) que o botão deve executar quando clicado
- * @param totalPages Quantidade total de páginas para a progress bar. Se vazio, será assumido 0 (zero) páginas
- * @param currentPage Número da página atual para o cálculo da progress bar.
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -63,44 +60,45 @@ export default class TitleInputContainer extends Component{
         }
     }
 
-    /**
-     * @function callbackInput
-     * @param isInputValid boolean indica se o valor do input é valido conforme configuração
-     * @param inputText string valor atual do input
-     * Atualiza os states referentes ao botão e posteriormente, chama a função btnStateCheck
-     */
-    callbackInput = (isInputValid, inputText) => {
-        this.setState(
-            {
-                inputState: isInputValid,
-                inputValue: inputText
-            },
-        () => {
-            this.btnStateCheck();
-        })
-    }
-    
-    render(){
-        
-        let totalPages = this.props.totalPages;
+    /**let totalPages = this.props.totalPages;
         let currentPage = this.props.currentPage;
         let widthProgressBar = currentPage / totalPages;
         if(totalPages === undefined){
             widthProgressBar = 0
         }
+     * @function callbackInputValidate
+     * @param isInputValid boolean indica se o valor do input é valido conforme configuração
+     * Atualiza os states referentes ao botão e posteriormente, chama a função btnStateCheck
+     */
+    callbackInputValidate = (isInputValid) => {
+        this.setState({inputState: isInputValid},
+        () => {
+            this.btnStateCheck();
+        })
+    }
+
+    callbackInputText = (inputValue) => {
+       this.setState({inputValue: inputValue});
+    }
+
+    callbackToScreen = () => {
+        this.props.callbackToScreen(this.state.inputValue);
+    }
+    
+    render(){
 
         return(
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View> 
-                    <ProgressBarComponent width={widthProgressBar}/>
                     <TitleDescComponent 
                         titleText={this.props.title} 
                         descriptionText={this.props.description} 
                         styleTitle={[styles.title, this.props.titleDescStyle]} 
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />  
-                    <TextInputContainer
-                        parentCall={this.callbackInput}
+                    <TextInputContainer 
+                        validateCallback={this.callbackInputValidate}
+                        textCallback={this.callbackInputText}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
@@ -108,7 +106,7 @@ export default class TitleInputContainer extends Component{
                         isDisabled={this.state.disabledButton}
                         text={this.state.btnText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
-                        action={this.props.btnAction}
+                        action={this.callbackToScreen}
                     />
                 </View>
             </TouchableWithoutFeedback>
