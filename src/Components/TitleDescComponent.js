@@ -19,7 +19,22 @@ import AppStyle from '../styles';
  */
 
 export default class TitleDescComponent extends Component {
-    
+/*
+ Props:
+ styleView
+ styleTitle
+ styleDescription
+ titleText
+ descriptionText
+
+    Example:
+    <TitleDescComponent 
+        styleTitle={styles.title} 
+        styleDescription={styles.description}
+        titleText={"Medicação"} 
+        descriptionText={"Insira sua medicação aqui"}
+    /> 
+*/
     render(){
         return (
             <View style={[styles.view, this.props.styleView]}>
@@ -64,4 +79,3 @@ const styles = StyleSheet.create({
         width: screenWidth,
     }
 }) 
-
