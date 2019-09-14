@@ -16,7 +16,7 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
- * @param btnAction Ação (função) que o botão deve executar quando clicado
+ * @param btnAction Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -60,28 +60,32 @@ export default class TitleInputContainer extends Component{
         }
     }
 
-    /**let totalPages = this.props.totalPages;
-        let currentPage = this.props.currentPage;
-        let widthProgressBar = currentPage / totalPages;
-        if(totalPages === undefined){
-            widthProgressBar = 0
-        }
-     * @function callbackInputValidate
+    /**
+     * @function updateInputState
      * @param isInputValid boolean indica se o valor do input é valido conforme configuração
      * Atualiza os states referentes ao botão e posteriormente, chama a função btnStateCheck
      */
-    callbackInputValidate = (isInputValid) => {
+    updateInputState = (isInputValid) => {
         this.setState({inputState: isInputValid},
         () => {
             this.btnStateCheck();
         })
     }
 
-    callbackInputText = (inputValue) => {
+    /**
+     * @function updateInputValue
+     * @param inputValue String com o valor atual do input.
+     * Atualiza o estado com o valor do input quando o usuário digita.
+     */
+    updateInputValue = (inputValue) => {
        this.setState({inputValue: inputValue});
     }
 
-    callbackToScreen = () => {
+    /**
+     * @function dataToScreen
+     * Função utilizada para enviar os dados para a screen, utilizando callback.
+     */
+    dataToScreen = () => {
         this.props.callbackToScreen(this.state.inputValue);
     }
     
@@ -97,8 +101,8 @@ export default class TitleInputContainer extends Component{
                         styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />  
                     <TextInputContainer 
-                        validateCallback={this.callbackInputValidate}
-                        textCallback={this.callbackInputText}
+                        validateCallback={this.updateInputState}
+                        textCallback={this.updateInputValue}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
                     />
@@ -106,7 +110,7 @@ export default class TitleInputContainer extends Component{
                         isDisabled={this.state.disabledButton}
                         text={this.state.btnText}
                         viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
-                        action={this.callbackToScreen}
+                        action={this.dataToScreen}
                     />
                 </View>
             </TouchableWithoutFeedback>
