@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, View, Dimensions} from 'react-native';
+import AppStyle from '../styles';
 
  /**
  * props for ProgressBar Component
@@ -10,9 +11,8 @@ import { StyleSheet, View, Dimensions} from 'react-native';
  */
 const screenSize = Math.round(Dimensions.get('window').width);
 
- export default class TextInputComponent extends Component {
+ export default class ProgressBarComponent extends Component {
     render() {
-        console.warn(screenSize)
         return (
             <View>
                 <View style={styles.RectangleShapeView} />
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
     RectangleShapeView: {
         width: '100%',
         height: 5,
-        backgroundColor: '#E5E5E5',
+        backgroundColor: AppStyle.colors.lightGray,
         position: 'absolute',
     },
 
     RectangleShapeViewProgress: {
         height: 5,
-        backgroundColor: '#FDBB61',
+        backgroundColor: AppStyle.colors.main,
          position: 'absolute',
     }
 });
