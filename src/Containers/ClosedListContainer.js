@@ -46,7 +46,6 @@ export default class ClosedListContainer extends Component {
     
     render(){
         isDisabled = this.state.minSatisfied;
-        // console.warn(isDisabled)
         return (
 
             <View style={styles.container}>
