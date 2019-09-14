@@ -19,6 +19,7 @@ import AppStyle from '../styles';
  */
 
 export default class TitleDescComponent extends Component {
+    
     render(){
         return (
             <View style={[styles.view, this.props.styleView]}>
