@@ -3,6 +3,7 @@
 export { default as AnamnesesRecordsScreen } from './AnamnesesRecordsScreen';
 
 // form
+export { default as ClosedListScreen } from './ClosedListScreen';
 export { default as ListSubitemsScreen } from './ListSubitemsScreen';
 
 // funções
