@@ -6,6 +6,7 @@ import ItemListComponent from '../Components/ItemListComponent';
 import AppStyle from '../styles';
 /**
      * @param dataToScreen Dados que serao rertornados para Screen (lista com itens selecionados)
+     * @param minSelected Numero minimo de itens que devem ser selecionados na lista 
      * @param list Dados que estarao presentes na lista
      * @param maxSelected Numero maximo de itens que podem ser selecionados na lista 
      * @param titleText Titulo da pagina 
@@ -18,10 +19,17 @@ export default class ClosedListContainer extends Component {
     
     state = {
         list: this.props.list,
-        maxSelected: this.props.maxSelected,
+        maxSelected: this.props.maxSelected || this.props.list.length,
+        titleText: this.props.titleText,
+        descriptionText:this.props.descriptionTextm,
+        minSelected: this.props.minSelected || 0,
+        selectedItems: this.props.list.filter(x => x.isSelected),
+        minSatisfied: this.props.list.filter(x => x.isSelected).length>=(this.props.minSelected || 0 )
     };
+    dataToScreen = () => {
+        this.props.dataToScreen(this.state.selectedItems);
+    }
     
-    selectedItems = this.props.list.filter(x => x.isSelected)
 
     _onPressItem = (index) => {
         this.setState({ render: !this.render })
@@ -30,24 +38,22 @@ export default class ClosedListContainer extends Component {
         
         if (numbSelected < this.state.maxSelected || this.state.list[index].isSelected) {
             this.state.list[index].isSelected = !this.state.list[index].isSelected;
-            this.setState({ refresh: !this.state.refresh })
         }
-        this.selectedItems = this.state.list.filter(x => x.isSelected)
+        this.state.selectedItems = this.state.list.filter(x => x.isSelected)
+        this.state.minSatisfied = this.state.selectedItems.length>=this.state.minSelected;
     };
 
-    dataToScreen = () => {
-        this.props.dataToScreen(this.selectedItems);
-    }
     
     render(){
-        selectedItems = this.selectedItems;
-        console.warn(this.minIsStaisfied)
+        isDisabled = this.state.minSatisfied;
+        // console.warn(isDisabled)
         return (
+
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TitleDescComponent 
-                        titleText={this.props.titleText} 
-                        descriptionText={this.props.descriptionText}
+                        titleText={this.state.titleText} 
+                        descriptionText={this.state.descriptionText}
                     />
                 </View> 
                 <ScrollView style={styles.content}>
@@ -68,12 +74,13 @@ export default class ClosedListContainer extends Component {
                 
                 <View style={styles.bottom}>
                     <DefaultButtonComponent 
-                        text={selectedItems.length==0? "Pular": "Próximo"}
+                        text={this.state.selectedItems.length==0? "Pular": "Próximo"}
                         action={this.dataToScreen}
                         style={styles.buttonStyle} 
                         textStyle={styles.textStyle}
                         extraData={this.state.refresh}
                         onPress ={() => this._onPressItem(index)}
+                        isDisabled = {!isDisabled}
                     />     
                 </View> 
             </View>

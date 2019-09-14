@@ -6,6 +6,7 @@ import ProgressBarComponent from '../Components/ProgressBarComponent';
      * @param width Estado da barra de progresso
      * @param list Dados que estarao presentes na lista
      * @param maxSelected Numero maximo de itens que podem ser selecionados na lista 
+     * @param minSelected Numero minimo de itens que devem ser selecionados na lista 
      * @param titleText Titulo da pagina 
      * @param descriptionText Descricao da pagina
      * 
@@ -25,6 +26,7 @@ export default class ClosedListScreen extends Component {
         const maxSelected = this.props.maxSelected || this.props.navigation.getParam("maxSelected");
         const titleText = this.props.titleText || this.props.navigation.getParam("titleText");
         const descriptionText = this.props.descriptionText || this.props.navigation.getParam("descriptionText");
+        const minSelected = this.props.minSelected || this.props.navigation.getParam("minSelected");
         return(
             <SafeAreaView style={styles.container}>
                 <ProgressBarComponent width={width}/> 
@@ -32,6 +34,7 @@ export default class ClosedListScreen extends Component {
                 dataToScreen={this.dataFromContainer} 
                 list={list} 
                 maxSelected={maxSelected} 
+                minSelected={minSelected}
                 titleText={titleText}
                 descriptionText={descriptionText}
                 />
