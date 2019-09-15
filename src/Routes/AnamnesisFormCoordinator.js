@@ -3,7 +3,9 @@ import { Alert } from 'react-native';
 import { HeaderButton } from '../Components';
 import createCancelAlert from './createCancelAlert';
 import { ClosedListScreen } from '../Screens';
-import { frequencyCodes, mapToFrequencyDescriptions } from '../frequencies';
+import { frequencyCodes } from '../Utils/frequencies';
+import * as InputProducers from '../Utils/InputProducers';
+import * as OutputFilters from '../Utils/OutputFilters';
 
 /**
  * Coordinator do formulário de criação/edição de anamnese.
@@ -36,13 +38,13 @@ export default class AnamnesisFormCoordinator extends Component {
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
 
         this.inputProducers = {
-            closedList: new ClosedListInputProducer(),
-            subitemList: new SubitemListInputProducer()
+            closedList: new InputProducers.ClosedListInputProducer(),
+            subitemList: new InputProducers.SubitemListInputProducer()
         }
 
         this.outputFilters = {
-            closedList: new ClosedListOutputFilter(),
-            subitemList: new SubitemListOutputFilter()
+            closedList: new OutputFilters.ClosedListOutputFilter(),
+            subitemList: new OutputFilters.SubitemListOutputFilter()
         };
     }
 
@@ -231,133 +233,5 @@ export default class AnamnesisFormCoordinator extends Component {
         console.log(this.anamnesisRecord);
         console.warn(this.anamnesisRecord);
         // this.props.navigation.navigate("Main");
-    }
-}
-
-class ClosedListInputProducer {
-    /**
-     * 
-     * @param {string[]} items itens exibidos na lista
-     * @param {string} selected item que deve iniciar selecionado
-     */
-    singleSelected(items, selected) {
-        return items.map((item, index) => {
-            return {
-                id: index,
-                texto: item,
-                isSelected: item === selected
-            }
-        })
-    }
-
-    /**
-     * 
-     * @param {string[]} items itens exibidos na lista
-     * @param {string[]} selected itens que devem iniciar selecionados
-     */
-    multipleSelected(items, selected = []) {
-        return items.map((item, index) => {
-            return {
-                id: index,
-                texto: item,
-                isSelected: selected.includes(item)
-            }
-        })
-    }
-}
-
-class SubitemListInputProducer {
-    /**
-     * 
-     * @param {{title: string, codes: string[]}[]} reference itens a ser exibidos
-     * @param {{name: string, frequency: string}[]} selected itens já selecionados
-     * @returns {{title: string, subitems: string[], selectedSubitems: number[]}[]}
-     */
-    frequencyList(reference, selected = []) {
-        return reference.map(({ title, codes }) => {
-            const existing = selected.find(item => item.name === title);
-
-            let indices;
-            if (!existing) {
-                indices = [];
-            } else {
-                indices = [codes.indexOf(existing.frequency)];
-            }
-
-            return {
-                title: title,
-                subitems: mapToFrequencyDescriptions(codes),
-                selectedSubitems: indices
-            }
-        })
-    }
-
-    /**
-     * 
-     * @param {string[]} medicines medicamentos a exibir
-     * @param {{name: string, frequency: string}[]} selected medicamentos já selecionados (com frequências)
-     * @returns {{item: string, subitems: string[], selectedSubitems: number[]}[]}
-     */
-    medicineFrequencyList(medicines, selected = []) {
-        const reference = medicines.map(medicineName => {
-            return {
-                title: medicineName,
-                codes: frequencyCodes.medicines
-            }
-        })
-        
-        return this.frequencyList(reference, selected);
-    }
-}
-
-class ClosedListOutputFilter {
-    singleItem(closedListResult) {
-        return closedListResult.find(item => item.isSelected).texto;
-    }
-
-    allSelected(closedListResult) {
-        return closedListResult.filter(item => item.isSelected).map(item => item.texto);
-    }
-}
-
-class SubitemListOutputFilter {
-    /**
-     * 
-     * @param {number[][]} subitemListResult índices selecionados (retorno _raw_ da screen)
-     * @param {{title: string, codes: string[]}[]} reference itens exibidos (nome e códigos de frequência)
-     * @returns {{name: string, frequency: string}[]}
-     */
-    frequencyList(subitemListResult, reference) {
-        return subitemListResult
-            .map((selectedIndices, index) => {
-                // só válido se apenas UM subitem foi selecionado
-                if (selectedIndices.length !== 1) return null;
-                const selectedIndex = selectedIndices[0];
-
-                // códigos exibidos na seção
-                const ref = reference[index];
-
-                return {
-                    name: ref.title,
-                    frequency: ref.codes[selectedIndex]
-                };
-            })
-            .filter(item => item !== null); // remover inválidos
-    }
-
-    /**
-     * 
-     * @param {number[][]} subitemListResult índices selecionados (retorno _raw_ da screen)
-     * @param {string[]} medicines nomes dos medicamentos
-     */
-    medicineFrequencyList(subitemListResult, medicines) {
-        const reference = medicines.map(medicineName => {
-            return {
-                title: medicineName,
-                codes: frequencyCodes.medicines
-            }
-        })
-
-        return this.frequencyList(subitemListResult, reference)
     }
 }
