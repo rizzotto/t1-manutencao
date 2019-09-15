@@ -37,35 +37,45 @@ export default class AnamnesisFormCoordinator extends Component {
         // se uma anamnese for passada como parâmetro, usar ela como base para as telas
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
 
+        // objetos que geram as entradas para as listagens no formato esperado
         this.inputProducers = {
             closedList: new InputProducers.ClosedListInputProducer(),
             subitemList: new InputProducers.SubitemListInputProducer()
         }
 
+        // objetos que mapeiam as saídas das telas para formatos predefinidos
         this.outputFilters = {
             closedList: new OutputFilters.ClosedListOutputFilter(),
             subitemList: new OutputFilters.SubitemListOutputFilter()
         };
     }
 
+    defaultParams = {
+        title: "Ficha",
+        onCancel: this._onCancel
+    }
+
     render() {
         // TODO: mudar quando a tela de entrada de texto estiver concluída
 
-        // TODO: mudar quando listagem aberta estiver pronta
+        const saveResult = (result) => {
+            this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
+            this.props.navigation.setParams({ hasData: true }); // TODO: mudar quando tela de entrada de texto estiver concluída
+        }
+
         const defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
         const items = this.inputProducers.closedList.multipleSelected(defaultSymptoms, this.anamnesisRecord.symptoms);
 
         const data = {
+            ...this.defaultParams,
             titleText: "Informe suas principais queixas/sintomas",
+            list: items,
             width: 0.42,
-            list: items
+            onComplete: composeSavePush(saveResult, this.pushMedicines),
         };
 
         return (
-            <ClosedListScreen {...data}
-                onCancel={this._onCancel}
-                onComplete={this._onCompleteSymptoms}
-            />
+            <ClosedListScreen {...data} />
         );
     }
 
@@ -78,40 +88,40 @@ export default class AnamnesisFormCoordinator extends Component {
         Alert.alert(...createCancelAlert(dismiss));
     }
 
-    // para cada tela do fluxo, há uma função `onComplete<Tela>` que recebe como parâmetro o dado
-    // enviado pela tela (ex. texto digitado pelo usuário) e persiste (salva em `this.anamnesisRecord`)
-    // no formato correto para o modelo (trata o resultado enviado pela screen, se necessário)
-    // depois de persistir, a função navega para a próxima tela, passando os parâmetros que ela
-    // necessita, como as funções `onComplete` e `onCancel`, e os dados que aquela tela espera (a
-    // partir do que está salvo em `this.anamnesisRecord`)
+    // cada tela do fluxo possui uma função `push<Tela>`, que deve navegar a tela em questão
+    // para as telas de listagem o formato básico é:
+    // 1. definir como o resultado da tela é persistido
+    // 2. definir os itens que serão exibidos
+    // 3. navegar para a tela em questão, usando a função `composeSavePush` para especificar a função que vai salvar o resultado dessa tela e a função que vai apresentar a próxima tela
+    // modificar a ordem das telas no fluxo consiste, basicamente, em mudar o segundo parâmetro da função `composeSavePush` e o parâmetro `progress`/`width` (barra de progresso)
 
-    _onCompleteSymptoms = (result) => {
-        this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
-
-        // apenas o onComplete da primeira tela tem isso, e serve para habilitar o alerta quando
-        // o usuário clica em "Cancelar" na primeira tela (caso ele volte para a mesma)
-        this.props.navigation.setParams({ hasData: true });
+    pushMedicines = () => {
+        const saveResult = (result) => {
+            this.selectedMedicines = this.outputFilters.closedList.allSelected(result);
+        }
 
         const availableMedicines = ["Omeprazol", "Dipirona", "AAS", "Diclofenaco"];
         const items = this.inputProducers.closedList.multipleSelected(availableMedicines, this.selectedMedicines);
 
         this.props.navigation.navigate("ClosedList", {
+            ...this.defaultParams,
             titleText: "Medicamentos",
             descriptionText: "Informe os medicamentos que você usa atualmente.",
-            width: 0.4998,
             list: items,
-            title: "Ficha",
-            onComplete: this._onCompleteMedicines,
-            onCancel: this._onCancel
+            width: 0.4998,
+            onComplete: composeSavePush(saveResult, this.pushMedicinesFrequency)
         });
     }
 
-    _onCompleteMedicines = (result) => {
-        this.selectedMedicines = this.outputFilters.closedList.allSelected(result);
+    pushMedicinesFrequency = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.medicines = this.outputFilters.subitemList.medicineFrequencyList(result, this.selectedMedicines);
+        }
 
         const items = this.inputProducers.subitemList.medicineFrequencyList(this.selectedMedicines, this.anamnesisRecord.medicines);
 
         this.props.navigation.navigate("SubitemsList", {
+            ...this.defaultParams,
             data: {
                 title: "Frequência",
                 description: "Informe a frequência de uso de cada medicamento.",
@@ -119,57 +129,60 @@ export default class AnamnesisFormCoordinator extends Component {
                 items
             },
             progress: 0.5712,
-            title: "Ficha",
-            onComplete: this._onCompleteMedicinesFrequency,
-            onCancel: this._onCancel
+            onComplete: composeSavePush(saveResult, this.pushPathologies)
         });
     }
 
-    _onCompleteMedicinesFrequency = (result) => {
-        this.anamnesisRecord.medicines = this.outputFilters.subitemList.medicineFrequencyList(result, this.selectedMedicines);
+    pushPathologies = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.pathologies = this.outputFilters.closedList.allSelected(result);
+        }
 
         const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
         const items = this.inputProducers.closedList.multipleSelected(defaultPathologies, this.anamnesisRecord.pathologies);
 
         this.props.navigation.push("ClosedList", {
+            ...this.defaultParams,
             titleText: "Você tem ou teve alguma patologia?",
-            width: 0.6426,
             list: items,
-            title: "Ficha",
-            onComplete: this._onCompletePathologies,
-            onCancel: this._onCancel
+            width: 0.6426,
+            onComplete: composeSavePush(saveResult, this.pushFamilyPathologies)
         })
     }
 
-    _onCompletePathologies = (result) => {
-        this.anamnesisRecord.pathologies = this.outputFilters.closedList.allSelected(result);
+    pushFamilyPathologies = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.familyPathologies = this.outputFilters.closedList.allSelected(result);
+        }
 
         const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
         const items = this.inputProducers.closedList.multipleSelected(defaultPathologies, this.anamnesisRecord.familyPathologies);
 
         this.props.navigation.push("ClosedList", {
+            ...this.defaultParams,
             titleText: "Histórico familiar",
             descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
-            width: 0.714,
             list: items,
-            title: "Ficha",
-            onComplete: this._onCompleteFamilyPathologies,
-            onCancel: this._onCancel
+            width: 0.714,
+            onComplete: composeSavePush(saveResult, this.pushHabits)
         })
     }
 
-    _onCompleteFamilyPathologies = (result) => {
-        this.anamnesisRecord.familyPathologies = this.outputFilters.closedList.allSelected(result);
-
+    pushHabits = () => {
         const habits = [
             { title: "Fumar", codes: frequencyCodes.smoking },
             { title: "Beber", codes: frequencyCodes.drinking },
             { title: "Atividade física", codes: frequencyCodes.physicalActivity }
         ];
 
+        const saveResult = (result) => {
+            this.anamnesisRecord.habits = this.outputFilters.subitemList.frequencyList(result, habits);
+        }
+
         const items = this.inputProducers.subitemList.frequencyList(habits, this.anamnesisRecord.habits);
 
         this.props.navigation.push("SubitemsList", {
+            ...this.defaultParams,
             data: {
                 title: "Hábitos",
                 description: "Informe seus hábitos que afetam sua saúde, como fumar e beber, e a frequência.",
@@ -177,61 +190,65 @@ export default class AnamnesisFormCoordinator extends Component {
                 items
             },
             progress: 0.7853,
-            title: "Ficha",
-            onComplete: this._onCompleteHabits,
-            onCancel: this._onCancel
+            onComplete: composeSavePush(saveResult, this.pushLifeRhythm)
         })
     }
 
-    _onCompleteHabits = (selectedIndices) => {
-        const habits = [
-            { title: "Fumar", codes: frequencyCodes.smoking },
-            { title: "Beber", codes: frequencyCodes.drinking },
-            { title: "Atividade física", codes: frequencyCodes.physicalActivity }
-        ];
-
-        this.anamnesisRecord.habits = this.outputFilters.subitemList.frequencyList(selectedIndices, habits);
+    pushLifeRhythm = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.lifeRhythm = this.outputFilters.closedList.singleItem(result);
+        }
 
         const defaultRhythms = ["Calmo", "\"Normal\"", "Muito agitada"];
         const items = this.inputProducers.closedList.singleSelected(defaultRhythms, this.anamnesisRecord.lifeRhythm);
 
         this.props.navigation.push("ClosedList", {
+            ...this.defaultParams,
             titleText: "Ritmo de vida",
             descriptionText: "Como você caracteriza seu \"ritmo\" de vida?",
-            width: 0.8568,
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            title: "Ficha",
-            onComplete: this._onCompleteLifeRhythm,
-            onCancel: this._onCancel
+            width: 0.8568,
+            onComplete: composeSavePush(saveResult, this.pushEatingStyle)
         })
     }
 
-    _onCompleteLifeRhythm = (result) => {
-        this.anamnesisRecord.lifeRhythm = this.outputFilters.closedList.singleItem(result);
+    pushEatingStyle = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.eatingStyle = this.outputFilters.closedList.singleItem(result);
+        }
 
         const defaultStyles = ["Adequada", "Não adequada"];
         const items = this.inputProducers.closedList.singleSelected(defaultStyles, this.anamnesisRecord.eatingStyle);
 
         this.props.navigation.push("ClosedList", {
+            ...this.defaultParams,
             titleText: "Alimentação",
             descriptionText: "Como você caracteriza sua alimentação?",
-            width: 0.9282,
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            title: "Ficha",
-            onComplete: this._onCompleteEatingStyle,
-            onCancel: this._onCancel
+            width: 0.9282,
+            onComplete: composeSavePush(saveResult, this.endFlow)
         })
     }
 
-    _onCompleteEatingStyle = (result) => {
-        this.anamnesisRecord.eatingStyle = this.outputFilters.closedList.singleItem(result);
-
+    endFlow = () => {
         console.log(this.anamnesisRecord);
         console.warn(this.anamnesisRecord);
-        // this.props.navigation.navigate("Main");
+        // TODO: salvar no firebase! :D
+        this.props.navigation.navigate("Main");
     }
+}
+
+/**
+ * Compõe uma função para salvar o resultado de uma tela e navegar para a próxima.
+ * 
+ * @param {function} save função que recebe como parâmetro o resultado de uma tela e deve persistir o mesmo no componente
+ * @param {*} push função sem parâmetros que indica qual será a próxima tela do fluxo
+ */
+const composeSavePush = (save, push) => (result) => {
+    save(result);
+    push();
 }
