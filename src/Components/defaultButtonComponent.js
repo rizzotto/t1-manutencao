@@ -6,6 +6,7 @@ import {
     Dimensions,
     View
 } from "react-native";
+import AppStyle from '../styles';
 
 export default class DefaultButtonComponent extends Component {
     
@@ -38,7 +39,7 @@ export default class DefaultButtonComponent extends Component {
         let opacity = 0.5;
         if (this.props.isDisabled) {
             opacity = 1;
-            styleList.push({backgroundColor: "#C0C0C0"});
+            styleList.push({backgroundColor: AppStyle.colors.mediumGray});
         }
 
         return (
@@ -63,10 +64,9 @@ const styles = StyleSheet.create({
     buttonStyle: {
         margin: 10,
         padding: 10,
-        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: '#FFC170',
+        backgroundColor: AppStyle.colors.main,
         borderRadius: 5,
         width: buttonWidth
     },
