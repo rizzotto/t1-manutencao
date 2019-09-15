@@ -135,7 +135,6 @@ export default class AnamnesisFormCoordinator extends Component {
             return [frequencyCodes.medicines.indexOf(freq.frequency)];
         }
 
-        // TODO: unify with selected!!!
         const items = this.selectedMedicines.map(medicineName => {
             return {
                 title: medicineName,
@@ -159,7 +158,7 @@ export default class AnamnesisFormCoordinator extends Component {
     }
 
     _onCompleteMedicinesFrequency = (selectedIndices) => {
-        const ttt = this.selectedMedicines.map((medicineName, index) => {
+        this.anamnesisRecord.medicines = this.selectedMedicines.map((medicineName, index) => {
             const selectedIndex = selectedIndices[index][0];
             const frequencyCode = frequencyCodes.medicines[selectedIndex];
 
@@ -169,13 +168,106 @@ export default class AnamnesisFormCoordinator extends Component {
             };
         });
 
-        console.log(ttt);
-        this.anamnesisRecord.medicines = ttt;
+        const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
+        const selectedPathologies = this.anamnesisRecord.pathologies || [];
+        const pathologies = defaultPathologies.map((pathology, index) => {
+            return {
+                id: index.toString(),
+                texto: pathology,
+                isSelected: selectedPathologies.includes(pathology)
+            };
+        });
 
-        // TODO: mover para última tela quando o fluxo estiver completo
-        // a última tela deve persistir o conteúdo em `this.anamnesisRecord` no firebase
-        // e, depois de concluído, navegar de volta para a tabbar (dismiss no fluxo)
-        // (por isso o uso de `navigate`, e não de `push`)
-        this.props.navigation.navigate("Main");
+        this.props.navigation.push("ClosedList", {
+            titleText: "Você tem ou teve alguma patologia?",
+            width: 0.66,
+            list: pathologies,
+            title: "Ficha",
+            onComplete: this._onCompletePathologies,
+            onCancel: this._onCancel
+        })
+    }
+
+    _onCompletePathologies = (pathologies) => {
+        this.anamnesisRecord.pathologies = pathologies.map(pat => pat.texto);
+
+        const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
+        const selectedPathologies = this.anamnesisRecord.familyPathologies || [];
+        const familyPathologies = defaultPathologies.map((pathology, index) => {
+            return {
+                id: index.toString(),
+                texto: pathology,
+                isSelected: selectedPathologies.includes(pathology)
+            };
+        });
+
+        this.props.navigation.push("ClosedList", {
+            titleText: "Histórico familiar",
+            descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
+            width: 0.74,
+            list: familyPathologies,
+            title: "Ficha",
+            onComplete: this._onCompleteFamilyPathologies,
+            onCancel: this._onCancel
+        })
+    }
+
+    _onCompleteFamilyPathologies = (familyPathologies) => {
+        this.anamnesisRecord.familyPathologies = familyPathologies.map(fpat => fpat.texto);
+
+        const habits = [
+            { title: "Fumar", subitems: frequencyDescriptions.smoking, codes: frequencyCodes.smoking },
+            { title: "Beber", subitems: frequencyDescriptions.drinking, codes: frequencyCodes.drinking },
+            { title: "Atividade física", subitems: frequencyDescriptions.physicalActivity, codes: frequencyCodes.physicalActivity }
+        ];
+
+        const createIndices = (habit) => {
+            const selectedHabits = this.anamnesisRecord.habits || [];
+            const preselected = selectedHabits.find(sh => sh.name === habit.title);
+            if (!preselected) return [];
+            return [habit.codes.indexOf(preselected.frequency)];
+        }
+
+        const items = habits.map(habit => {
+            return {
+                ...habit,
+                selectedSubitems: createIndices(habit)
+            }
+        });
+
+        this.props.navigation.push("SubitemsList", {
+            data: {
+                title: "Hábitos",
+                description: "Informe seus hábitos que afetam sua saúde, como fumar e beber, e a frequência.",
+                requiresAllSelected: false,
+                items
+            },
+            progress: 0.82,
+            title: "Ficha",
+            onComplete: this._onCompleteHabits,
+            onCancel: this._onCancel
+        })
+    }
+
+    _onCompleteHabits = (selectedIndices) => {
+        const habits = [
+            { title: "Fumar", subitems: frequencyDescriptions.smoking, codes: frequencyCodes.smoking },
+            { title: "Beber", subitems: frequencyDescriptions.drinking, codes: frequencyCodes.drinking },
+            { title: "Atividade física", subitems: frequencyDescriptions.physicalActivity, codes: frequencyCodes.physicalActivity }
+        ];
+
+        this.anamnesisRecord.habits = habits.map((habit, index) => {
+            if (selectedIndices[index].length === 0) return null;
+
+            const selectedIndex = selectedIndices[index][0];
+            const frequencyCode = habit.codes[selectedIndex];
+
+            return {
+                name: habit.title,
+                frequency: frequencyCode
+            };
+        }).filter(h => h !== undefined && h !== null);
+
+        console.log(this.anamnesisRecord);
     }
 }
