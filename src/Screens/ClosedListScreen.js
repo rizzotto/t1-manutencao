@@ -50,6 +50,5 @@ export default class ClosedListScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     }
 })

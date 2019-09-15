@@ -115,7 +115,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         this.props.navigation.navigate("ClosedList", {
             titleText: "Medicamentos",
-            description: "Informe os medicamentos que você usa atualmente.",
+            descriptionText: "Informe os medicamentos que você usa atualmente.",
             width: 0.4998,
             list: medicines,
             title: "Ficha",
