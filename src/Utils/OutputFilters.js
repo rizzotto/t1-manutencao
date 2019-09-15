@@ -1,6 +1,43 @@
 import { frequencyCodes } from './frequencies';
 
 /**
+ * Mapeia o resultado da tela de entrada de texto.
+ */
+class TextInputOutputFilter {
+    /**
+     * Remove os espaços em branco no início e fim do resultado da tela de entrada de texto.
+     * @param {string} textInputResult resultado da tela de entrada de texto
+     * @returns {string} conteúdo sem espaços no início ou fim
+     */
+    removeWhitespace(textInputResult) {
+        return textInputResult.trim();
+    }
+
+    /**
+     * Parseia o resultado da tela de entrada de texto para uma data.
+     * @param {string} textInputResult resultado da tela de entrada de texto
+     * @returns {Date} data correspondente ao informado em `textInputResult`
+     */
+    date(textInputResult) {
+        const reversed = this.removeWhitespace(textInputResult) // 02/04/2009
+            .split("/") // ["02", "04", "2009"]
+            .reverse() // ["2009", "04", "02"]
+            .join("/"); // "2009/04/02"
+        
+        return new Date(reversed);
+    }
+
+    /**
+     * Parseia o resultado para um número.
+     * @param {string} textInputResult resultado da tela com número
+     * @return {number} número correspondente
+     */
+    number(textInputResult) {
+        return parseFloat(this.removeWhitespace(textInputResult).replace(",", "."));
+    }
+}
+
+/**
  * Mapeia o resultado da tela de listagem fechada para alguns formatos de resultado.
  * 
  * @typedef {Object} ClosedListOutputItem
@@ -83,4 +120,4 @@ class SubitemListOutputFilter {
     }
 }
 
-export { ClosedListOutputFilter, SubitemListOutputFilter };
+export { TextInputOutputFilter, ClosedListOutputFilter, SubitemListOutputFilter };

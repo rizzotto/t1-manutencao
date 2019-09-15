@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButton } from '../Components';
 import createCancelAlert from './createCancelAlert';
-import { ClosedListScreen } from '../Screens';
+import { TextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
@@ -39,12 +39,14 @@ export default class AnamnesisFormCoordinator extends Component {
 
         // objetos que geram as entradas para as listagens no formato esperado
         this.inputProducers = {
+            textInput: new InputProducers.TextInputInputProducer(),
             closedList: new InputProducers.ClosedListInputProducer(),
             subitemList: new InputProducers.SubitemListInputProducer()
         }
 
         // objetos que mapeiam as saídas das telas para formatos predefinidos
         this.outputFilters = {
+            textInput: new OutputFilters.TextInputOutputFilter(),
             closedList: new OutputFilters.ClosedListOutputFilter(),
             subitemList: new OutputFilters.SubitemListOutputFilter()
         };
@@ -56,26 +58,23 @@ export default class AnamnesisFormCoordinator extends Component {
     }
 
     render() {
-        // TODO: mudar quando a tela de entrada de texto estiver concluída
-
         const saveResult = (result) => {
-            this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
-            this.props.navigation.setParams({ hasData: true }); // TODO: mudar quando tela de entrada de texto estiver concluída
+            this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result);
+            this.props.navigation.setParams({ hasData: true });
         }
-
-        const defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
-        const items = this.inputProducers.closedList.multipleSelected(defaultSymptoms, this.anamnesisRecord.symptoms);
 
         const data = {
             ...this.defaultParams,
-            titleText: "Informe suas principais queixas/sintomas",
-            list: items,
-            width: 0.42,
-            onComplete: composeSavePush(saveResult, this.pushMedicines),
-        };
+            callout: "Informe seu nome completo",
+            placeholder: "Insira seu nome...",
+            progress: 0.0713,
+            required: true,
+            content: this.anamnesisRecord.name,
+            onComplete: composeSavePush(saveResult, this.pushEmail)
+        }
 
         return (
-            <ClosedListScreen {...data} />
+            <TextInputScreen {...data} />
         );
     }
 
@@ -94,6 +93,93 @@ export default class AnamnesisFormCoordinator extends Component {
     // 2. definir os itens que serão exibidos
     // 3. navegar para a tela em questão, usando a função `composeSavePush` para especificar a função que vai salvar o resultado dessa tela e a função que vai apresentar a próxima tela
     // modificar a ordem das telas no fluxo consiste, basicamente, em mudar o segundo parâmetro da função `composeSavePush` e o parâmetro `progress`/`width` (barra de progresso)
+
+    pushEmail = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.email = this.outputFilters.textInput.date(result);
+        }
+
+        this.props.navigation.push("TextInput", {
+            ...this.defaultParams,
+            callout: "Informe seu e-mail",
+            placeholder: "email@exemplo.com",
+            progress: 0.1428,
+            keyboardType: "email",
+            content: this.anamnesisRecord.email,
+            onComplete: composeSavePush(saveResult, this.pushBirthDate)
+        })
+    }
+
+    pushBirthDate = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result);
+        }
+
+        const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
+
+        this.props.navigation.push("TextInput", {
+            ...this.defaultParams,
+            callout: "Informe sua data de nascimento",
+            placeholder: "DD/MM/AAAA",
+            progress: 0.2141,
+            keyboardType: "date",
+            content: currentDate,
+            onComplete: composeSavePush(saveResult, this.pushWeight)
+        })
+    }
+
+    pushWeight = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
+        }
+
+        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 1);
+
+        this.props.navigation.push("TextInput", {
+            ...this.defaultParams,
+            callout: "Informe seu peso atual",
+            placeholder: "00,0 kg",
+            progress: 0.2856,
+            keyboardType: "numeric",
+            content: currentWeight,
+            onComplete: composeSavePush(saveResult, this.pushHeight)
+        })
+    }
+
+    pushHeight = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.height = this.outputFilters.textInput.number(result);
+        }
+
+        const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
+
+        this.props.navigation.push("TextInput", {
+            ...this.defaultParams,
+            callout: "Informe sua altura",
+            placeholder: "000 cm",
+            progress: 0.3570,
+            keyboardType: "numeric",
+            content: currentHeight,
+            onComplete: composeSavePush(saveResult, this.pushSymptoms)
+        })
+    }
+    
+    pushSymptoms = () => {
+        const saveResult = (result) => {
+            this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
+        }
+
+        const defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
+        const items = this.inputProducers.closedList.multipleSelected(defaultSymptoms, this.anamnesisRecord.symptoms);
+
+        this.props.navigation.push("ClosedList", {
+            ...this.defaultParams,
+            titleText: "Informe suas principais queixas/sintomas",
+            list: items,
+            width: 0.42,
+            onComplete: composeSavePush(saveResult, this.pushMedicines),
+        })
+    }
 
     pushMedicines = () => {
         const saveResult = (result) => {

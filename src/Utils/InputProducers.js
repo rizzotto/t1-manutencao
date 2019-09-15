@@ -1,6 +1,48 @@
 import { mapToFrequencyDescriptions, frequencyCodes } from './frequencies';
 
 /**
+ * Gera as strings da tela de entrada de texto.
+ */
+class TextInputInputProducer {
+    /**
+     * Parseia uma data para o formado DD/MM/AAAA, para exibição na tela de entrada de texto.
+     * @param {Date} date data a ser exibida
+     * @returns {string} conteúdo a ser exibido no campo de texto
+     */
+    dayMonthYear(date) {
+        if (date === undefined || date === null) {
+            return "";
+        }
+
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+
+        return `${day}/${month}/${year}`;
+    }
+
+    /**
+     * Converte um número para uma string com uma quantidade predefinida de dígitos decimais.
+     * @param {number} number número a ser convertido para string
+     * @param {number} fractionDigits quantidade de dígitos decimais a serem exibidos
+     * @returns {string} string representando o número
+     */
+    decimalNumber(number, fractionDigits = 2) {
+        if (!number) return null;
+        return number.toFixed(fractionDigits).replace(".", ",");
+    }
+
+    /**
+     * Converte um número inteiro para uma string (sem dígitos decimais).
+     * @param {number} number número a ser convertido para string
+     * @returns {string} string representando o número
+     */
+    intNumber(number) {
+        return this.decimalNumber(number, 0);
+    }
+}
+
+/**
  * Gera os itens da tela de listagem fechada.
  * 
  * @typedef {Object} ClosedListInputItem
@@ -107,4 +149,4 @@ class SubitemListInputProducer {
     }
 }
 
-export { ClosedListInputProducer, SubitemListInputProducer };
+export { TextInputInputProducer, ClosedListInputProducer, SubitemListInputProducer };
