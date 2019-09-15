@@ -116,7 +116,7 @@ export default class AnamnesisFormCoordinator extends Component {
         this.props.navigation.navigate("ClosedList", {
             titleText: "Medicamentos",
             description: "Informe os medicamentos que você usa atualmente.",
-            width: 0.50,
+            width: 0.4998,
             list: medicines,
             title: "Ficha",
             onComplete: this._onCompleteMedicines,
@@ -150,7 +150,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: true,
                 items
             },
-            progress: 0.58,
+            progress: 0.5712,
             title: "Ficha",
             onComplete: this._onCompleteMedicinesFrequency,
             onCancel: this._onCancel
@@ -180,7 +180,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         this.props.navigation.push("ClosedList", {
             titleText: "Você tem ou teve alguma patologia?",
-            width: 0.66,
+            width: 0.6426,
             list: pathologies,
             title: "Ficha",
             onComplete: this._onCompletePathologies,
@@ -204,7 +204,7 @@ export default class AnamnesisFormCoordinator extends Component {
         this.props.navigation.push("ClosedList", {
             titleText: "Histórico familiar",
             descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
-            width: 0.74,
+            width: 0.714,
             list: familyPathologies,
             title: "Ficha",
             onComplete: this._onCompleteFamilyPathologies,
@@ -242,7 +242,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: false,
                 items
             },
-            progress: 0.82,
+            progress: 0.7853,
             title: "Ficha",
             onComplete: this._onCompleteHabits,
             onCancel: this._onCancel
@@ -268,6 +268,58 @@ export default class AnamnesisFormCoordinator extends Component {
             };
         }).filter(h => h !== undefined && h !== null);
 
+        const defaultRhythms = ["Calmo", "\"Normal\"", "Muito agitada"];
+        const items = defaultRhythms.map((rhythm, index) => {
+            return {
+                id: index.toString(),
+                texto: rhythm,
+                isSelected: rhythm === this.anamnesisRecord.lifeRhythm
+            }
+        })
+
+        this.props.navigation.push("ClosedList", {
+            titleText: "Ritmo de vida",
+            descriptionText: "Como você caracteriza seu \"ritmo\" de vida?",
+            width: 0.8568,
+            list: items,
+            minSelected: 1,
+            maxSelected: 1,
+            title: "Ficha",
+            onComplete: this._onCompleteLifeRhythm,
+            onCancel: this._onCancel
+        })
+    }
+
+    _onCompleteLifeRhythm = (selectedItems) => {
+        this.anamnesisRecord.lifeRhythm = selectedItems.find(item => item.isSelected).texto;
+
+        const defaultStyles = ["Adequada", "Não adequada"];
+        const items = defaultStyles.map((style, index) => {
+            return {
+                id: index.toString(),
+                texto: style,
+                isSelected: style === this.anamnesisRecord.eatingStyle
+            }
+        })
+
+        this.props.navigation.push("ClosedList", {
+            titleText: "Alimentação",
+            descriptionText: "Como você caracteriza sua alimentação?",
+            width: 0.9282,
+            list: items,
+            minSelected: 1,
+            maxSelected: 1,
+            title: "Ficha",
+            onComplete: this._onCompleteEatingStyle,
+            onCancel: this._onCancel
+        })
+    }
+
+    _onCompleteEatingStyle = (selectedItems) => {
+        this.anamnesisRecord.eatingStyle = selectedItems.find(item => item.isSelected).texto;
+
         console.log(this.anamnesisRecord);
+        console.warn(this.anamnesisRecord);
+        this.props.navigation.navigate("Main");
     }
 }
