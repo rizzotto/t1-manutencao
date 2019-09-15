@@ -11,6 +11,7 @@ import TextInputContainer from './TextInputContainer';
  * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
  * @param requiredInput Booleano que indica se o input é obrigatório ou não
  * @param inputDescription Descrição do input do TextInputContainer
+ * @param initialContent Conteúdo inicial do input do TextInputContainer
  * @param keyboardType Tipo do teclado do TextInputContainer
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
@@ -101,6 +102,7 @@ export default class TitleInputContainer extends Component{
                             styleView={[styles.titleView, this.props.titleDescViewStyle]}
                         />
                         <TextInputContainer
+                            initialContent={this.props.initialContent}
                             validateCallback={this.updateInputState}
                             textCallback={this.updateInputValue}
                             description={this.props.inputDescription}

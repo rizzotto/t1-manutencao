@@ -8,6 +8,7 @@ import AppStyle from '../styles';
  /**
  * props for a textInput container
  * - description: the text behind
+ * - initialContent: text initially set on text input
  * - type: can be: 
  *      'alphanum': only numbers and letters
  *      'alpha': only letter
@@ -29,6 +30,11 @@ export default class ContainerTextInput extends React.Component {
       text: "",
       validate: false,
     }
+  }
+
+  componentDidMount() {
+    // setar valor inicial e rodar validação
+    this.onChangeText(this.props.initialContent || "", this.props.type);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot){
