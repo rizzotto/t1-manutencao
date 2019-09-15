@@ -34,6 +34,11 @@ export default class AnamnesisFormCoordinator extends Component {
 
         // se uma anamnese for passada como parâmetro, usar ela como base para as telas
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
+
+        this.outputFilters = {
+            closedList: new ClosedListOutputFilter(),
+            subitemList: new SubitemListOutputFilter()
+        };
     }
 
     render() {
@@ -79,27 +84,12 @@ export default class AnamnesisFormCoordinator extends Component {
     // necessita, como as funções `onComplete` e `onCancel`, e os dados que aquela tela espera (a
     // partir do que está salvo em `this.anamnesisRecord`)
 
-    _onCompleteName = (name) => {
-        this.anamnesisRecord.name = name;
+    _onCompleteSymptoms = (result) => {
+        this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
 
         // apenas o onComplete da primeira tela tem isso, e serve para habilitar o alerta quando
         // o usuário clica em "Cancelar" na primeira tela (caso ele volte para a mesma)
         this.props.navigation.setParams({ hasData: true });
-
-        // como as telas são reusáveis, é preciso usar `push` (e não `navigate`),
-        // para que o react-navigation apresente uma nova instância daquela tela
-        // (se usar `navigate`, corre o risco de voltar para a última tela daquele tipo)
-        this.props.navigation.push("SubitemsSelection", {
-            onComplete: this._onCompleteEmail,
-            onCancel: this._onCancel,
-            data: this.name,
-            title: "Ficha",
-            progress: 0.3 // porcentagem da barra de progresso
-        });
-    }
-
-    _onCompleteSymptoms = (symptoms) => {
-        this.anamnesisRecord.symptoms = symptoms.map(symptom => symptom.texto);
 
         // TODO: mudar quando listagem aberta estiver pronta
         const availableMedicines = ["Omeprazol", "Dipirona", "AAS", "Diclofenaco"];
@@ -124,8 +114,8 @@ export default class AnamnesisFormCoordinator extends Component {
         });
     }
 
-    _onCompleteMedicines = (medicines) => {
-        this.selectedMedicines = medicines.map(med => med.texto);
+    _onCompleteMedicines = (result) => {
+        this.selectedMedicines = this.outputFilters.closedList.allSelected(result);
 
         const pastMedicines = this.anamnesisRecord.medicines || [];
         const makeIndices = (medicineName) => {
@@ -157,16 +147,8 @@ export default class AnamnesisFormCoordinator extends Component {
         });
     }
 
-    _onCompleteMedicinesFrequency = (selectedIndices) => {
-        this.anamnesisRecord.medicines = this.selectedMedicines.map((medicineName, index) => {
-            const selectedIndex = selectedIndices[index][0];
-            const frequencyCode = frequencyCodes.medicines[selectedIndex];
-
-            return {
-                name: medicineName,
-                frequency: frequencyCode
-            };
-        });
+    _onCompleteMedicinesFrequency = (result) => {
+        this.anamnesisRecord.medicines = this.outputFilters.subitemList.medicineFrequencyList(result, this.selectedMedicines);
 
         const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
         const selectedPathologies = this.anamnesisRecord.pathologies || [];
@@ -188,8 +170,8 @@ export default class AnamnesisFormCoordinator extends Component {
         })
     }
 
-    _onCompletePathologies = (pathologies) => {
-        this.anamnesisRecord.pathologies = pathologies.map(pat => pat.texto);
+    _onCompletePathologies = (result) => {
+        this.anamnesisRecord.pathologies = this.outputFilters.closedList.allSelected(result);
 
         const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
         const selectedPathologies = this.anamnesisRecord.familyPathologies || [];
@@ -212,8 +194,8 @@ export default class AnamnesisFormCoordinator extends Component {
         })
     }
 
-    _onCompleteFamilyPathologies = (familyPathologies) => {
-        this.anamnesisRecord.familyPathologies = familyPathologies.map(fpat => fpat.texto);
+    _onCompleteFamilyPathologies = (result) => {
+        this.anamnesisRecord.familyPathologies = this.outputFilters.closedList.allSelected(result);
 
         const habits = [
             { title: "Fumar", subitems: frequencyDescriptions.smoking, codes: frequencyCodes.smoking },
@@ -251,22 +233,12 @@ export default class AnamnesisFormCoordinator extends Component {
 
     _onCompleteHabits = (selectedIndices) => {
         const habits = [
-            { title: "Fumar", subitems: frequencyDescriptions.smoking, codes: frequencyCodes.smoking },
-            { title: "Beber", subitems: frequencyDescriptions.drinking, codes: frequencyCodes.drinking },
-            { title: "Atividade física", subitems: frequencyDescriptions.physicalActivity, codes: frequencyCodes.physicalActivity }
+            { title: "Fumar", codes: frequencyCodes.smoking },
+            { title: "Beber", codes: frequencyCodes.drinking },
+            { title: "Atividade física", codes: frequencyCodes.physicalActivity }
         ];
 
-        this.anamnesisRecord.habits = habits.map((habit, index) => {
-            if (selectedIndices[index].length === 0) return null;
-
-            const selectedIndex = selectedIndices[index][0];
-            const frequencyCode = habit.codes[selectedIndex];
-
-            return {
-                name: habit.title,
-                frequency: frequencyCode
-            };
-        }).filter(h => h !== undefined && h !== null);
+        this.anamnesisRecord.habits = this.outputFilters.subitemList.frequencyList(selectedIndices, habits);
 
         const defaultRhythms = ["Calmo", "\"Normal\"", "Muito agitada"];
         const items = defaultRhythms.map((rhythm, index) => {
@@ -290,8 +262,8 @@ export default class AnamnesisFormCoordinator extends Component {
         })
     }
 
-    _onCompleteLifeRhythm = (selectedItems) => {
-        this.anamnesisRecord.lifeRhythm = selectedItems.find(item => item.isSelected).texto;
+    _onCompleteLifeRhythm = (result) => {
+        this.anamnesisRecord.lifeRhythm = this.outputFilters.closedList.singleItem(result);
 
         const defaultStyles = ["Adequada", "Não adequada"];
         const items = defaultStyles.map((style, index) => {
@@ -315,11 +287,63 @@ export default class AnamnesisFormCoordinator extends Component {
         })
     }
 
-    _onCompleteEatingStyle = (selectedItems) => {
-        this.anamnesisRecord.eatingStyle = selectedItems.find(item => item.isSelected).texto;
+    _onCompleteEatingStyle = (result) => {
+        this.anamnesisRecord.eatingStyle = this.outputFilters.closedList.singleItem(result);
 
         console.log(this.anamnesisRecord);
         console.warn(this.anamnesisRecord);
-        this.props.navigation.navigate("Main");
+        // this.props.navigation.navigate("Main");
+    }
+}
+
+class ClosedListOutputFilter {
+    singleItem(closedListResult) {
+        return closedListResult.find(item => item.isSelected).texto;
+    }
+
+    allSelected(closedListResult) {
+        return closedListResult.filter(item => item.isSelected).map(item => item.texto);
+    }
+}
+
+class SubitemListOutputFilter {
+    /**
+     * 
+     * @param {number[][]} subitemListResult índices selecionados (retorno _raw_ da screen)
+     * @param {{title: string, codes: string[]}[]} reference itens exibidos (nome e códigos de frequência)
+     * @returns {{name: string, frequency: string}[]}
+     */
+    frequencyList(subitemListResult, reference) {
+        return subitemListResult
+            .map((selectedIndices, index) => {
+                // só válido se apenas UM subitem foi selecionado
+                if (selectedIndices.length !== 1) return null;
+                const selectedIndex = selectedIndices[0];
+
+                // códigos exibidos na seção
+                const ref = reference[index];
+
+                return {
+                    name: ref.title,
+                    frequency: ref.codes[selectedIndex]
+                };
+            })
+            .filter(item => item !== null); // remover inválidos
+    }
+
+    /**
+     * 
+     * @param {number[][]} subitemListResult índices selecionados (retorno _raw_ da screen)
+     * @param {string[]} medicines nomes dos medicamentos
+     */
+    medicineFrequencyList(subitemListResult, medicines) {
+        const reference = medicines.map(medicineName => {
+            return {
+                title: medicineName,
+                codes: frequencyCodes.medicines
+            }
+        })
+
+        return this.frequencyList(subitemListResult, reference)
     }
 }
