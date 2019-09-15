@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButton } from '../Components';
 import createCancelAlert from './createCancelAlert';
-import { ListSubitemsScreen } from '../Screens';
+import { ClosedListScreen } from '../Screens';
+import { frequencyDescriptions, frequencyCodes } from '../frequencies';
 
 /**
  * Coordinator do formulário de criação/edição de anamnese.
@@ -33,49 +34,31 @@ export default class AnamnesisFormCoordinator extends Component {
 
         // se uma anamnese for passada como parâmetro, usar ela como base para as telas
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
-
-        // como a seleção de medicamentos é separada em duas telas (uma para entrada dos nomes dos
-        // medicamentos e outra para as frequências), o nome dos medicamentos é guardado separado das
-        // frequências; a lista de medicamentos em `this.anamnesisRecord.medicines` só é setada
-        // quando a tela de frequência completa (`onCompleteMedicinenFrequency`)
-        this.selectedMedicines = (this.anamnesisRecord.medicines || []).map(m => m.name);
-
-        // TODO: remover depois de a seleção de medicamentos estiver funcionando
-        this.selectedMedicines = ["Omeprazol", "Ácido acetilsalicílico", "Diclofenaco"];
     }
-
-    medicinesFrequencies = [
-        { code: "6-6h", text: "a cada 6 horas" },
-        { code: "8-8h", text: "a cada 8 horas" },
-        { code: "12-12h", text: "a cada 12 horas" },
-        { code: "24-24h", text: "a cada 24 horas" },
-        // outras frequência de medicamentos... (TODO: talvez colocar isso em outro lugar? (quando for usado em outras telas))
-    ]
 
     render() {
         // TODO: mudar quando a tela de entrada de texto estiver concluída
 
-        // considerando que a tela de frequência de medicamentos é a primeira
-        const frequencies = this.medicinesFrequencies.map(freq => freq.text);
-        const items = this.selectedMedicines.map(medName => {
+        // TODO: mudar quando listagem aberta estiver pronta
+        const defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
+
+        const symptoms = defaultSymptoms.map((symptom, index) => {
             return {
-                title: medName,
-                subitems: frequencies,
-                selectedSubitems: [] // TODO: fazer lógica de itens já selecionados
+                id: index.toString(),
+                texto: symptom
             }
         });
 
         const data = {
-            title: "Frequência",
-            description: "Informe a frequência de uso de cada medicamento.",
-            requiresAllSelected: true,
-            items
+            titleText: "Informe suas principais queixas/sintomas",
+            width: 0.42,
+            list: symptoms
         };
 
         return (
-            <ListSubitemsScreen data={data}
-                onComplete={this._onCompleteMedicinesFrequency}
+            <ClosedListScreen {...data}
                 onCancel={this._onCancel}
+                onComplete={this._onCompleteSymptoms}
             />
         );
     }
@@ -115,8 +98,79 @@ export default class AnamnesisFormCoordinator extends Component {
         });
     }
 
+    _onCompleteSymptoms = (symptoms) => {
+        this.anamnesisRecord.symptoms = symptoms.map(symptom => symptom.texto);
+
+        // TODO: mudar quando listagem aberta estiver pronta
+        const availableMedicines = ["Omeprazol", "Dipirona", "AAS", "Diclofenaco"];
+        const selectedMedicines = this.selectedMedicines || [];
+
+        const medicines = availableMedicines.map((medicineName, index) => {
+            return {
+                id: index.toString(),
+                texto: medicineName,
+                isSelected: selectedMedicines.includes(medicineName)
+            };
+        });
+
+        this.props.navigation.navigate("ClosedList", {
+            titleText: "Medicamentos",
+            description: "Informe os medicamentos que você usa atualmente.",
+            width: 0.50,
+            list: medicines,
+            title: "Ficha",
+            onComplete: this._onCompleteMedicines,
+            onCancel: this._onCancel
+        });
+    }
+
+    _onCompleteMedicines = (medicines) => {
+        this.selectedMedicines = medicines.map(med => med.texto);
+
+        const pastMedicines = this.anamnesisRecord.medicines || [];
+        const makeIndices = (medicineName) => {
+            const freq = pastMedicines.find(pm => pm.text === medicineName);
+            if (!freq) return [];
+
+            return [frequencyCodes.medicines.indexOf(freq.frequency)];
+        }
+
+        // TODO: unify with selected!!!
+        const items = this.selectedMedicines.map(medicineName => {
+            return {
+                title: medicineName,
+                subitems: frequencyDescriptions.medicines,
+                selectedSubitems: makeIndices(medicineName)
+            }
+        });
+
+        this.props.navigation.navigate("SubitemsList", {
+            data: {
+                title: "Frequência",
+                description: "Informe a frequência de uso de cada medicamento.",
+                requiresAllSelected: true,
+                items
+            },
+            progress: 0.58,
+            title: "Ficha",
+            onComplete: this._onCompleteMedicinesFrequency,
+            onCancel: this._onCancel
+        });
+    }
+
     _onCompleteMedicinesFrequency = (selectedIndices) => {
-        this.anamnesisRecord.medicines = selectedIndices;
+        const ttt = this.selectedMedicines.map((medicineName, index) => {
+            const selectedIndex = selectedIndices[index][0];
+            const frequencyCode = frequencyCodes.medicines[selectedIndex];
+
+            return {
+                name: medicineName,
+                frequency: frequencyCode
+            };
+        });
+
+        console.log(ttt);
+        this.anamnesisRecord.medicines = ttt;
 
         // TODO: mover para última tela quando o fluxo estiver completo
         // a última tela deve persistir o conteúdo em `this.anamnesisRecord` no firebase
