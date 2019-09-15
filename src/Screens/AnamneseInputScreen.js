@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { SafeAreaView, StyleSheet } from "react-native";
-import TitleInputContainer from '../Containers/TitleInputContainer';
 import createDefaultNavigationOption from './createDefaultNavigationOptions';
-import ProgressBar from '../Components/ProgressBarComponent';
+import { SimpleTextInputContainer } from '../Containers';
+import { ProgressBar } from '../Components';
 
 export default class AnamneseInputScreen extends Component{
 
@@ -12,32 +12,30 @@ export default class AnamneseInputScreen extends Component{
         console.log("aqui");
     }
 
-    render(){
-        const progress = this.props.progress || this.props.navigation.getParam("progress", 0);
+    render() {
+        const progress = this.props.progress || this.props.navigation.getParam("progress", .33);
 
-        return(
-            <SafeAreaView styles={styles.container}>
-                <ProgressBar width={progress}/>
-                <TitleInputContainer
-                    title="Nome"
-                    buttonText="Enviar"
+        return (
+            <SafeAreaView style={styles.container}>
+                <ProgressBar width={progress} />
+                <SimpleTextInputContainer
+                    title="Título..."
+                    description="Descrição..."
+                    buttonText="Continuar"
                     altBtnText="Pular"
+                    inputDescription="Placeholder..."
                     keyboardType="alphanumeric"
-                    inputDescription={"Nome e sobrenome"}
                     requiredInput={true}
                     callbackToScreen={this._onComplete}
                 />
             </SafeAreaView>
-        )
+        );
     }
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'stretch',
-        //alignItems: "stretch" 
+        flex: 1
     }
 });
