@@ -58,7 +58,7 @@ export default class ContainerTextInput extends React.Component {
       if(this.props.textCallback !== undefined){
         this.textCallback();
       }
-      var reNumeric = /^[0-9]+$/
+      var reNumeric = /^\d+(?:[\.,]\d+)?$/
       var reAlphNum = /^[a-z0-9 ]+$/i
       var reAlph = /^[a-zA-Z ]+$/
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i

@@ -133,12 +133,12 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
         }
 
-        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 1);
+        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
         this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso atual",
-            placeholder: "00,0 kg",
+            placeholder: "00,00 kg",
             progress: 0.2856,
             keyboardType: "numeric",
             content: currentWeight,
@@ -189,7 +189,7 @@ export default class AnamnesisFormCoordinator extends Component {
         const availableMedicines = ["Omeprazol", "Dipirona", "AAS", "Diclofenaco"];
         const items = this.inputProducers.closedList.multipleSelected(availableMedicines, this.selectedMedicines);
 
-        this.props.navigation.navigate("ClosedList", {
+        this.props.navigation.push("ClosedList", {
             ...this.defaultParams,
             titleText: "Medicamentos",
             descriptionText: "Informe os medicamentos que você usa atualmente.",
@@ -205,6 +205,12 @@ export default class AnamnesisFormCoordinator extends Component {
         }
 
         const items = this.inputProducers.subitemList.medicineFrequencyList(this.selectedMedicines, this.anamnesisRecord.medicines);
+
+        // se nenhum medicamento foi selecionado, então pula essa tela
+        if (items.length === 0) {
+            this.pushPathologies();
+            return;
+        }
 
         this.props.navigation.navigate("SubitemsList", {
             ...this.defaultParams,
