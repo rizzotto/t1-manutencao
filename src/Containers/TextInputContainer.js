@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import TextInputComponent from '../Components/TextInputComponent';
+import AppStyle from '../styles';
 
 
  /**
@@ -134,25 +135,20 @@ export default class ContainerTextInput extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInputComponent 
+      <TextInputComponent style={styles.container}
         keyboardType={this.props.type==='numeric'?'numeric':'default'} 
         onChangeText={(text) => this.onChangeText(text, this.props.type)} 
         value={this.state.text} 
         inputMessage={this.props.description} 
-        validate={this.state.validate}  />
-      </View>
+        validate={this.state.validate}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    
+    marginHorizontal: 20,
+    backgroundColor: AppStyle.colors.background,
   }
-
 });
