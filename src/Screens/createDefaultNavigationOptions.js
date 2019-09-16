@@ -32,7 +32,7 @@ const createDefaultNavigationOptions = ({ navigation, screenProps }, headerRight
 
     return {
         title: screenProps.title || navigation.getParam("title"),
-        headerRight: <HeaderButton text={headerRightTitle} onPress={headerRightOnPress} />
+        headerRight: <HeaderButton text={headerRightTitle} onPress={headerRightOnPress} hasColor={headerRightHasColor} />
     };
 }
 

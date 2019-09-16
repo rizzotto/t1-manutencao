@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
+import AppStyle from '../styles';
 
 export default class TextInputComponent extends Component {
 
@@ -7,7 +8,7 @@ export default class TextInputComponent extends Component {
   render() {
     return (
       <TextInput
-        style={this.props.validate?styles.textInput:styles.error}
+        style={[this.props.validate?styles.textInput:styles.error, this.props.style]}
         placeholder={this.props.inputMessage}
         onChangeText={this.props.onChangeText}
         value={this.props.value}
@@ -20,18 +21,17 @@ export default class TextInputComponent extends Component {
 
 const styles = StyleSheet.create({
   textInput: {
-    width: 300,
+    minHeight: 40,
+    fontSize: 20,
     textAlign: 'left',
     borderBottomWidth: 1.5,
-    borderColor: 'green',
-    padding:-10,
+    borderColor: AppStyle.colors.main
   },
   error: {
-    width: 300,
+    minHeight: 40,
+    fontSize: 20,
     textAlign: 'left',
     borderBottomWidth: 1.5,
-    borderColor: 'lightgray',
-    padding:-10,
-
+    borderColor: AppStyle.colors.darkGray
   }
 })

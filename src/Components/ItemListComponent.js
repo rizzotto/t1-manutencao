@@ -22,19 +22,12 @@ export default class ItemListComponent extends Component {
     }
 }
 
-
-const buttonWidth = Math.round(Dimensions.get('window').width);
-
-
 const createStyles = (selected) => {
     return StyleSheet.create({
         container: {
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 20,
-            paddingVertical: 10,
             backgroundColor: selected ? AppStyle.colors.lightGray : AppStyle.colors.background,
-            width: buttonWidth,
         },
         textStyle: {
             flex: 1,
@@ -43,11 +36,9 @@ const createStyles = (selected) => {
             textAlign: "left",
             textAlignVertical: "center",
         },
-        check: {
-            marginLeft: 10
-        },
         button: {
-            display: 'flex',
+            paddingHorizontal: 20,
+            paddingVertical: 10,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: "center"
