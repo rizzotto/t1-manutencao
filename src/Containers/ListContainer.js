@@ -41,9 +41,14 @@ export default class ClosedListContainer extends Component {
         const nameEmpty = cleanName.length == 0;
         if (isAdded || nameEmpty) return;
 
+        // por padrão, pode selecionar
+        let hasSelectionAvailable = true;
+
         const currentSelected = this.state.list.filter(item => item.isSelected).length;
         const maxSelected = this.state.maxSelected;
-        const hasSelectionAvailable = currentSelected < maxSelected;
+        if (maxSelected !== undefined && maxSelected !== null) {
+            hasSelectionAvailable = currentSelected < maxSelected;
+        }
         
         const id = this.state.list.length + 1;
         let data = {
@@ -62,25 +67,30 @@ export default class ClosedListContainer extends Component {
 
     _onPressItem = (index) => {
         const maxSelected = this.state.maxSelected;
+        const wasSelected = this.state.list[index].isSelected;
 
         // se não há limite de itens selecionados
         if (maxSelected === undefined || maxSelected === null) {
-            this.state.list[index].isSelected = true;
+            this.state.list[index].isSelected = !wasSelected;
+            this.setState({ render: !this.render });
             return;
         }
 
-        // se puder selecionar apenas um, selecionar um item deseleciona o que estiver selecionado anteriormente
-        if (maxSelected === 1) {
-            this.state.list.forEach(item => item.isSelected = false);
-        } else {
-            // se puder selecionar vários, então só seleciona se já não tiver selecionado tudo o que podia
-            const currentSelected = this.state.filter(item => item.isSelected).length;
-            if (currentSelected >= maxSelected) {
-                return;
+        // se está selecionando (não estava selecionado)
+        if (!wasSelected) {
+            // se puder selecionar apenas um, selecionar um item deseleciona o que estiver selecionado anteriormente
+            if (maxSelected === 1) {
+                this.state.list.forEach(item => item.isSelected = false);
+            } else {
+                // se puder selecionar vários, então só seleciona se já não tiver selecionado tudo o que podia
+                const currentSelected = this.state.filter(item => item.isSelected).length;
+                if (currentSelected >= maxSelected) {
+                    return;
+                }
             }
         }
 
-        this.state.list[index].isSelected = true;
+        this.state.list[index].isSelected = !wasSelected;
 
         const selectedItems = this.state.list.filter(item => item.isSelected);
         this.state.minSatisfied = selectedItems.length >= this.state.minSelected;
