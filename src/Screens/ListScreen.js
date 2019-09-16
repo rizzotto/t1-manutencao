@@ -19,7 +19,9 @@ export default class ClosedListScreen extends Component {
     static navigationOptions = createDefaultNavigationOptions;
 
     dataFromContainer = (data) => {
-        console.warn(data);
+        const onComplete = this.getParam("onComplete");
+        if (!onComplete) return;
+        onComplete(data);
     }
 
     selectedItems = {}
