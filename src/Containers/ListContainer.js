@@ -70,19 +70,16 @@ export default class ClosedListContainer extends Component {
     
     render(){
         isDisabled = this.state.minSatisfied;
+        const isEmpty = this.state.list.length === 0;
+
         return (
 
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <TitleDescComponent 
-                        titleText={this.state.titleText} 
-                        descriptionText={this.state.descriptionText}
-                        
-                    />
-                
-                </View> 
-                <View style={styles.content}>
-                <ScrollView  >
+                <TitleDescComponent styleView={styles.header}
+                    titleText={this.state.titleText} 
+                    descriptionText={this.state.descriptionText}
+                />
+                <ScrollView style={styles.content}>
                     <FlatList
                         data={this.state.list}
                         renderItem={({ item, index }) => (
@@ -96,28 +93,24 @@ export default class ClosedListContainer extends Component {
                             extraData={this.state.refresh}
                             ItemSeparatorComponent={() => <Separator />}
                             />
+                    { this.props.hasInput &&
+                        <ItemInputListComponent
+                            style={isEmpty ? {} : styles.withBorder}
+                            placeholder={"Outro..."}
+                            buttonText="+"
+                            dataToAdd={this._onPressAdd}
+                        />
+                    }
                 </ScrollView>
-                            {this.props.hasInput? <ItemInputListComponent
-                                    
-                                    style={this.state.list.length==0? styles.noBorder: styles.withBorder}
-                                    placeholder={"Outro..."}
-                                    buttonText={"Adicionar"} 
-                                    dataToAdd={this._onPressAdd}
-                                /> : <View/>}
-                </View>
-
                 
-                <View style={styles.bottom}>
-                    <DefaultButtonComponent 
-                        text={this.state.selectedItems.length==0? "Pular": "Próximo"}
-                        action={this.dataToScreen}
-                        style={styles.buttonStyle} 
-                        textStyle={styles.textStyle}
-                        extraData={this.state.refresh}
-                        onPress ={() => this._onPressItem(index)}
-                        isDisabled = {!isDisabled}
-                    />     
-                </View> 
+                <DefaultButtonComponent 
+                    text={this.state.selectedItems.length==0? "Pular": "Próximo"}
+                    action={this.dataToScreen}
+                    textStyle={styles.textStyle}
+                    extraData={this.state.refresh}
+                    onPress ={() => this._onPressItem(index)}
+                    isDisabled = {!isDisabled}
+                />
             </View>
         )
     }
@@ -130,14 +123,8 @@ const styles = StyleSheet.create({
         flex:1,
     },
     header: {
-        marginBottom:'5%',
-    },
-    bottom: {
-        marginBottom:'10%',
-        marginTop:'8%',
-        alignContent:'flex-end',
-        position: "absolute",
-        bottom: 0
+        marginTop: 10,
+        marginBottom: 60
     },
     line: {
         width: "100%",
@@ -149,7 +136,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1
     },
     content: {
-        maxHeight: "63%"
+        flex: 1
     }
 
 })
