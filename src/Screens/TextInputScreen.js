@@ -35,7 +35,7 @@ export default class TextInputScreen extends Component{
         const description = this.getParam("description");
         const placeholder = this.getParam("placeholder");
         const content = this.getParam("content");
-        const keyboardType = this.getParam("keyboardType", "alphanumeric");
+        const keyboardType = this.getParam("keyboardType");
         const required = this.getParam("required", false);
 
         return (
