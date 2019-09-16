@@ -1,5 +1,5 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import { AnamnesesRecordsScreen, ListSubitemsScreen, ClosedListScreen, TextInputScreen, LoadingScreen } from '../Screens';
+import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen, LoadingScreen } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
 
@@ -10,7 +10,7 @@ const AnamnesisForm = createStackNavigator({
 
     // demais entradas para os tipos de telas do form (entrada de texto, listagem fechada, ...)
     TextInput: TextInputScreen,
-    ClosedList: ClosedListScreen,
+    List: ListScreen,
     SubitemsList: ListSubitemsScreen
 }, {
     initialRouteName: "Coordinator",

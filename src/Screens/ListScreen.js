@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
 import ClosedListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
+import createDefaultNavigationOptions from './createDefaultNavigationOptions';
+
     /**
      * @param hasInput Indica se a tela de lista deve ter um input para adicionar mais opcoes
      * @param width Estado da barra de progresso
