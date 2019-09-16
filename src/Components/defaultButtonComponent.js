@@ -58,17 +58,15 @@ export default class DefaultButtonComponent extends Component {
     }
 }
 
-const buttonWidth = Math.round(Dimensions.get('window').width) - 15;
-
 const styles = StyleSheet.create({
     buttonStyle: {
-        margin: 10,
+        margin: 20,
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'center',
+        alignSelf: "stretch",
         backgroundColor: AppStyle.colors.main,
-        borderRadius: 5,
-        width: buttonWidth
+        borderRadius: 5
     },
 
     textStyle: {

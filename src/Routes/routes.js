@@ -1,5 +1,5 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import { AnamnesesRecordsScreen, ListSubitemsScreen, ClosedListScreen, TextInputScreen } from '../Screens';
+import { AnamnesesRecordsScreen, ListSubitemsScreen, ClosedListScreen, TextInputScreen, LoadingScreen } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
 
@@ -45,12 +45,16 @@ const AppNavigator = createStackNavigator({
     Main: TabNavigator,
 
     // as demais são os fluxos de cadastro/edição
-    AnamnesisForm: AnamnesisForm
+    AnamnesisForm: AnamnesisForm,
+
+    // tela de carregamento
+    Loading: LoadingScreen
 }, {
     // esconder header e apresentar com animação de modal (de baixo para cima)
     mode: "modal",
     headerMode: "none",
-    initialRouteName: "Main"
+    initialRouteName: "Main",
+    transparentCard: true
 });
 
 export default createAppContainer(AppNavigator);
