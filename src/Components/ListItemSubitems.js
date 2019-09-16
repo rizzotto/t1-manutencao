@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import AppStyle from '../styles';
 import CheckImage from './CheckImage';
 import ItemListComponent from './ItemListComponent';
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginHorizontal: 20,
         fontSize: 16,
-        fontWeight: "500"
+        fontWeight: Platform.OS === "android" ? "normal" : "500"
     },
     list: {
         marginVertical: 10,

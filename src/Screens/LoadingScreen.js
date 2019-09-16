@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView, ActivityIndicator, Animated, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, SafeAreaView, ActivityIndicator, Animated, StyleSheet, Dimensions, Platform } from 'react-native';
 import { Button } from '../Components';
 import AppStyle from '../styles';
 
@@ -170,7 +170,7 @@ const errorStyles = StyleSheet.create({
         marginTop: 20,
         marginHorizontal: 20,
         fontSize: 20,
-        fontWeight: "600",
+        fontWeight: Platform.OS === "android" ? "bold" : "600",
         textAlign: "center",
         color: AppStyle.colors.darkText
     },

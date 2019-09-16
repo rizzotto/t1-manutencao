@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, View, Dimensions } from "react-native";
+import {Text, StyleSheet, View, Dimensions, Platform } from "react-native";
 import AppStyle from '../styles';
 /**
  * @param styleView estilo da view que comporta o título e a descrição
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         marginRight: 20, 
         marginBottom: 0,
         marginTop: 60,
-        fontWeight: '600',
+        fontWeight: Platform.OS === "android" ? "bold" : "600",
         color: AppStyle.colors.darkText
         },
     description: {
