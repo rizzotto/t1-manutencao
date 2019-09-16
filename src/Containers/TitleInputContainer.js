@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
-import TitleDescComponent from "../Components/TitleDescComponent";
-import DefautlButtonComponent from "../Components/defaultButtonComponent";
-import TextInputContainer from "../Containers/TextInputContainer";
+import { TitleDescription, Button } from '../Components';
+import TextInputContainer from './TextInputContainer';
 
 /**
  * @author Bruno Guerra e Eduardo Lessa
@@ -12,6 +11,7 @@ import TextInputContainer from "../Containers/TextInputContainer";
  * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
  * @param requiredInput Booleano que indica se o input é obrigatório ou não
  * @param inputDescription Descrição do input do TextInputContainer
+ * @param initialContent Conteúdo inicial do input do TextInputContainer
  * @param keyboardType Tipo do teclado do TextInputContainer
  * @param buttonViewStyle StyleSheet com os estilos do <View> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
@@ -91,41 +91,44 @@ export default class TitleInputContainer extends Component{
     
     render(){
 
-        return(
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View> 
-                    <TitleDescComponent 
-                        titleText={this.props.title} 
-                        descriptionText={this.props.description} 
-                        styleTitle={[styles.title, this.props.titleDescStyle]} 
-                        styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                    />  
-                    <TextInputContainer 
-                        validateCallback={this.updateInputState}
-                        textCallback={this.updateInputValue}
-                        description={this.props.inputDescription}
-                        type={this.props.keyboardType}
-                    />
-                    <DefautlButtonComponent
+        return (
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={styles.container}>
+                    <View style={styles.content}>
+                        <TitleDescription
+                            titleText={this.props.title}
+                            descriptionText={this.props.description}
+                            styleTitle={this.props.titleDescStyle}
+                            styleView={[styles.titleView, this.props.titleDescViewStyle]}
+                        />
+                        <TextInputContainer
+                            initialContent={this.props.initialContent}
+                            validateCallback={this.updateInputState}
+                            textCallback={this.updateInputValue}
+                            description={this.props.inputDescription}
+                            type={this.props.keyboardType}
+                        />
+                    </View>
+                    <Button
                         isDisabled={this.state.disabledButton}
                         text={this.state.btnText}
-                        viewStyle={[styles.buttonView, this.props.buttonViewStyle]}
-                        action={this.props.btnAction ? this.props.btnAction : this.dataToScreen}
+                        action={this.props.btnAction || this.dataToScreen}
                     />
                 </View>
             </TouchableWithoutFeedback>
-        )
+        );
     }
 }
 
 const styles = StyleSheet.create({
-    titleView: {
-        justifyContent: 'flex-start',
-        marginTop: 10,
+    container: {
+        flex: 1
     },
-    buttonView: {
+    content: {
         flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 20
+    },
+    titleView: {
+        marginTop: 10,
+        marginBottom: 60
     }
 })

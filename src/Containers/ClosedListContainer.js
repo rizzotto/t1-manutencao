@@ -4,6 +4,7 @@ import TitleDescComponent from '../Components/TitleDescComponent';
 import DefaultButtonComponent from '../Components/defaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
 import AppStyle from '../styles';
+
 /**
      * @param dataToScreen Dados que serao rertornados para Screen (lista com itens selecionados)
      * @param minSelected Numero minimo de itens que devem ser selecionados na lista 
@@ -21,7 +22,7 @@ export default class ClosedListContainer extends Component {
         list: this.props.list,
         maxSelected: this.props.maxSelected || this.props.list.length,
         titleText: this.props.titleText,
-        descriptionText:this.props.descriptionTextm,
+        descriptionText:this.props.descriptionText,
         minSelected: this.props.minSelected || 0,
         selectedItems: this.props.list.filter(x => x.isSelected),
         minSatisfied: this.props.list.filter(x => x.isSelected).length>=(this.props.minSelected || 0 )
@@ -49,12 +50,10 @@ export default class ClosedListContainer extends Component {
         return (
 
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <TitleDescComponent 
-                        titleText={this.state.titleText} 
-                        descriptionText={this.state.descriptionText}
-                    />
-                </View> 
+                <TitleDescComponent styleView={styles.header}
+                    titleText={this.state.titleText} 
+                    descriptionText={this.state.descriptionText}
+                />
                 <ScrollView style={styles.content}>
                     <FlatList
                         data={this.state.list}
@@ -71,17 +70,15 @@ export default class ClosedListContainer extends Component {
                     />
                 </ScrollView>
                 
-                <View style={styles.bottom}>
-                    <DefaultButtonComponent 
-                        text={this.state.selectedItems.length==0? "Pular": "Próximo"}
-                        action={this.dataToScreen}
-                        style={styles.buttonStyle} 
-                        textStyle={styles.textStyle}
-                        extraData={this.state.refresh}
-                        onPress ={() => this._onPressItem(index)}
-                        isDisabled = {!isDisabled}
-                    />     
-                </View> 
+                <DefaultButtonComponent
+                    text={this.state.selectedItems.length==0? "Pular": "Próximo"}
+                    action={this.dataToScreen}
+                    style={styles.buttonStyle} 
+                    textStyle={styles.textStyle}
+                    extraData={this.state.refresh}
+                    onPress ={() => this._onPressItem(index)}
+                    isDisabled = {!isDisabled}
+                />
             </View>
         )
     }
@@ -94,14 +91,8 @@ const styles = StyleSheet.create({
         flex:1,
     },
     header: {
-    },
-    content: {
-        marginTop:'15%',
-        marginBottom:'3%',
-    },
-    bottom: {
-        marginBottom:'10%',
-        alignContent:'flex-end'
+        marginTop: 10,
+        marginBottom: 60
     },
     line: {
         width: "100%",

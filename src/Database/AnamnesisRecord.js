@@ -46,6 +46,7 @@
  * 12-12h           -> a cada 12h
  * 24-24h           -> a cada 24h
  * 1xw              -> uma vez por semana
+ * 2xw              -> duas vezes por semana
  * 1-3xw            -> de uma a três vezes por semana
  * 3xw              -> três vezes por semana
  * +3xw             -> mais de três vezes por semana

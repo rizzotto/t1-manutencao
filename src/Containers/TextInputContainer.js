@@ -2,11 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import TextInputComponent from '../Components/TextInputComponent';
+import AppStyle from '../styles';
 
 
  /**
  * props for a textInput container
  * - description: the text behind
+ * - initialContent: text initially set on text input
  * - type: can be: 
  *      'alphanum': only numbers and letters
  *      'alpha': only letter
@@ -30,6 +32,11 @@ export default class ContainerTextInput extends React.Component {
     }
   }
 
+  componentDidMount() {
+    // setar valor inicial e rodar validação
+    this.onChangeText(this.props.initialContent || "", this.props.type);
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot){
     if(this.props.validateCallback !== undefined){
       if(this.state.validate != prevState.validate || prevState.text == "" && this.state.text.length >= 1 || prevState.text != "" && this.state.text == ""){
@@ -51,7 +58,7 @@ export default class ContainerTextInput extends React.Component {
       if(this.props.textCallback !== undefined){
         this.textCallback();
       }
-      var reNumeric = /^[0-9]+$/
+      var reNumeric = /^\d+(?:[\.,]\d+)?$/
       var reAlphNum = /^[a-z0-9 ]+$/i
       var reAlph = /^[a-zA-Z ]+$/
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
@@ -134,25 +141,20 @@ export default class ContainerTextInput extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInputComponent 
+      <TextInputComponent style={styles.container}
         keyboardType={this.props.type==='numeric'?'numeric':'default'} 
         onChangeText={(text) => this.onChangeText(text, this.props.type)} 
         value={this.state.text} 
         inputMessage={this.props.description} 
-        validate={this.state.validate}  />
-      </View>
+        validate={this.state.validate}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    
+    marginHorizontal: 20,
+    backgroundColor: AppStyle.colors.background,
   }
-
 });

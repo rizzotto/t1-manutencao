@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import AppStyle from '../styles';
-import { CheckImage } from './';
+import CheckImage from './CheckImage';
 import ItemListComponent from './ItemListComponent';
 
 /**
