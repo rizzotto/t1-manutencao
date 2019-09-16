@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
-import ClosedListContainer from '../Containers/ClosedListContainer'
+import ClosedListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
-import createDefaultNavigationOptions from './createDefaultNavigationOptions';
-
     /**
+     * @param hasInput Indica se a tela de lista deve ter um input para adicionar mais opcoes
      * @param width Estado da barra de progresso
      * @param list Dados que estarao presentes na lista
      * @param maxSelected Numero maximo de itens que podem ser selecionados na lista 
@@ -18,19 +17,18 @@ export default class ClosedListScreen extends Component {
     static navigationOptions = createDefaultNavigationOptions;
 
     dataFromContainer = (data) => {
-        const onComplete = this.getParam("onComplete");
-        if (!onComplete) return;
-        onComplete(data);
+        console.warn(data);
     }
 
     selectedItems = {}
     render(){
-        const width = this.getParam("width");
-        const list = this.getParam("list");
-        const maxSelected = this.getParam("maxSelected", 0);
-        const minSelected = this.getParam("minSelected", 0);
-        const titleText = this.getParam("titleText");
-        const descriptionText = this.getParam("descriptionText");
+        const hasInput = this.props.hasInput || this.props.navigation.getParam("hasInput");
+        const width = this.props.width || this.props.navigation.getParam("width");
+        const list = this.props.list || this.props.navigation.getParam("list");
+        const maxSelected = this.props.maxSelected || this.props.navigation.getParam("maxSelected");
+        const titleText = this.props.titleText || this.props.navigation.getParam("titleText");
+        const descriptionText = this.props.descriptionText || this.props.navigation.getParam("descriptionText");
+        const minSelected = this.props.minSelected || this.props.navigation.getParam("minSelected");
         return(
             <SafeAreaView style={styles.container}>
                 <ProgressBarComponent width={width}/> 
@@ -41,6 +39,7 @@ export default class ClosedListScreen extends Component {
                 minSelected={minSelected}
                 titleText={titleText}
                 descriptionText={descriptionText}
+                hasInput={hasInput}
                 />
             </SafeAreaView>
         )
@@ -50,5 +49,6 @@ export default class ClosedListScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+
     }
 })
