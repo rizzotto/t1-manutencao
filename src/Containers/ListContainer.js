@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DefaultButtonComponent from '../Components/defaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
@@ -17,7 +17,7 @@ import AppStyle from '../styles';
      * @return Container com titulo, descricao, lista fechada e botao de ir para proxima pagina
      */
 
-export default class ClosedListContainer extends Component {
+export default class ListContainer extends Component {
     
     state = {
         list: this.props.list,
@@ -107,33 +107,35 @@ export default class ClosedListContainer extends Component {
         return (
 
             <View style={styles.container}>
-                <TitleDescComponent styleView={styles.header}
-                    titleText={this.state.titleText} 
-                    descriptionText={this.state.descriptionText}
-                />
-                <ScrollView style={styles.content}>
-                    <FlatList
-                        data={this.state.list}
-                        renderItem={({ item, index }) => (
-                            <ItemListComponent 
-                            text={item.texto}
-                            onPress ={() => this._onPressItem(index)} 
-                            selected={item.isSelected}
-                            />
-                            )}
-                        keyExtractor={item => item.id.toString()}
-                        extraData={this.state.refresh}
-                        ItemSeparatorComponent={() => <Separator />}
-                    />
-                    { this.props.hasInput &&
-                        <ItemInputListComponent
-                            style={isEmpty ? {} : styles.withBorder}
-                            placeholder={"Outro..."}
-                            buttonText="+"
-                            dataToAdd={this._onPressAdd}
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <ScrollView style={styles.content}>
+                        <TitleDescComponent styleView={styles.header}
+                            titleText={this.state.titleText} 
+                            descriptionText={this.state.descriptionText}
                         />
-                    }
-                </ScrollView>
+                        <FlatList
+                            data={this.state.list}
+                            renderItem={({ item, index }) => (
+                                <ItemListComponent 
+                                text={item.texto}
+                                onPress ={() => this._onPressItem(index)} 
+                                selected={item.isSelected}
+                                />
+                                )}
+                            keyExtractor={item => item.id.toString()}
+                            extraData={this.state.refresh}
+                            ItemSeparatorComponent={() => <Separator />}
+                        />
+                        { this.props.hasInput &&
+                            <ItemInputListComponent
+                                style={isEmpty ? {} : styles.withBorder}
+                                placeholder={"Outro..."}
+                                buttonText="+"
+                                dataToAdd={this._onPressAdd}
+                            />
+                        }
+                    </ScrollView>
+                </TouchableWithoutFeedback>
                 
                 <DefaultButtonComponent 
                     text={hasSelected ? "Continuar" : "Pular"}

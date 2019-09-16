@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
-import ClosedListContainer from '../Containers/ListContainer'
+import ListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
 import createDefaultNavigationOptions from './createDefaultNavigationOptions';
 
@@ -36,7 +36,7 @@ export default class ClosedListScreen extends Component {
         return(
             <SafeAreaView style={styles.container}>
                 <ProgressBarComponent width={width}/> 
-                <ClosedListContainer 
+                <ListContainer 
                 dataToScreen={this.dataFromContainer} 
                 list={list} 
                 maxSelected={maxSelected} 
