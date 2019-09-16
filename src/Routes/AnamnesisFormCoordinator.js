@@ -6,6 +6,7 @@ import { TextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
+import database from '../Database/Firebase';
 
 /**
  * Coordinator do formulário de criação/edição de anamnese.
@@ -36,6 +37,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         // se uma anamnese for passada como parâmetro, usar ela como base para as telas
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
+        this.selectedMedicines = this.anamnesisRecord.medicines.map(med => med.name);
 
         // objetos que geram as entradas para as listagens no formato esperado
         this.inputProducers = {
@@ -50,11 +52,11 @@ export default class AnamnesisFormCoordinator extends Component {
             closedList: new OutputFilters.ClosedListOutputFilter(),
             subitemList: new OutputFilters.SubitemListOutputFilter()
         };
-    }
 
-    defaultParams = {
-        title: "Ficha",
-        onCancel: this._onCancel
+        this.defaultParams = {
+            title: "Ficha",
+            onCancel: this._onCancel
+        }
     }
 
     render() {
@@ -96,7 +98,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
     pushEmail = () => {
         const saveResult = (result) => {
-            this.anamnesisRecord.email = this.outputFilters.textInput.date(result);
+            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result);
         }
 
         this.props.navigation.push("TextInput", {
@@ -327,10 +329,17 @@ export default class AnamnesisFormCoordinator extends Component {
     }
 
     endFlow = () => {
-        console.log(this.anamnesisRecord);
-        console.warn(this.anamnesisRecord);
-        // TODO: salvar no firebase! :D
-        this.props.navigation.navigate("Main");
+        this.anamnesisRecord.creationDate = new Date();
+
+        const save = database.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
+            .then(() => this.props.navigation.navigate("Main"))
+            .catch(() => {
+                return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+            })
+
+        this.props.navigation.push("Loading", {
+            operation: save
+        });
     }
 }
 
