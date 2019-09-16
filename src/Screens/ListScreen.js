@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
-import ClosedListContainer from '../Containers/ClosedListContainer'
+import ClosedListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
     /**
+     * @param hasInput Indica se a tela de lista deve ter um input para adicionar mais opcoes
      * @param width Estado da barra de progresso
      * @param list Dados que estarao presentes na lista
      * @param maxSelected Numero maximo de itens que podem ser selecionados na lista 
@@ -21,6 +22,7 @@ export default class ClosedListScreen extends Component {
 
     selectedItems = {}
     render(){
+        const hasInput = this.props.hasInput || this.props.navigation.getParam("hasInput");
         const width = this.props.width || this.props.navigation.getParam("width");
         const list = this.props.list || this.props.navigation.getParam("list");
         const maxSelected = this.props.maxSelected || this.props.navigation.getParam("maxSelected");
@@ -37,6 +39,7 @@ export default class ClosedListScreen extends Component {
                 minSelected={minSelected}
                 titleText={titleText}
                 descriptionText={descriptionText}
+                hasInput={hasInput}
                 />
             </SafeAreaView>
         )
