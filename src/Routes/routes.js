@@ -1,7 +1,8 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen, LoadingScreen } from '../Screens';
+import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen, LoadingScreen, AnamnesisDetailScreen } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
+import createTabBarIcon from '../Screens/createTabBarIcon';
 
 // stack navigator do formulário de anamnese
 const AnamnesisForm = createStackNavigator({
@@ -26,9 +27,19 @@ const AnamnesisForm = createStackNavigator({
     }
 })
 
+const AnamnesisTab = createStackNavigator({
+    AnamnesesRecords: AnamnesesRecordsScreen,
+    AnamnesisDetail: AnamnesisDetailScreen
+});
+
+AnamnesisTab.navigationOptions = {
+    title: "Ficha",
+    tabBarIcon: createTabBarIcon(require("../Resources/anamnesesTabBarIcon.png"))
+}
+
 // tabbar do app
 const TabNavigator = createBottomTabNavigator({
-    AnamnesesRecords: AnamnesesRecordsScreen
+    Anamnesis: AnamnesisTab
     // entradas para as outras tabs (exames e diário) quando prontas
 }, {
     tabBarOptions: {
