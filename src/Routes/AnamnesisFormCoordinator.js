@@ -37,7 +37,13 @@ export default class AnamnesisFormCoordinator extends Component {
 
         // se uma anamnese for passada como parâmetro, usar ela como base para as telas
         this.anamnesisRecord = props.navigation.getParam("anamnesisRecord", {});
-        this.selectedMedicines = this.anamnesisRecord.medicines.map(med => med.name);
+        this.selectedMedicines = (this.anamnesisRecord.medicines || []).map(med => med.name);
+
+        // dados padrão
+        this.defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
+        this.defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
+        this.defaultLifeRhythms = ["Calmo", "\"Normal\"", "Muito agitada"];
+        this.defaultLifeStyles = ["Adequada", "Não adequada"];
 
         // objetos que geram as entradas para as listagens no formato esperado
         this.inputProducers = {
@@ -171,14 +177,14 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.symptoms = this.outputFilters.closedList.allSelected(result);
         }
 
-        const defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
-        const items = this.inputProducers.closedList.multipleSelected(defaultSymptoms, this.anamnesisRecord.symptoms);
+        const items = this.inputProducers.closedList.multipleSelected(this.defaultSymptoms, this.anamnesisRecord.symptoms);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Informe suas principais queixas/sintomas",
             list: items,
             width: 0.42,
+            hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
         })
     }
@@ -188,15 +194,15 @@ export default class AnamnesisFormCoordinator extends Component {
             this.selectedMedicines = this.outputFilters.closedList.allSelected(result);
         }
 
-        const availableMedicines = ["Omeprazol", "Dipirona", "AAS", "Diclofenaco"];
-        const items = this.inputProducers.closedList.multipleSelected(availableMedicines, this.selectedMedicines);
+        const items = this.inputProducers.closedList.multipleSelected([], this.selectedMedicines);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Medicamentos",
             descriptionText: "Informe os medicamentos que você usa atualmente.",
             list: items,
             width: 0.4998,
+            hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicinesFrequency)
         });
     }
@@ -232,14 +238,14 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.pathologies = this.outputFilters.closedList.allSelected(result);
         }
 
-        const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
-        const items = this.inputProducers.closedList.multipleSelected(defaultPathologies, this.anamnesisRecord.pathologies);
+        const items = this.inputProducers.closedList.multipleSelected(this.defaultPathologies, this.anamnesisRecord.pathologies);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Você tem ou teve alguma patologia?",
             list: items,
             width: 0.6426,
+            hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushFamilyPathologies)
         })
     }
@@ -249,15 +255,15 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.familyPathologies = this.outputFilters.closedList.allSelected(result);
         }
 
-        const defaultPathologies = ["Diabetes", "Hipertensão", "Gastrite", "Asma/Bronquite", "Alergias alimentares", "Intolerâncias alimentares", "Câncer"];
-        const items = this.inputProducers.closedList.multipleSelected(defaultPathologies, this.anamnesisRecord.familyPathologies);
+        const items = this.inputProducers.closedList.multipleSelected(this.defaultPathologies, this.anamnesisRecord.familyPathologies);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Histórico familiar",
             descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
             list: items,
             width: 0.714,
+            hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushHabits)
         })
     }
@@ -293,10 +299,9 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.lifeRhythm = this.outputFilters.closedList.singleItem(result);
         }
 
-        const defaultRhythms = ["Calmo", "\"Normal\"", "Muito agitada"];
-        const items = this.inputProducers.closedList.singleSelected(defaultRhythms, this.anamnesisRecord.lifeRhythm);
+        const items = this.inputProducers.closedList.singleSelected(this.defaultLifeRhythms, this.anamnesisRecord.lifeRhythm);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Ritmo de vida",
             descriptionText: "Como você caracteriza seu \"ritmo\" de vida?",
@@ -313,10 +318,9 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.eatingStyle = this.outputFilters.closedList.singleItem(result);
         }
 
-        const defaultStyles = ["Adequada", "Não adequada"];
-        const items = this.inputProducers.closedList.singleSelected(defaultStyles, this.anamnesisRecord.eatingStyle);
+        const items = this.inputProducers.closedList.singleSelected(this.defaultLifeStyles, this.anamnesisRecord.eatingStyle);
 
-        this.props.navigation.push("ClosedList", {
+        this.props.navigation.push("List", {
             ...this.defaultParams,
             titleText: "Alimentação",
             descriptionText: "Como você caracteriza sua alimentação?",

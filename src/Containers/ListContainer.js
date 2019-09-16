@@ -21,68 +21,97 @@ export default class ClosedListContainer extends Component {
     
     state = {
         list: this.props.list,
-        maxSelected: this.props.maxSelected || this.props.list.length,
+        maxSelected: this.props.maxSelected,
         titleText: this.props.titleText,
         descriptionText:this.props.descriptionText,
         minSelected: this.props.minSelected || 0,
-        selectedItems: this.props.list.filter(x => x.isSelected),
         minSatisfied: this.props.list.filter(x => x.isSelected).length>=(this.props.minSelected || 0 )
     };
+
     dataToScreen = () => {
-        this.props.dataToScreen(this.state.selectedItems);
+        const selectedItems = this.state.list.filter(item => item.isSelected);
+        this.props.dataToScreen(selectedItems);
     }
 
     _onPressAdd = (name) => {
-        isAdded = this.state.list.filter((item)=>{ 
-            return name == item.texto
-        }).length >0
-        nameEmpty = name.length==0
-        // console.warn(nameEmpty + "")
-        if (isAdded | nameEmpty) return ;
+        const cleanName = name.trim();
 
+        // não adicionar diplicados
+        const isAdded = this.state.list.map(item => item.texto).includes(name);
+        const nameEmpty = cleanName.length == 0;
+        if (isAdded || nameEmpty) return;
+
+        // por padrão, pode selecionar
+        let hasSelectionAvailable = true;
+
+        const currentSelected = this.state.list.filter(item => item.isSelected).length;
+        const maxSelected = this.state.maxSelected;
+        if (maxSelected !== undefined && maxSelected !== null) {
+            hasSelectionAvailable = currentSelected < maxSelected;
+        }
         
-        id = this.state.list.length+1;
+        const id = this.state.list.length + 1;
         let data = {
-            id: "" +id,
-            isSelected: false,
+            id: id.toString(),
+            isSelected: hasSelectionAvailable,
             texto: name
         };
 
-        this.state.list = [data].concat(this.state.list);
-        this.state.selectedItems = this.state.list.filter(x => x.isSelected);
+        this.state.list.push(data);
+        const selectedItems = this.state.list.filter(item => item.isSelected);
+        this.state.minSatisfied = selectedItems.length >= this.state.minSelected;
+
         this.setState({ render: !this.render });
-        this.state.minSatisfied = this.state.selectedItems.length>=this.state.minSelected;
     }
     
 
     _onPressItem = (index) => {
-        this.setState({ render: !this.render })
-        
-        let numbSelected = this.state.list.filter(x => x.isSelected).length;
-        
-        if (numbSelected < this.state.maxSelected || this.state.list[index].isSelected) {
-            this.state.list[index].isSelected = !this.state.list[index].isSelected;
+        const maxSelected = this.state.maxSelected;
+        const wasSelected = this.state.list[index].isSelected;
+
+        // se não há limite de itens selecionados
+        if (maxSelected === undefined || maxSelected === null) {
+            this.state.list[index].isSelected = !wasSelected;
+            this.setState({ render: !this.render });
+            return;
         }
-        this.state.selectedItems = this.state.list.filter(x => x.isSelected)
-        this.state.minSatisfied = this.state.selectedItems.length>=this.state.minSelected;
+
+        // se está selecionando (não estava selecionado)
+        if (!wasSelected) {
+            // se puder selecionar apenas um, selecionar um item deseleciona o que estiver selecionado anteriormente
+            if (maxSelected === 1) {
+                this.state.list.forEach(item => item.isSelected = false);
+            } else {
+                // se puder selecionar vários, então só seleciona se já não tiver selecionado tudo o que podia
+                const currentSelected = this.state.filter(item => item.isSelected).length;
+                if (currentSelected >= maxSelected) {
+                    return;
+                }
+            }
+        }
+
+        this.state.list[index].isSelected = !wasSelected;
+
+        const selectedItems = this.state.list.filter(item => item.isSelected);
+        this.state.minSatisfied = selectedItems.length >= this.state.minSelected;
+
+        this.setState({ render: !this.render });
     };
 
     
     render(){
         isDisabled = this.state.minSatisfied;
+        const isEmpty = this.state.list.length === 0;
+        const hasSelected = this.state.list.filter(item => item.isSelected).length !== 0;
+
         return (
 
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <TitleDescComponent 
-                        titleText={this.state.titleText} 
-                        descriptionText={this.state.descriptionText}
-                        
-                    />
-                
-                </View> 
-                <View style={styles.content}>
-                <ScrollView  >
+                <TitleDescComponent styleView={styles.header}
+                    titleText={this.state.titleText} 
+                    descriptionText={this.state.descriptionText}
+                />
+                <ScrollView style={styles.content}>
                     <FlatList
                         data={this.state.list}
                         renderItem={({ item, index }) => (
@@ -92,32 +121,27 @@ export default class ClosedListContainer extends Component {
                             selected={item.isSelected}
                             />
                             )}
-                            keyExtractor={item => item.id.toString()}
-                            extraData={this.state.refresh}
-                            ItemSeparatorComponent={() => <Separator />}
-                            />
-                </ScrollView>
-                            {this.props.hasInput? <ItemInputListComponent
-                                    
-                                    style={this.state.list.length==0? styles.noBorder: styles.withBorder}
-                                    placeholder={"Outro..."}
-                                    buttonText={"Adicionar"} 
-                                    dataToAdd={this._onPressAdd}
-                                /> : <View/>}
-                </View>
-
-                
-                <View style={styles.bottom}>
-                    <DefaultButtonComponent 
-                        text={this.state.selectedItems.length==0? "Pular": "Próximo"}
-                        action={this.dataToScreen}
-                        style={styles.buttonStyle} 
-                        textStyle={styles.textStyle}
+                        keyExtractor={item => item.id.toString()}
                         extraData={this.state.refresh}
-                        onPress ={() => this._onPressItem(index)}
-                        isDisabled = {!isDisabled}
-                    />     
-                </View> 
+                        ItemSeparatorComponent={() => <Separator />}
+                    />
+                    { this.props.hasInput &&
+                        <ItemInputListComponent
+                            style={isEmpty ? {} : styles.withBorder}
+                            placeholder={"Outro..."}
+                            buttonText="+"
+                            dataToAdd={this._onPressAdd}
+                        />
+                    }
+                </ScrollView>
+                
+                <DefaultButtonComponent 
+                    text={hasSelected ? "Continuar" : "Pular"}
+                    action={this.dataToScreen}
+                    textStyle={styles.textStyle}
+                    onPress ={() => this._onPressItem(index)}
+                    isDisabled = {!isDisabled}
+                />
             </View>
         )
     }
@@ -130,14 +154,8 @@ const styles = StyleSheet.create({
         flex:1,
     },
     header: {
-        marginBottom:'5%',
-    },
-    bottom: {
-        marginBottom:'10%',
-        marginTop:'8%',
-        alignContent:'flex-end',
-        position: "absolute",
-        bottom: 0
+        marginTop: 10,
+        marginBottom: 60
     },
     line: {
         width: "100%",
@@ -149,7 +167,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1
     },
     content: {
-        maxHeight: "63%"
+        flex: 1
     }
 
 })

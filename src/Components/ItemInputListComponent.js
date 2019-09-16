@@ -43,13 +43,12 @@ export default class ItemListComponent extends Component {
             <View style={[styles.container, this.props.style]}>
                 
                 <TextInput
-                    style={[styles.placeholder, this.props.stylePlaceholder]}
+                    style={[styles.textInput, this.props.stylePlaceholder]}
                     maxLength={50}
                     placeholder={this.props.placeholder}
                     autoCorrect={false}
                     onChangeText={(text) => this.setState({text})}
                     value={this.state.text}
-                    clearButtonMode='always'
                     />
                 <DefaultButton 
                     text={this.props.buttonText} 
@@ -73,29 +72,21 @@ const createStyles = (selected) => {
             paddingVertical: 10,
             backgroundColor: selected ? AppStyle.colors.lightGray : AppStyle.colors.background,
         },
-        textStyle: {
+        textInput: {
             flex: 1,
             flexGrow: 1,
-            fontSize: 20,
-            textAlign: "left",
-            textAlignVertical: "center",
-        },
-        placeholder: {
+            minHeight: 40,
             fontSize: 20,
             color: '#333333',
-            width: '70%',
             borderColor: '#999999',
             borderBottomWidth: 1,
-            padding: 0,
-            
         },
         button: {
             margin: 0,
-            marginLeft: 20,
-            width: '25%',
+            marginLeft: 10,
+            minWidth: 40,
         },
         text: {
-            padding: 0,
             fontSize: 15,
             textAlignVertical: "center"
         },

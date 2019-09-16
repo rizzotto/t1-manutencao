@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
 import ClosedListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
+import createDefaultNavigationOptions from './createDefaultNavigationOptions';
+
     /**
      * @param hasInput Indica se a tela de lista deve ter um input para adicionar mais opcoes
      * @param width Estado da barra de progresso
@@ -17,18 +19,20 @@ export default class ClosedListScreen extends Component {
     static navigationOptions = createDefaultNavigationOptions;
 
     dataFromContainer = (data) => {
-        console.warn(data);
+        const onComplete = this.getParam("onComplete");
+        if (!onComplete) return;
+        onComplete(data);
     }
 
     selectedItems = {}
     render(){
-        const hasInput = this.props.hasInput || this.props.navigation.getParam("hasInput");
-        const width = this.props.width || this.props.navigation.getParam("width");
-        const list = this.props.list || this.props.navigation.getParam("list");
-        const maxSelected = this.props.maxSelected || this.props.navigation.getParam("maxSelected");
-        const titleText = this.props.titleText || this.props.navigation.getParam("titleText");
-        const descriptionText = this.props.descriptionText || this.props.navigation.getParam("descriptionText");
-        const minSelected = this.props.minSelected || this.props.navigation.getParam("minSelected");
+        const hasInput = this.getParam("hasInput");
+        const width = this.getParam("width");
+        const list = this.getParam("list");
+        const maxSelected = this.getParam("maxSelected");
+        const titleText = this.getParam("titleText");
+        const descriptionText = this.getParam("descriptionText");
+        const minSelected = this.getParam("minSelected");
         return(
             <SafeAreaView style={styles.container}>
                 <ProgressBarComponent width={width}/> 

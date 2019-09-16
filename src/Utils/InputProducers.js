@@ -70,11 +70,19 @@ class ClosedListInputProducer {
     /**
      * Gera a lista considerando um conjunto de elementos já selecionados.
      * @param {string[]} items itens exibidos na lista
-     * @param {string[]} selected itens que devem iniciar selecionados
-     * @returns {ClosedListInputItem[]} itens no formato esperado pelo componente
+     * @param {string[]} selected itens que devem ser exibidos e iniciar selecionados
+     * @returns {ClosedListInputItem[]} itens no formato esperado pelo componente, união entre `items` e `selected`
      */
     multipleSelected(items, selected = []) {
-        return items.map((item, index) => {
+        const allItems = items.slice();
+
+        // adicionar tudo em `selected` sem duplicar
+        selected.forEach(item => {
+            if (allItems.includes(item)) return;
+            allItems.push(item);
+        });
+
+        return allItems.map((item, index) => {
             return {
                 id: index,
                 texto: item,
