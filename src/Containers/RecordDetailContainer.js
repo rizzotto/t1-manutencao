@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DetailedRecordComponent from '../Components/DetailedRecordComponent';
+import {formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam} from '../Utils/Helpers';
 
 export default class RecordDetailContainer extends Component {
-
-  getAnamnesesSymptoms(){
-    return this.props.anamnese.symptoms.join()
-  }
-
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -17,7 +13,7 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.generalTitle}
         styleDescription={styles.generalDescription}
         titleText="Teste" 
-        descriptionText={"Ficha criada em: 16/09/2019"} />
+        descriptionText={formatDate(this.props.anamnese.creationDate)} />
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
@@ -29,45 +25,45 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Data de nascimento:"}
-        descriptionText={"sss"}/>
+        descriptionText={formatDate(this.props.anamnese.birthDate)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Peso e altura:"}
-        descriptionText={this.props.anamnese.weight+" kg, "+this.props.anamnese.height+" cm"}/>
+        descriptionText={this.props.anamnese.weight+" kg, "+formatHeight(this.props.anamnese.height)}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Principais Sintomas:"}
-        descriptionText={this.props.anamnese.symptoms.join(", ")}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.symptoms, ', ')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Medicamentos:"}
-        descriptionText={"Placeholder para medicamentos"}/>
+        descriptionText={formatArrayObjectsAnam(this.props.anamnese.medicines)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Patologias:"}
-        descriptionText={this.props.anamnese.pathologies.join(", ")}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.pathologies, ', ')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Histórico Familiar:"}
-        descriptionText={this.props.anamnese.familyPathologies.join(", ")}/>
+        descriptionText={"desc"}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Hábitos:"}
-        descriptionText={"Placeholder para hábitos"}/>
+        descriptionText={formatArrayObjectsAnam(this.props.anamnese.habits)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
@@ -79,7 +75,7 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Alimentação:"}
-        descriptionText={this.props.anamnese.eating}/>
+        descriptionText={this.props.anamnese.eatingStyle}/>
       </ScrollView>
     );
   }
