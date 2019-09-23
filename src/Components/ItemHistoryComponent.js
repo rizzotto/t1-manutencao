@@ -5,12 +5,14 @@ import Arrow from './Arrow';
      * @param hasEmoji Indica se o item possui emoji de representacao de sentimento
      * @param list Lista de dados que estarao representados no item
      * @param emoji Codigo do emoji a ser inserido na lista
+     * @param day Dia do Item que fora adicionado 
      * @return Component do item de historico
      * EXAMPLE:
      * <ItemHistoryComponent
             list={DATA}
             hasEmoji={true}
             emoji={"😄"}
+            day={"15"}
         />
 
         EMOJIS:
@@ -29,7 +31,7 @@ export default class ItemHistoryComponent extends Component {
                 <View style={styles.item}>
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.number}>
-                                26
+                            {this.props.day}
                         </Text>
                         <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
                             
