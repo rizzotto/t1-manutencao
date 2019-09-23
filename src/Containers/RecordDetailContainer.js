@@ -2,84 +2,80 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DetailedRecordComponent from '../Components/DetailedRecordComponent';
+import {formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam, textWhenEmpty} from '../Utils/Helpers';
 
 export default class RecordDetailContainer extends Component {
-
-  getAnamnesesSymptoms(){
-    return this.props.anamnese.symptoms.join()
-  }
-
   render() {
     return (
       <ScrollView style={styles.container}>
-        <TitleDescComponent 
+        <TitleDescComponent
         styleView={styles.styleView}
         styleTitle={styles.generalTitle}
         styleDescription={styles.generalDescription}
-        titleText="Teste" 
-        descriptionText={"Ficha criada em: 16/09/2019"} />
+        titleText={this.props.anamnese.name}
+        descriptionText={formatDate(this.props.anamnese.creationDate)} />
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"E-mail:"}
-        descriptionText={this.props.anamnese.email}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.email, 'N/A')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Data de nascimento:"}
-        descriptionText={"sss"}/>
+        descriptionText={formatDate(this.props.anamnese.birthDate)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Peso e altura:"}
-        descriptionText={this.props.anamnese.weight+" kg, "+this.props.anamnese.height+" cm"}/>
+        descriptionText={this.props.anamnese.weight+" kg, "+formatHeight(this.props.anamnese.height)}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Principais Sintomas:"}
-        descriptionText={this.props.anamnese.symptoms.join(", ")}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.symptoms, ', ')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Medicamentos:"}
-        descriptionText={"Placeholder para medicamentos"}/>
+        descriptionText={formatArrayObjectsAnam(this.props.anamnese.medicines)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Patologias:"}
-        descriptionText={this.props.anamnese.pathologies.join(", ")}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.pathologies, ', ')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Histórico Familiar:"}
-        descriptionText={this.props.anamnese.familyPathologies.join(", ")}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.familyPathologies, ', ')}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Hábitos:"}
-        descriptionText={"Placeholder para hábitos"}/>
+        descriptionText={formatArrayObjectsAnam(this.props.anamnese.habits)}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Estilo de vida:"}
-        descriptionText={this.props.anamnese.lifeRhythm}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.lifeRhythm, 'N/A')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Alimentação:"}
-        descriptionText={this.props.anamnese.eating}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.eatingStyle, 'N/A')}/>
       </ScrollView>
     );
   }
