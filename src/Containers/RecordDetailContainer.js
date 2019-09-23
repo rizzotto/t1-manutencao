@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DetailedRecordComponent from '../Components/DetailedRecordComponent';
-import {formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam} from '../Utils/Helpers';
+import {formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam, textWhenEmpty} from '../Utils/Helpers';
 
 export default class RecordDetailContainer extends Component {
   render() {
@@ -19,7 +19,7 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"E-mail:"}
-        descriptionText={this.props.anamnese.email}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.email, 'N/A')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
@@ -69,13 +69,13 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Estilo de vida:"}
-        descriptionText={this.props.anamnese.lifeRhythm}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.lifeRhythm, 'N/A')}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Alimentação:"}
-        descriptionText={this.props.anamnese.eatingStyle}/>
+        descriptionText={textWhenEmpty(this.props.anamnese.eatingStyle, 'N/A')}/>
       </ScrollView>
     );
   }

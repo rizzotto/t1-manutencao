@@ -4,11 +4,14 @@ import {getFrequencyDescription} from './frequencies';
  * @param {Object} date
  */
 export function formatDate(date){
-    let correctedMonth = date.getMonth()+1;
-    if(correctedMonth < 10){
-        correctedMonth = "0"+correctedMonth;
+    if(!_isEmpty(date)){
+        let correctedMonth = date.getMonth()+1;
+        if(correctedMonth < 10){
+            correctedMonth = "0"+correctedMonth;
+        }
+        return ""+date.getDate() +"/" + correctedMonth + "/" +date.getFullYear();
     }
-    return ""+date.getDate() +"/" + correctedMonth + "/" +date.getFullYear();
+    return "N/A";
 }
 
 /**
@@ -16,10 +19,13 @@ export function formatDate(date){
  * @param {number} height
  */
 export function formatHeight(height){
-    if (height % 1 !== 0) {
-        return height + " m";
+    if(!_isEmpty(height)){
+        if (height % 1 !== 0) {
+            return height + " m";
+        }
+        return (height/100).toLocaleString('pt-BR') + " m";
     }
-    return (height/100).toLocaleString('pt-BR') + " m";
+    return "N/A";
 }
 
 /**
@@ -28,7 +34,7 @@ export function formatHeight(height){
  * @param {string} sep
  */
 export function formatArrayWithSeparator(arr, sep){
-    if(arr != null || arr != undefined){
+    if(!_isEmpty(arr)){
         let string = "";
         arr.forEach((item,index) => {
             if(index != 0){
@@ -53,7 +59,7 @@ export function formatArrayWithSeparator(arr, sep){
  * @param {array} arr
  */
 export function formatArrayObjectsAnam(arr){
-    if(arr != null || arr != undefined){
+    if(!_isEmpty(arr)){
         let str = "";
         arr.forEach((item,index) => {
             let freq = getFrequencyDescription(item.frequency);
@@ -67,4 +73,15 @@ export function formatArrayObjectsAnam(arr){
         return str;
     }
     return "N/A";
+}
+
+export function textWhenEmpty(s, text){
+    return (_isEmpty(s)) ? text : s;
+}
+
+_isEmpty = (v) => {
+    if(v == null || v == undefined || v == ""){
+        return true;
+    }
+    return false; 
 }
