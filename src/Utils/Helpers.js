@@ -1,10 +1,10 @@
-import {getFrequencyDescription} from './frequencies'
+import {getFrequencyDescription} from './frequencies';
 /**
  * Retorna uma string com os dados de um objeto do tipo date formatados.
- * @param {Object} date 
+ * @param {Object} date
  */
 export function formatDate(date){
-    correctedMonth = date.getMonth()+1;
+    let correctedMonth = date.getMonth()+1;
     if(correctedMonth < 10){
         correctedMonth = "0"+correctedMonth;
     }
@@ -13,15 +13,18 @@ export function formatDate(date){
 
 /**
  * Retorna uma string com a altura formatada em x,y m.
- * @param {number} height 
+ * @param {number} height
  */
 export function formatHeight(height){
+    if (height % 1 !== 0) {
+        return height + " m";
+    }
     return (height/100).toLocaleString('pt-BR') + " m";
 }
 
 /**
  * Retorna uma string com os valores do array formatados e separados.
- * @param {[]} arr 
+ * @param {[]} arr
  * @param {string} sep
  */
 export function formatArrayWithSeparator(arr, sep){
@@ -47,15 +50,15 @@ export function formatArrayWithSeparator(arr, sep){
  * @param {array} arr
  */
 export function formatArrayObjectsAnam(arr){
-    string = "";
+    let str = "";
     arr.forEach((item,index) => {
-        freq = getFrequencyDescription(item.frequency);
+        let freq = getFrequencyDescription(item.frequency);
         if(arr.length == 1 || index == arr.length - 1){
-            string += item.name + ": " + freq;
+            str += item.name + ": " + freq;
         }
         else{
-            string += item.name + ": " + freq + "\n";
+            str += item.name + ": " + freq + "\n";
         }
-    })
-    return string;
+    });
+    return str;
 }

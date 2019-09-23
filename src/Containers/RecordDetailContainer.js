@@ -8,11 +8,11 @@ export default class RecordDetailContainer extends Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <TitleDescComponent 
+        <TitleDescComponent
         styleView={styles.styleView}
         styleTitle={styles.generalTitle}
         styleDescription={styles.generalDescription}
-        titleText="Teste" 
+        titleText={this.props.anamnese.name}
         descriptionText={formatDate(this.props.anamnese.creationDate)} />
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
@@ -56,7 +56,7 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Histórico Familiar:"}
-        descriptionText={"desc"}/>
+        descriptionText={formatArrayWithSeparator(this.props.anamnese.familyPathologies, ', ')}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
