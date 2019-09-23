@@ -1,6 +1,6 @@
 import {getFrequencyDescription} from './frequencies';
 /**
- * Retorna uma string com os dados de um objeto do tipo date formatados.
+ * Retorna uma string com os dados de um objeto do tipo date formatados no padrão dd/mm/aaaa.
  * @param {Object} date
  * @returns {String}
  */
@@ -31,7 +31,7 @@ export function formatHeight(height){
 }
 
 /**
- * Retorna uma string com os valores do array formatados e separados.
+ * Retorna uma string com os valores de um array formatados e separados por um separador.
  * @param {[]} arr
  * @param {String} sep
  * @returns {String}
@@ -58,7 +58,7 @@ export function formatArrayWithSeparator(arr, sep){
 }
 
 /**
- * Retorna uma string formatada com os objetos contendo frequencia e nome.
+ * Retorna uma string formatada com os objetos de um array contendo frequencia e nome.
  * @param {Array} arr
  * @returns {String}
  */
@@ -80,7 +80,7 @@ export function formatArrayObjectsAnam(arr){
 }
 
 /**
- * Utiliza um texto definido quando o primeiro parâmetro está vazio
+ * Utiliza um texto definido quando a variável passada no primeiro parâmetro for vazia.
  * @param {*} s 
  * @param {String} text Texto a ser utilizado quando está vazio
  */
