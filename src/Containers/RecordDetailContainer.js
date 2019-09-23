@@ -35,7 +35,7 @@ export default class RecordDetailContainer extends Component {
         styleTitle={styles.detailRecordTitle}
         styleView={styles.styleView}
         titleText={"Peso e altura:"}
-        descriptionText={this.props.anamnese.weight+" kg, "+this.props.anamnese.height+" cm"}/>
+        descriptionText={this.props.anamnese.weight+" kg, "+this.props.anamnese.height+" m"}/>
         <View style={styles.divisionBar}/>
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}

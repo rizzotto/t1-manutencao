@@ -164,7 +164,7 @@ export default class AnamnesisFormCoordinator extends Component {
         this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Informe sua altura",
-            placeholder: "000 cm",
+            placeholder: "1.50m",
             progress: 0.3570,
             keyboardType: "numeric",
             content: currentHeight,
