@@ -2,6 +2,7 @@ import {getFrequencyDescription} from './frequencies';
 /**
  * Retorna uma string com os dados de um objeto do tipo date formatados.
  * @param {Object} date
+ * @returns {String}
  */
 export function formatDate(date){
     if(!_isEmpty(date)){
@@ -16,7 +17,8 @@ export function formatDate(date){
 
 /**
  * Retorna uma string com a altura formatada em x,y m.
- * @param {number} height
+ * @param {Number} height
+ * @returns {String}
  */
 export function formatHeight(height){
     if(!_isEmpty(height)){
@@ -31,7 +33,8 @@ export function formatHeight(height){
 /**
  * Retorna uma string com os valores do array formatados e separados.
  * @param {[]} arr
- * @param {string} sep
+ * @param {String} sep
+ * @returns {String}
  */
 export function formatArrayWithSeparator(arr, sep){
     if(!_isEmpty(arr)){
@@ -56,7 +59,8 @@ export function formatArrayWithSeparator(arr, sep){
 
 /**
  * Retorna uma string formatada com os objetos contendo frequencia e nome.
- * @param {array} arr
+ * @param {Array} arr
+ * @returns {String}
  */
 export function formatArrayObjectsAnam(arr){
     if(!_isEmpty(arr)){
@@ -75,12 +79,22 @@ export function formatArrayObjectsAnam(arr){
     return "N/A";
 }
 
+/**
+ * Utiliza um texto definido quando o primeiro parâmetro está vazio
+ * @param {*} s 
+ * @param {String} text Texto a ser utilizado quando está vazio
+ */
 export function textWhenEmpty(s, text){
     return (_isEmpty(s)) ? text : s;
 }
 
+/**
+ * Verifica se a variável está vazia
+ * @param {*} v
+ * @returns {Boolean}
+ */
 _isEmpty = (v) => {
-    if(v == null || v == undefined || v == ""){
+    if(!v || v == null || v == undefined || v == ""){
         return true;
     }
     return false; 
