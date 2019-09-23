@@ -28,21 +28,24 @@ export function formatHeight(height){
  * @param {string} sep
  */
 export function formatArrayWithSeparator(arr, sep){
-    let string = "";
-    arr.forEach((item,index) => {
-        if(index != 0){
-            if(index == arr.length - 1){
-                string += item.toLowerCase() + ".";
+    if(arr != null || arr != undefined){
+        let string = "";
+        arr.forEach((item,index) => {
+            if(index != 0){
+                if(index == arr.length - 1){
+                    string += item.toLowerCase() + ".";
+                }
+                else{
+                    string += item.toLowerCase() + sep;
+                }
             }
             else{
-                string += item.toLowerCase() + sep;
+                arr.length == 1 ? string += item + "." : string += item + sep;
             }
-        }
-        else{
-            arr.length == 1 ? string += item + "." : string += item + sep;
-        }
-    });
-    return string;
+        });
+        return string;
+    }
+    return "N/A";
 }
 
 /**
@@ -50,15 +53,18 @@ export function formatArrayWithSeparator(arr, sep){
  * @param {array} arr
  */
 export function formatArrayObjectsAnam(arr){
-    let str = "";
-    arr.forEach((item,index) => {
-        let freq = getFrequencyDescription(item.frequency);
-        if(arr.length == 1 || index == arr.length - 1){
-            str += item.name + ": " + freq;
-        }
-        else{
-            str += item.name + ": " + freq + "\n";
-        }
-    });
-    return str;
+    if(arr != null || arr != undefined){
+        let str = "";
+        arr.forEach((item,index) => {
+            let freq = getFrequencyDescription(item.frequency);
+            if(arr.length == 1 || index == arr.length - 1){
+                str += item.name + ": " + freq;
+            }
+            else{
+                str += item.name + ": " + freq + "\n";
+            }
+        });
+        return str;
+    }
+    return "N/A";
 }
