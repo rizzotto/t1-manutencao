@@ -5,9 +5,9 @@
  * Parâmetros:
  *   - `onExit`: função chamada quando o botão "Sair" é clicado
  * 
- * Exemplo de uso: `Alert.alert(...createCancelAlert(() => console.warn("cancelar!"))));`
+ * Exemplo de uso: `Alert.alert(...CreateCancelAlert(() => console.warn("cancelar!"))));`
  */
-const createCancelAlert = (onExit) => {
+const CreateCancelAlert = (onExit) => {
     // manter a ordem: title, message, buttons
     return [
         "Tem certeza?",
@@ -26,4 +26,4 @@ const createCancelAlert = (onExit) => {
     ]
 };
 
-export default createCancelAlert;
+export default CreateCancelAlert;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, ScrollView, StyleSheet } from 'react-native';
-import { ListItemSubitems, Button, TitleDescription } from '../Components';
+import { ListItemSubitemsComponent, Button, TitleDescription } from '../Components';
 import AppStyle from '../styles';
 
 /**
@@ -18,7 +18,7 @@ import AppStyle from '../styles';
  *     - `{ selectedSubitems: number[][] }`: objeto passado como parâmetro que contém os índices dos subitens selecionados em cada item;
  *   - `style`: estilos aplicados no container.
  */
-export default class ListSubitems extends Component {
+export default class ListSubitemsContainer extends Component {
     constructor(props) {
         super(props)
 
@@ -41,7 +41,7 @@ export default class ListSubitems extends Component {
 
     _renderItem = ({ item, index: section }) => {
         const selectedSubitems = this.state.selected[section];
-        return <ListItemSubitems {...item}
+        return <ListItemSubitemsComponent {...item}
             selectedSubitems={selectedSubitems}
             onSelectionToggle={(row) => this._onToggleSubitem(section, row)} />;
     }

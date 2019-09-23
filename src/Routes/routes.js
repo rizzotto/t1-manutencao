@@ -2,7 +2,7 @@ import { createBottomTabNavigator, createAppContainer, createStackNavigator } fr
 import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen, LoadingScreen, AnamnesisDetailScreen } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
-import createTabBarIcon from '../Screens/createTabBarIcon';
+import CreateTabBarIcon from '../Screens/CreateTabBarIcon';
 
 // stack navigator do formulário de anamnese
 const AnamnesisForm = createStackNavigator({
@@ -34,7 +34,7 @@ const AnamnesisTab = createStackNavigator({
 
 AnamnesisTab.navigationOptions = {
     title: "Ficha",
-    tabBarIcon: createTabBarIcon(require("../Resources/anamnesesTabBarIcon.png"))
+    tabBarIcon: CreateTabBarIcon(require("../Resources/anamnesesTabBarIcon.png"))
 }
 
 // tabbar do app

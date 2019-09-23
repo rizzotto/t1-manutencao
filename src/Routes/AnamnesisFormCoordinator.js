@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButton } from '../Components';
-import createCancelAlert from './createCancelAlert';
+import { HeaderButtonComponent } from '../Components';
+import CreateCancelAlert from './CreateCancelAlert';
 import { TextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
@@ -19,7 +19,7 @@ export default class AnamnesisFormCoordinator extends Component {
         const onCancel = () => {
             // só mostra o alerta quando o usuário já tiver entrado com algum dado
             if (navigation.getParam("hasData", false)) {
-                Alert.alert(...createCancelAlert(dismiss));
+                Alert.alert(...CreateCancelAlert(dismiss));
             } else {
                 // se não tem dados, então apenas dá o dismiss no fluxo
                 dismiss();
@@ -28,7 +28,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         return {
             title: "Ficha",
-            headerRight: <HeaderButton text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 
@@ -92,7 +92,7 @@ export default class AnamnesisFormCoordinator extends Component {
      */
     _onCancel = () => {
         const dismiss = () => this.props.navigation.navigate("Main");
-        Alert.alert(...createCancelAlert(dismiss));
+        Alert.alert(...CreateCancelAlert(dismiss));
     }
 
     // cada tela do fluxo possui uma função `push<Tela>`, que deve navegar a tela em questão
