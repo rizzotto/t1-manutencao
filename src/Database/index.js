@@ -1,10 +1,10 @@
+// cria os serviços de persistência injetando as dependências necessárias
+
 import { database as firebaseDatabase } from './Firebase';
 import AnamnesisService from "./AnamnesisService";
 import JournalService from './JournalService';
 
-const databaseServices = {
-    anamnesis: new AnamnesisService(firebaseDatabase),
-    journal: new JournalService(firebaseDatabase)
-}
+const anamnesisService = new AnamnesisService(firebaseDatabase);
+const journalService = new JournalService(firebaseDatabase);
 
-export default databaseServices;
+export { anamnesisService, journalService };
