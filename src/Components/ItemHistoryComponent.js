@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList } from "react-native";
+import {StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList, Dimensions } from "react-native";
 import Arrow from './Arrow';
+import AppStyle from '../styles';
 /**
      * @param hasEmoji Indica se o item possui emoji de representacao de sentimento
      * @param list Lista de dados que estarao representados no item
@@ -28,17 +29,23 @@ export default class ItemHistoryComponent extends Component {
         render(){
             return (
 
-                <View style={styles.item}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.number}>
-                            {this.props.day}
-                        </Text>
+                <View style={styles.button}>
+                        <View style={styles.circle}/>
+                    <TouchableOpacity style={styles.button} onPress={this.props.action}>
+                        <View style={styles.date}>
+                            <Text style={styles.number}>
+                                {this.props.day}
+                            </Text>
+                            <Text style={styles.month}>
+                                {this.props.mes}
+                            </Text>
+                        </View>
                         <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
                             
                             <FlatList
                                 data={this.props.list}
                                 renderItem={({ item }) => (
-                                    <Text style={styles.item}>
+                                    <Text style={styles.item} numberOfLines={1}>
                                         <Text style={styles.title}>
                                             {item.id}
                                         </Text>
@@ -51,10 +58,13 @@ export default class ItemHistoryComponent extends Component {
                             />
          
                         </View>
+                        
                         {this.props.hasEmoji && 
-                        <Text style={styles.emoji}>
-                            {this.props.emoji}
-                        </Text>}
+                        <View style={styles.emojiView}>
+                            <Text style={styles.emoji} >
+                                {this.props.emoji}
+                            </Text>
+                        </View>}
                         
                         <View style={styles.enter}>
                             <Arrow/>
@@ -66,40 +76,50 @@ export default class ItemHistoryComponent extends Component {
     }
 
 
-
+const width = Dimensions.get('window').width
 const styles = StyleSheet.create({
-
+    date: {
+        // flexDirection: "column"
+        width: "10%",
+    },
+    month: {
+        fontSize: 15,
+        textAlign: "center",
+        color: AppStyle.colors.mediumGray
+    },
     button: {
         flexDirection: "row",
         alignItems: "center",
-        marginHorizontal: "3%"
-        
     },
     number: {
-        width: "10%",
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: "bold",
         textAlign: "center",
+        paddingLeft: 0
 
     },
     textsWithEmoji: {
         width: "65%",
-        padding: 15,
+        padding: 13,
     },
     textsWithoutEmoji: {
         width: "80%",
-        padding: 15
+        padding: 13
     },
     emoji: {
-        fontSize: 40,
+        fontSize: 0.09*width,
+        
+    },
+    emojiView: {
         width: "15%",
-        paddingLeft: 10,
+        justifyContent: "center",
+        alignItems:"center",
 
     },
     enter: {
         justifyContent: "center",
         alignItems:"center",
-        width: "10%"
+        width: "10%",
     
     }, 
     item: {
@@ -111,6 +131,13 @@ const styles = StyleSheet.create({
     },
     text: {
         flex: 1
+    },
+    circle: {
+        width: 5,
+        height: 10,
+        backgroundColor: AppStyle.colors.mediumGray,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10
     }
 })
 
