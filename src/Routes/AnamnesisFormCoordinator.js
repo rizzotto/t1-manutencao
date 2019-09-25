@@ -69,7 +69,11 @@ export default class AnamnesisFormCoordinator extends Component {
         const saveResult = (result) => {
             this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result);
             this.props.navigation.setParams({ hasData: true });
+            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result);
+            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result);
         }
+
+        const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
 
         const data = {
             ...this.defaultParams,
@@ -77,7 +81,7 @@ export default class AnamnesisFormCoordinator extends Component {
             placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
             progress: 0.0713,
             required: true,
-            content: this.anamnesisRecord,
+            content: [this.anamnesisRecord.name, this.anamnesisRecord.email, currentDate],
             keyboardType: ["text", "email", "date"],
             onComplete: composeSavePush(saveResult, this.pushEmail)
         }
@@ -105,17 +109,22 @@ export default class AnamnesisFormCoordinator extends Component {
 
     pushEmail = () => {
         const saveResult = (result) => {
-            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result);
+            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
+            this.anamnesisRecord.height = this.outputFilters.textInput.number(result);
         }
+
+        const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
+        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
+
 
         this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
-            placeholder: "email@exemplo.com",
+            placeholder: ["00,00kg", "1.50m"],
             required:true,
             progress: 0.1428,
-            keyboardType: "email",
-            content: this.anamnesisRecord.email,
+            keyboardType: ["number", "number"],
+            content: [currentWeight, currentHeight],
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })
     }
