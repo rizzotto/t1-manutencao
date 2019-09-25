@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View } from "react-native";
-export default class detailedRecordComponent extends Component {
+export default class DetailedRecordComponent extends Component {
     /*
      Props:
      styleView
@@ -15,39 +15,41 @@ export default class detailedRecordComponent extends Component {
             desciptionText={"57 kg"}
         /> 
     */
-        render(){
-            return (
-                <View style={this.props.styleView}>
-                    {
-                        this.props.titleText &&
-    
-                        <Text style={[styles.label, this.props.styleTitle]} >
-                            {this.props.titleText}
+    render(){
+        return (
+            <View style={this.props.styleView}>
+                {
+                    this.props.titleText &&
+
+                    <Text style={[styles.label, this.props.styleTitle]} >
+                        {this.props.titleText}
+                    </Text>
+                }
+                {
+                    this.props.descriptionText &&
+
+                        <Text style={[styles.content,this.props.styleDescription]}>
+                        {this.props.descriptionText}
                         </Text>
-                    }
-                    {
-                        this.props.descriptionText &&
+                }
 
-                         <Text style={[styles.content,this.props.styleDescription]}>
-                         {this.props.descriptionText}
-                         </Text>
-                    }
-                </View>
-            )
-        }
+            </View>
+        )
     }
+}
 
-    const styles = StyleSheet.create({
-        label: {
-            fontSize: 15,
-            fontWeight: 'bold',
-            marginLeft: 8,
-            marginRight: 8
-        },
-        content: {
-            fontSize: 15,
-            marginLeft: 8,
-            marginRight: 8
-        }
-    }) 
-    
+const styles = StyleSheet.create({
+    label: {
+        fontSize: 15,
+        fontWeight: '500',
+        marginLeft: 8,
+        marginRight: 8,
+    },
+    content: {
+        fontSize: 15,
+        fontWeight: '300',
+        marginLeft: 8,
+        marginRight: 8
+    },
+
+}) 
