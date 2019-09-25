@@ -3,74 +3,56 @@ import { FlatList, View, Text, Item, StyleSheet, SafeAreaView } from 'react-nati
 
 
 export default class CarouselContainer extends Component {
-    
 
-    render(){
-        const DATA = [
-            {
-                id: '1',
-                emoji: ':D'
-            },
-            {
-                id: '2',
-                emoji: ':|'
-            },
-            {
-                id: '3',
-                emoji: ':('
-            },
-            {
-                id: '4',
-                emoji: ':P'
-            },
-            {
-                id: '5',
-                emoji: ':)'
-            },
-            {
-                id: '6',
-                emoji: '>.<'
-            }
-        ];
 
-        function Item({ title }) {
+    render() {
+
+
+        function Item({ emoji, title }) {
             return (
-              <View style={styles.item}>
-                <Text style={styles.title}>{title}</Text>
-              </View>
+                <View style={styles.item}>
+                    <Text style={styles.emoji}>{emoji}</Text>
+                    <Text style={styles.title}>{title}</Text>
+                </View>
             );
-          }
+        }
 
-        return(
+        return (
 
             <SafeAreaView style={styles.container}>
                 <FlatList
-                    data={DATA}
-                    renderItem={({ item }) => <Item title={item.emoji} />}
+                    data={this.props.data || DATA}
+                    renderItem={({ item }) => <Item title={item.nome} emoji={item.emoji} />}
                     keyExtractor={item => item.id}
                     horizontal={true}
+                    showsHorizontalScrollIndicator={false}
                 />
             </SafeAreaView>
         )
     }
 
-    
+
 }
 
 const styles = StyleSheet.create({
     container: {
-        // position: 'absolute',
-        marginBottom: 400,
-        height: 100,
-        
+        flex: 1,
     },
     item: {
-      backgroundColor: '#ddd',
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
+        width: 110,
+        height: 130,
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 4
+    },
+    emoji: {
+        fontSize: 40,
+        alignItems: 'center',
+        alignSelf: 'center',
     },
     title: {
-      fontSize: 32,
-    },
-  });
+        fontSize: 16,
+        alignItems: 'center',
+        alignSelf: 'center',
+    }
+});
