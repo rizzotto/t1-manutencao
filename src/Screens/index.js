@@ -11,5 +11,5 @@ export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen'
 export { default as LoadingScreen } from './LoadingScreen';
 
 // funções
-export { default as createDefaultNavigationOptions } from './createDefaultNavigationOptions';
-export { default as createTabBarIcon } from './createTabBarIcon';
+export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';
+export { default as CreateTabBarIcon } from './CreateTabBarIcon';

@@ -14,7 +14,7 @@ import ItemListComponent from './ItemListComponent';
  *   - `onSelectionToggle: (index: number) => void`: função chamada quando um subitem é selecionado (índice passado como parâmetro);
  *   - `style`: estilos aplicados no container.
  */
-export default class ListItemSubitems extends Component {
+export default class ListItemSubitemsComponent extends Component {
     /**
      * Se um item em um índice deve ser renderrizado como selecionado.
      * @param {number} index índice do item

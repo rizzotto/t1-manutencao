@@ -6,7 +6,7 @@ import AppStyle from '../styles';
 
 
  /**
- * props for a textInput container
+ * props for a TextInputContainer
  * - description: the text behind
  * - initialContent: text initially set on text input
  * - type: can be: 
@@ -22,7 +22,7 @@ import AppStyle from '../styles';
  *        gray: not valid
  * example: <TextInputContainer type= {'numeric'} description={'Cellphone number'}/>
  */
-export default class ContainerTextInput extends React.Component {
+export default class TextInputContainer extends React.Component {
  
   constructor() {
     super()

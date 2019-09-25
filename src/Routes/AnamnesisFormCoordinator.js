@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButton } from '../Components';
-import createCancelAlert from './createCancelAlert';
+import { HeaderButtonComponent } from '../Components';
+import CreateCancelAlert from './CreateCancelAlert';
 import { TextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
@@ -19,7 +19,7 @@ export default class AnamnesisFormCoordinator extends Component {
         const onCancel = () => {
             // só mostra o alerta quando o usuário já tiver entrado com algum dado
             if (navigation.getParam("hasData", false)) {
-                Alert.alert(...createCancelAlert(dismiss));
+                Alert.alert(...CreateCancelAlert(dismiss));
             } else {
                 // se não tem dados, então apenas dá o dismiss no fluxo
                 dismiss();
@@ -28,7 +28,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         return {
             title: "Ficha",
-            headerRight: <HeaderButton text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 
@@ -92,7 +92,7 @@ export default class AnamnesisFormCoordinator extends Component {
      */
     _onCancel = () => {
         const dismiss = () => this.props.navigation.navigate("Main");
-        Alert.alert(...createCancelAlert(dismiss));
+        Alert.alert(...CreateCancelAlert(dismiss));
     }
 
     // cada tela do fluxo possui uma função `push<Tela>`, que deve navegar a tela em questão
@@ -111,6 +111,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             callout: "Informe seu e-mail",
             placeholder: "email@exemplo.com",
+            required:true,
             progress: 0.1428,
             keyboardType: "email",
             content: this.anamnesisRecord.email,
@@ -129,6 +130,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             callout: "Informe sua data de nascimento",
             placeholder: "DD/MM/AAAA",
+            required:true,
             progress: 0.2141,
             keyboardType: "date",
             content: currentDate,
@@ -147,6 +149,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             callout: "Informe seu peso atual",
             placeholder: "00,00 kg",
+            required:true,
             progress: 0.2856,
             keyboardType: "numeric",
             content: currentWeight,
@@ -164,7 +167,8 @@ export default class AnamnesisFormCoordinator extends Component {
         this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Informe sua altura",
-            placeholder: "000 cm",
+            placeholder: "1.50 m",
+            required:true,
             progress: 0.3570,
             keyboardType: "numeric",
             content: currentHeight,
@@ -183,6 +187,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Informe suas principais queixas/sintomas",
             list: items,
+            minSelected: 1,
             width: 0.42,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
@@ -200,6 +205,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Medicamentos",
             descriptionText: "Informe os medicamentos que você usa atualmente.",
+            required:true,
             list: items,
             width: 0.4998,
             hasInput: true,
@@ -244,6 +250,7 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Você tem ou teve alguma patologia?",
             list: items,
+            minSelected: 1,
             width: 0.6426,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushFamilyPathologies)
@@ -286,7 +293,7 @@ export default class AnamnesisFormCoordinator extends Component {
             data: {
                 title: "Hábitos",
                 description: "Informe seus hábitos que afetam sua saúde, como fumar e beber, e a frequência.",
-                requiresAllSelected: false,
+                requiresAllSelected: true,
                 items
             },
             progress: 0.7853,

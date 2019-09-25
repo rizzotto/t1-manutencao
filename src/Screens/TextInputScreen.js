@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from "react-native";
-import createDefaultNavigationOption from './createDefaultNavigationOptions';
+import createDefaultNavigationOption from './CreateDefaultNavigationOptions';
 import { SimpleTextInputContainer } from '../Containers';
 import { ProgressBar } from '../Components';
 

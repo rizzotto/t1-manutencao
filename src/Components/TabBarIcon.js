@@ -8,7 +8,7 @@ import { Image, StyleSheet } from 'react-native';
  *   - `icon`: ícone exibido (passado como parâmetro `source` do componente `Image`);
  *   - `tintColor`: cor do ícone quando selecionado;
  * 
- * A função `createTabBarIcon` é mais útil (ver `Routes/createTabBarIcon`).
+ * A função `CreateTabBarIcon` é mais útil (ver `Routes/CreateTabBarIcon`).
  */
 const TabBarIcon = ({ icon, tintColor }) => {
     const styles = createStyles(tintColor);

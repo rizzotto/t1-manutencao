@@ -4,7 +4,7 @@ import { StyleSheet, View, Dimensions} from 'react-native';
 import AppStyle from '../styles';
 
  /**
- * props for ProgressBar Component
+ * props for ProgressBarComponent
  * - width={porcentagem} (tanto no formato real quanto fracionario)
  * example: <ProgressBarComponent width={5/10}/> (estou na tela 5 de um fluxo com 10 telas)
  * example2: <ProgressBarComponent width={0.5}/> (estou na tela 5 de um fluxo com 10 telas)

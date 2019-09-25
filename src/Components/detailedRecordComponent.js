@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View } from "react-native";
+
 export default class DetailedRecordComponent extends Component {
     /*
      Props:
@@ -50,6 +51,5 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         marginLeft: 8,
         marginRight: 8
-    },
-
-}) 
+    }
+});

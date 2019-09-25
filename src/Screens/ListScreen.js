@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet } from "react-native";
 import ListContainer from '../Containers/ListContainer'
 import ProgressBarComponent from '../Components/ProgressBarComponent';
-import createDefaultNavigationOptions from './createDefaultNavigationOptions';
+import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
 
     /**
      * @param hasInput Indica se a tela de lista deve ter um input para adicionar mais opcoes
@@ -16,7 +16,7 @@ import createDefaultNavigationOptions from './createDefaultNavigationOptions';
      * @return Tela com barra de progresso, titulo, descricao, lista fechada e botao de ir para proxima pagina
      */
 export default class ClosedListScreen extends Component {
-    static navigationOptions = createDefaultNavigationOptions;
+    static navigationOptions = CreateDefaultNavigationOptions;
 
     dataFromContainer = (data) => {
         const onComplete = this.getParam("onComplete");

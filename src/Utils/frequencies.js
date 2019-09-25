@@ -44,9 +44,9 @@ const mapFrequencyCodes = (codes) => {
  */
 const frequencyCodes = {
     medicines: ["6-6h", "8-8h", "12-12h", "24-24h", "1xw", "2xw", "3xw"],
-    smoking: ["sm:+2d", "sm:1d", "sm:-1d", "occasionaly", "rarely"],
-    drinking: ["daily", "+3xw", "3xw", "1-3xw", "1xw", "occasionaly", "rarely"],
-    physicalActivity: ["daily", "+3xw", "3xw", "1-3xw", "1xw", "occasionaly", "rarely"]
+    smoking: ["sm:+2d", "sm:1d", "sm:-1d", "occasionaly", "rarely", "never"],
+    drinking: ["daily", "+3xw", "3xw", "1-3xw", "1xw", "occasionaly", "rarely", "never"],
+    physicalActivity: ["daily", "+3xw", "3xw", "1-3xw", "1xw", "occasionaly", "rarely", "never"]
 };
 
 /**

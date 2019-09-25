@@ -10,7 +10,7 @@ import AppStyle from '../styles';
  *   - `hasColor`: se o botão é colorido (por padrão, `false`);
  *   - `onPress`: callback chamado quando o botão é clicado.
  */
-const HeaderButton = ({ text, hasColor, onPress }) => {
+const HeaderButtonComponent = ({ text, hasColor, onPress }) => {
     const styles = createStyles(hasColor);
 
     return (
@@ -20,7 +20,7 @@ const HeaderButton = ({ text, hasColor, onPress }) => {
     );
 }
 
-export default HeaderButton;
+export default HeaderButtonComponent;
 
 const createStyles = (hasColor) => {
     return StyleSheet.create({
