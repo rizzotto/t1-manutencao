@@ -74,10 +74,11 @@ export default class AnamnesisFormCoordinator extends Component {
         const data = {
             ...this.defaultParams,
             callout: "Informe seus dados pessoais",
-            placeholder: "Insira seu nome...",
+            placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
             progress: 0.0713,
             required: true,
-            content: this.anamnesisRecord.name,
+            content: this.anamnesisRecord,
+            keyboardType: ["text", "email", "date"],
             onComplete: composeSavePush(saveResult, this.pushEmail)
         }
 
@@ -109,69 +110,12 @@ export default class AnamnesisFormCoordinator extends Component {
 
         this.props.navigation.push("TextInput", {
             ...this.defaultParams,
-            callout: "Informe seu e-mail",
+            callout: "Informe seu peso e altura",
             placeholder: "email@exemplo.com",
             required:true,
             progress: 0.1428,
             keyboardType: "email",
             content: this.anamnesisRecord.email,
-            onComplete: composeSavePush(saveResult, this.pushBirthDate)
-        })
-    }
-
-    pushBirthDate = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result);
-        }
-
-        const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe sua data de nascimento",
-            placeholder: "DD/MM/AAAA",
-            required:true,
-            progress: 0.2141,
-            keyboardType: "date",
-            content: currentDate,
-            onComplete: composeSavePush(saveResult, this.pushWeight)
-        })
-    }
-
-    pushWeight = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
-        }
-
-        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe seu peso atual",
-            placeholder: "00,00 kg",
-            required:true,
-            progress: 0.2856,
-            keyboardType: "numeric",
-            content: currentWeight,
-            onComplete: composeSavePush(saveResult, this.pushHeight)
-        })
-    }
-
-    pushHeight = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.height = this.outputFilters.textInput.number(result);
-        }
-
-        const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe sua altura",
-            placeholder: "1.50 m",
-            required:true,
-            progress: 0.3570,
-            keyboardType: "numeric",
-            content: currentHeight,
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })
     }
