@@ -73,7 +73,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         const data = {
             ...this.defaultParams,
-            callout: "Informe seu nome completo",
+            callout: "Informe seus dados pessoais",
             placeholder: "Insira seu nome...",
             progress: 0.0713,
             required: true,
