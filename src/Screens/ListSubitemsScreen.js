@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { ListSubitems } from '../Containers';
+import { ListSubitemsContainer } from '../Containers';
 import { ProgressBar } from '../Components';
-import createDefaultNavigationOptions from './createDefaultNavigationOptions';
+import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
 
 /**
  * Tela de listagem com subitens.
  * 
  * Parâmetros (via `props` e `navigation.params`):
- *   - `data`: dados exibidos; ver `Container/ListSubitems`;
+ *   - `data`: dados exibidos; ver `Container/ListSubitemsContainer`;
  *   - `onComplete`: função chamada quando o botão "Continuar" é clicado, onde o único parâmetro é uma lista com os índices dos subitens selecionados (ex. `[[1, 2], [], [0, 3]]`);
  *   - `onCancel`: função chamada quando o botão "Cancelar" é clicado.
  *   - `headerRightTitle`: string com texto do botão na direita do header;
@@ -16,7 +16,7 @@ import createDefaultNavigationOptions from './createDefaultNavigationOptions';
  *   - `progress`: procentagem exibida na progress bar (ver `Components/ProgressBar`).
  */
 export default class ListSubitemsScreen extends Component {
-    static navigationOptions = createDefaultNavigationOptions;
+    static navigationOptions = CreateDefaultNavigationOptions;
 
     _onComplete = ({ selectedSubitems }) => {
         const onComplete = this.getParam("onComplete");
@@ -31,7 +31,7 @@ export default class ListSubitemsScreen extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <ProgressBar width={progress} />
-                <ListSubitems {...data}
+                <ListSubitemsContainer {...data}
                     onComplete={this._onComplete} />
             </SafeAreaView>
         );

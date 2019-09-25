@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, ScrollView, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
 import TitleDescComponent from '../Components/TitleDescComponent';
-import DefaultButtonComponent from '../Components/defaultButtonComponent';
+import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
 import ItemInputListComponent from '../Components/ItemInputListComponent';
 import AppStyle from '../styles';

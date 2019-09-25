@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, TextInput } from "react-native";
-import DefaultButton from './defaultButtonComponent';
+import DefaultButton from './DefaultButtonComponent';
 import AppStyle from '../styles';
     /**
      * @param styleListItem estilo do item inteiro
@@ -11,7 +11,7 @@ import AppStyle from '../styles';
      * @param styleButtonText estilo do texto do botao
      * @return componente de item de lista (com input e botao)
      * - Example
-     *   <ItemInputList
+     *   <ItemInputListComponent
      *       styleListItem={styles.listInputStyle}
      *       placeholder={"Outro..."}
      *       stylePlacehoder={styles.placeholderStyle}
