@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { FlatList, View, Text, Item, StyleSheet, SafeAreaView } from 'react-native';
 
+/**
+ * @author Bruno Guerr e Eduardo Lessa
+ * Contaier com carrossel de itens, passados por props.
+ * @param data array com os dados a serem mostrados no carrosel
+ */
 
 export default class CarouselContainer extends Component {
 
-
     render() {
-
 
         function Item({ emoji, title }) {
             return (
