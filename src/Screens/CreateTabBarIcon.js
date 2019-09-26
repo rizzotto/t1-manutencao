@@ -11,9 +11,9 @@ import { TabBarIcon } from '../Components';
  * 
  *      navigationOptions: {
  *          tabBarTitle: "Texto",
- *          tabBarIcon: createTabBarIcon(require("./imagem.png"))
+ *          tabBarIcon: CreateTabBarIcon(require("./imagem.png"))
  *      }
  */
-const createTabBarIcon = (icon) => ({ tintColor }) => <TabBarIcon icon={icon} tintColor={tintColor} />;
+const CreateTabBarIcon = (icon) => ({ tintColor }) => <TabBarIcon icon={icon} tintColor={tintColor} />;
 
-export default createTabBarIcon;
+export default CreateTabBarIcon;

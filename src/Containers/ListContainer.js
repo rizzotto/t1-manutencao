@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, ScrollView, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
 import TitleDescComponent from '../Components/TitleDescComponent';
-import DefaultButtonComponent from '../Components/defaultButtonComponent';
+import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
 import ItemInputListComponent from '../Components/ItemInputListComponent';
 import AppStyle from '../styles';
@@ -72,6 +72,7 @@ export default class ListContainer extends Component {
         // se não há limite de itens selecionados
         if (maxSelected === undefined || maxSelected === null) {
             this.state.list[index].isSelected = !wasSelected;
+            this._updateMinSelected();
             this.setState({ render: !this.render });
             return;
         }
@@ -91,16 +92,20 @@ export default class ListContainer extends Component {
         }
 
         this.state.list[index].isSelected = !wasSelected;
-
-        const selectedItems = this.state.list.filter(item => item.isSelected);
-        this.state.minSatisfied = selectedItems.length >= this.state.minSelected;
+        this._updateMinSelected();
 
         this.setState({ render: !this.render });
     };
 
+    _updateMinSelected = () => {
+        const selectedItems = this.state.list.filter(item => item.isSelected);
+        this.state.minSatisfied = selectedItems.length >= this.state.minSelected;
+    }
+
     
     render(){
-        isDisabled = this.state.minSatisfied;
+        const isRequired = this.state.minSelected > 0;
+        const continueButtonEnabled = this.state.minSatisfied;
         const isEmpty = this.state.list.length === 0;
         const hasSelected = this.state.list.filter(item => item.isSelected).length !== 0;
 
@@ -138,11 +143,10 @@ export default class ListContainer extends Component {
                 </TouchableWithoutFeedback>
                 
                 <DefaultButtonComponent 
-                    text={hasSelected ? "Continuar" : "Pular"}
+                    text={!hasSelected && !isRequired ? "Pular" : "Continuar"}
                     action={this.dataToScreen}
                     textStyle={styles.textStyle}
-                    onPress ={() => this._onPressItem(index)}
-                    isDisabled = {!isDisabled}
+                    isDisabled = {!continueButtonEnabled}
                 />
             </View>
         )
