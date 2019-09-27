@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-//import EmptyStateImage from '../Components/EmptyStateImage.png';
-import Button from '../Components';
-import TitleDescription from '../Components';
+import { StyleSheet, Image, View } from 'react-native';
+import { Button, TitleDescription } from '../Components';
 import AppStyle from '../styles';
 
 export default class EmptyStateContainer extends Component {
@@ -25,6 +23,7 @@ export default class EmptyStateContainer extends Component {
         }
         return (
             <View>
+                <Image source={require('../Resources/emptyState.png')}/>
                 <TitleDescription titleText={title} descriptionText={description}/>
                 <Button text={buttonTitle} action={buttonAction}/>
             </View>
