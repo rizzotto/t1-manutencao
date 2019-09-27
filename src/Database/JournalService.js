@@ -72,11 +72,12 @@ export default class JournalService {
                 const dateMonth = this._mapPartialDate(dateString);
 
                 // índice da entrada do mês no resultado final
-                const index = result.findIndex(obj => obj.date === dateMonth);
+                const index = result.findIndex(obj => obj.date.getTime() === dateMonth.getTime());
 
                 if (index >= 0) {
                     // se já existir, apenas adicionar as entradas diárias
-                    result[index].entries.concat(dayEntries);
+                    const currentEntries = result[index].entries;
+                    result[index].entries = currentEntries.concat(dayEntries);
                 } else {
                     // se não, adicionar nova entrada para o mês
                     result.push({ date: dateMonth, entries: dayEntries });
