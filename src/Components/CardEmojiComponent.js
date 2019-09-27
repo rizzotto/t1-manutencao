@@ -16,8 +16,10 @@ export default class CardEmojiComponent extends Component {
     render(){
         return (
             <TouchableOpacity style={styles.shadow}>
-                <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
-                <Text style={styles.centerText}> {this.props.text} </Text>
+                <View>
+                    <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
+                    <Text style={styles.centerText}> {this.props.text} </Text>
+                </View>
             </TouchableOpacity>
         )
     }
@@ -27,8 +29,6 @@ export default class CardEmojiComponent extends Component {
 const styles=StyleSheet.create({
     shadow:{
         shadowColor: '#000', 
-        width: "30%",
-        height: "25%",
         borderColor: 'white',
         shadowOffset: {
             width: 0,
@@ -38,17 +38,20 @@ const styles=StyleSheet.create({
         elevation: 5,
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 5 //nao funciona, alguem ajuda ai, precisa arredondar os cards
+        borderRadius: 10,
+        backgroundColor: "#fff",
+        margin: 5
     },
     centerText:{
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 20
+        fontSize: 20,
+        padding: 16
     },
     centerEmoji:{
         textAlign: "center",
         fontSize: 50,
-        paddingBottom: "8%"
-        
-    }
+        paddingBottom: "8%",
+        padding: 16
+    },
 })

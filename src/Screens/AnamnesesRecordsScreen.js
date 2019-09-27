@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, StyleSheet, Alert } from 'react-native';
-import CardEmojiComponent from '../Components/CardEmojiComponent'
+import CardEmojiContainer from '../Containers/CardEmojiContainer';
+import CardEmojiComponent from '../Components/CardEmojiComponent';
 import { Button } from '../Components';
 import database from '../Database/Firebase';
 import AppStyle from '../styles';
@@ -43,11 +44,7 @@ export default class AnamnesesRecordsScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <Text style={{textAlign: "center"}}>Anamnese</Text>
-                <Button text="Nova ficha" action={this._newRecord} />
-                <Button text="Editar última ficha" action={this._editLast} />
-                <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
-                <CardEmojiComponent></CardEmojiComponent>
+                <CardEmojiContainer></CardEmojiContainer>
             </SafeAreaView>
         );
     }
