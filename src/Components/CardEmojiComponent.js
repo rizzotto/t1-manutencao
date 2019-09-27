@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, TouchableOpacity, View } from "react-native";
 
+/**
+ * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
+ * @param emoji String do emoji
+ * @param text Descrição do emoji
+ *  
+ * 
+ * Uso do StyleSheet: StyleSheet.create({ ... });
+ * 
+ * Exemplo de uso: <CardEmojiComponent text="Raiva" emoji=":)"/>
+ */
+
 export default class CardEmojiComponent extends Component {
     render(){
         return (
             <TouchableOpacity style={styles.shadow}>
                 <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
-                <Text style={styles.centerText}> {this.props.emoji} </Text>
+                <Text style={styles.centerText}> {this.props.text} </Text>
             </TouchableOpacity>
         )
     }
