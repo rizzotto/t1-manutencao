@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import { View, StyleSheet, ScrollView, FlatList, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
 import ItemInputListComponent from '../Components/ItemInputListComponent';
 import AppStyle from '../styles';
+
 /**
      * @param hasInput Indica se a tela de lista deve ter um input
      * @param dataToScreen Dados que serao rertornados para Screen (lista com itens selecionados)
@@ -110,37 +112,34 @@ export default class ListContainer extends Component {
         const hasSelected = this.state.list.filter(item => item.isSelected).length !== 0;
 
         return (
-
             <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <ScrollView style={styles.content}>
-                        <TitleDescComponent styleView={styles.header}
-                            titleText={this.state.titleText} 
-                            descriptionText={this.state.descriptionText}
-                        />
-                        <FlatList
-                            data={this.state.list}
-                            renderItem={({ item, index }) => (
-                                <ItemListComponent 
-                                text={item.texto}
-                                onPress ={() => this._onPressItem(index)} 
-                                selected={item.isSelected}
-                                />
-                                )}
-                            keyExtractor={item => item.id.toString()}
-                            extraData={this.state.refresh}
-                            ItemSeparatorComponent={() => <Separator />}
-                        />
-                        { this.props.hasInput &&
-                            <ItemInputListComponent
-                                style={isEmpty ? {} : styles.withBorder}
-                                placeholder={"Outro..."}
-                                buttonText="+"
-                                dataToAdd={this._onPressAdd}
+                <KeyboardAwareScrollView style={styles.content} scrollEnabled={false} extraScrollHeight={50}>
+                    <TitleDescComponent styleView={styles.header}
+                        titleText={this.state.titleText} 
+                        descriptionText={this.state.descriptionText}
+                    />
+                    <FlatList
+                        data={this.state.list}
+                        renderItem={({ item, index }) => (
+                            <ItemListComponent 
+                            text={item.texto}
+                            onPress ={() => this._onPressItem(index)} 
+                            selected={item.isSelected}
                             />
-                        }
-                    </ScrollView>
-                </TouchableWithoutFeedback>
+                            )}
+                        keyExtractor={item => item.id.toString()}
+                        extraData={this.state.refresh}
+                        ItemSeparatorComponent={() => <Separator />}
+                    />
+                    { this.props.hasInput &&
+                        <ItemInputListComponent
+                            style={isEmpty ? {} : styles.withBorder}
+                            placeholder={"Outro..."}
+                            buttonText="+"
+                            dataToAdd={this._onPressAdd}
+                        />
+                    }
+                </KeyboardAwareScrollView>
                 
                 <DefaultButtonComponent 
                     text={!hasSelected && !isRequired ? "Pular" : "Continuar"}
