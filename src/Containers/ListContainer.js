@@ -36,6 +36,9 @@ export default class ListContainer extends Component {
     }
 
     _onPressAdd = (name) => {
+        // evitar que campo de texto seja empurrado para baixo conforme itens são adicionados
+        this.scrollView.scrollToEnd();
+        
         const cleanName = name.trim();
 
         // não adicionar diplicados
@@ -113,7 +116,13 @@ export default class ListContainer extends Component {
 
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView style={styles.content} scrollEnabled={false} extraScrollHeight={50}>
+                <KeyboardAwareScrollView style={styles.content}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    innerRef={ref => this.scrollView = ref}
+                    onKeyboardDidHide={() => this.scrollView.scrollToEnd()}
+                    enableOnAndroid={true}
+                >
                     <TitleDescComponent styleView={styles.header}
                         titleText={this.state.titleText} 
                         descriptionText={this.state.descriptionText}
@@ -130,6 +139,7 @@ export default class ListContainer extends Component {
                         keyExtractor={item => item.id.toString()}
                         extraData={this.state.refresh}
                         ItemSeparatorComponent={() => <Separator />}
+                        scrollEnabled={false}
                     />
                     { this.props.hasInput &&
                         <ItemInputListComponent

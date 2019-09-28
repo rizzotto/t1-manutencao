@@ -94,7 +94,11 @@ export default class TitleInputContainer extends Component{
 
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView style={styles.content}>
+                <KeyboardAwareScrollView style={styles.content}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    enableOnAndroid={true}
+                >
                     <TitleDescription
                         titleText={this.props.title}
                         descriptionText={this.props.description}
