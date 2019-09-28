@@ -40,7 +40,7 @@ export default class TextInputScreen extends Component{
 
         return (
             <SafeAreaView style={styles.container}>
-                <ProgressBar width={progress} />
+                <ProgressBar width={progress} style={styles.progressBar} />
                 <SimpleTextInputContainer
                     title={callout}
                     description={description}
@@ -61,5 +61,8 @@ export default class TextInputScreen extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    progressBar: {
+        zIndex: 100
     }
 });

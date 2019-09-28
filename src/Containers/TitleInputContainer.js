@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TitleDescription, Button } from '../Components';
 import TextInputContainer from './TextInputContainer';
@@ -95,21 +95,19 @@ export default class TitleInputContainer extends Component{
         return (
             <View style={styles.container}>
                 <KeyboardAwareScrollView style={styles.content}>
-                    <View>
-                        <TitleDescription
-                            titleText={this.props.title}
-                            descriptionText={this.props.description}
-                            styleTitle={this.props.titleDescStyle}
-                            styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                        />
-                        <TextInputContainer
-                            initialContent={this.props.initialContent}
-                            validateCallback={this.updateInputState}
-                            textCallback={this.updateInputValue}
-                            description={this.props.inputDescription}
-                            type={this.props.keyboardType}
-                        />
-                    </View>
+                    <TitleDescription
+                        titleText={this.props.title}
+                        descriptionText={this.props.description}
+                        styleTitle={this.props.titleDescStyle}
+                        styleView={[styles.titleView, this.props.titleDescViewStyle]}
+                    />
+                    <TextInputContainer
+                        initialContent={this.props.initialContent}
+                        validateCallback={this.updateInputState}
+                        textCallback={this.updateInputValue}
+                        description={this.props.inputDescription}
+                        type={this.props.keyboardType}
+                    />
                 </KeyboardAwareScrollView>
                 <Button
                     isDisabled={this.state.disabledButton}
