@@ -4,6 +4,15 @@ import CardEmojiComponent from '../Components/CardEmojiComponent'
 import { TitleDescription, Button } from '../Components';
 import { SafeAreaView } from 'react-navigation';
 
+/**
+ * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
+ * 
+ * Uso do StyleSheet: StyleSheet.create({ ... });
+ * 
+ * Exemplo de uso: <CardEmojiContainer></CardEmojiContainer>
+ */
+
+
 export default class CardEmojiContainer extends Component{
     state = {
         data: [
