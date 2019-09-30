@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Text, View, ScrollView, Dimensions, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { TitleDescription, Button } from '../Components';
 import TextInputContainer from './TextInputContainer';
 
@@ -99,13 +99,18 @@ export default class MultiTitleInputContainer extends Component{
     listInputs = () => {
         let inputs = [];
         for (let i = 0; i < this.props.initialContent.length; i++) {
-            inputs.push(<TextInputContainer
-                initialContent={this.props.initialContent[i]}
-                validateCallback={this.updateInputState}
-                textCallback={this.updateInputValue}
-                description={this.props.inputDescription[i]}
-                type={this.props.keyboardType[i]}
-            />)
+            inputs.push(
+                <View>
+                    <Text style={styles.descriptionView}>{this.props.description[i]}</Text>
+                    <TextInputContainer
+                        initialContent={this.props.initialContent[i]}
+                        validateCallback={this.updateInputState}
+                        textCallback={this.updateInputValue}
+                        description={this.props.inputDescription[i]}
+                        type={this.props.keyboardType[i]}
+                        />
+                </View>
+                )
         }
         return inputs;
     }
@@ -122,7 +127,6 @@ export default class MultiTitleInputContainer extends Component{
                     <View style={styles.content}>
                         <TitleDescription
                             titleText={this.props.title}
-                            descriptionText={this.props.description}
                             styleTitle={this.props.titleDescStyle}
                             styleView={[styles.titleView, this.props.titleDescViewStyle]}
                         />
@@ -149,5 +153,12 @@ const styles = StyleSheet.create({
     titleView: {
         marginTop: 10,
         marginBottom: 60
+    },
+    descriptionView: {
+        marginTop: 10,
+        marginHorizontal: 20,
+        minHeight: 40,
+        fontSize: 23,
+        textAlign: 'left'
     }
 })

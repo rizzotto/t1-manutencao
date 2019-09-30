@@ -78,6 +78,7 @@ export default class AnamnesisFormCoordinator extends Component {
         const data = {
             ...this.defaultParams,
             callout: "Informe seus dados pessoais",
+            description: ["Nome", "E-mail", "Data de Nascimento"],
             placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
             progress: 0.0713,
             required: true,
