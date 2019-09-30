@@ -117,7 +117,7 @@ export default class AnamnesisFormCoordinator extends Component {
         const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
 
-        this.props.navigation.push("TextInput", {
+        this.props.navigation.push("MultiTextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
             placeholder: ["00,00kg", "1.50m"],
