@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView } from "react-native";
+import { View, ScrollView, Dimensions, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { TitleDescription, Button } from '../Components';
 import TextInputContainer from './TextInputContainer';
 
 /**
  * @author Bruno Guerra e Eduardo Lessa
+ * @author Updated by Gabriel Franzoni e Mathias Voelcker
  * @param title String com o título a ser exibido
  * @param description String com a descrição doUso do TextInsertContainer título (opcional)
  * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
@@ -13,7 +14,6 @@ import TextInputContainer from './TextInputContainer';
  * @param inputDescription Descrição do input do TextInputContainer
  * @param initialContent Conteúdo inicial do input do TextInputContainer
  * @param keyboardType Tipo do teclado do TextInputContainer
- * @param buttonViewStyle StyleSheet com os estilos do <ScrollView> do componente DefaultButtonComponent
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
  * @param btnAction (Opcional) Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
@@ -92,6 +92,10 @@ export default class MultiTitleInputContainer extends Component{
         this.props.callbackToScreen(this.state.inputValue);
     }
     
+    /**
+     * @function listInputs
+     * Função utilizada para criar mapear várias entradas de texto para uma única tela.
+     */
     listInputs = () => {
         let inputs = [];
         for (let i = 0; i < this.props.initialContent.length; i++) {
@@ -115,26 +119,20 @@ export default class MultiTitleInputContainer extends Component{
                     style={styles.container} style={{flexGrow: 1}}
                     contentContainerStyle={{flexGrow: 1}}
                     ref='scroll'>
-                    {/* <KeyboardAvoidingView 
-                        behavior="padding"
-                        style={styles.container}
-                        // keyboardVerticalOffset={30}
-                        > */}
-                        <View style={styles.content}>
-                            <TitleDescription
-                                titleText={this.props.title}
-                                descriptionText={this.props.description}
-                                styleTitle={this.props.titleDescStyle}
-                                styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                            />
-                                {this.listInputs()}
-                        </View>
-                        <Button
-                            isDisabled={this.state.disabledButton}
-                            text={this.state.btnText}
-                            action={this.props.btnAction || this.dataToScreen}
-                            />
-                    {/* </KeyboardAvoidingView> */}
+                    <View style={styles.content}>
+                        <TitleDescription
+                            titleText={this.props.title}
+                            descriptionText={this.props.description}
+                            styleTitle={this.props.titleDescStyle}
+                            styleView={[styles.titleView, this.props.titleDescViewStyle]}
+                        />
+                            {this.listInputs()}
+                    </View>
+                    <Button
+                        isDisabled={this.state.disabledButton}
+                        text={this.state.btnText}
+                        action={this.props.btnAction || this.dataToScreen}
+                        />
                 </ScrollView>
             </TouchableWithoutFeedback>
         );
