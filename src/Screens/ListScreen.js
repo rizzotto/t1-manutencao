@@ -35,7 +35,7 @@ export default class ClosedListScreen extends Component {
         const minSelected = this.getParam("minSelected");
         return(
             <SafeAreaView style={styles.container}>
-                <ProgressBarComponent width={width}/> 
+                <ProgressBarComponent width={width} style={styles.progressBar}/>
                 <ListContainer 
                 dataToScreen={this.dataFromContainer} 
                 list={list} 
@@ -53,6 +53,8 @@ export default class ClosedListScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+    },
+    progressBar: {
+        zIndex: 100
     }
 })

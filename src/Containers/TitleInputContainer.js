@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TitleDescription, Button } from '../Components';
 import TextInputContainer from './TextInputContainer';
 
@@ -92,30 +93,32 @@ export default class TitleInputContainer extends Component{
     render(){
 
         return (
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={styles.container}>
-                    <View style={styles.content}>
-                        <TitleDescription
-                            titleText={this.props.title}
-                            descriptionText={this.props.description}
-                            styleTitle={this.props.titleDescStyle}
-                            styleView={[styles.titleView, this.props.titleDescViewStyle]}
-                        />
-                        <TextInputContainer
-                            initialContent={this.props.initialContent}
-                            validateCallback={this.updateInputState}
-                            textCallback={this.updateInputValue}
-                            description={this.props.inputDescription}
-                            type={this.props.keyboardType}
-                        />
-                    </View>
-                    <Button
-                        isDisabled={this.state.disabledButton}
-                        text={this.state.btnText}
-                        action={this.props.btnAction || this.dataToScreen}
+            <View style={styles.container}>
+                <KeyboardAwareScrollView style={styles.content}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    enableOnAndroid={true}
+                >
+                    <TitleDescription
+                        titleText={this.props.title}
+                        descriptionText={this.props.description}
+                        styleTitle={this.props.titleDescStyle}
+                        styleView={[styles.titleView, this.props.titleDescViewStyle]}
                     />
-                </View>
-            </TouchableWithoutFeedback>
+                    <TextInputContainer
+                        initialContent={this.props.initialContent}
+                        validateCallback={this.updateInputState}
+                        textCallback={this.updateInputValue}
+                        description={this.props.inputDescription}
+                        type={this.props.keyboardType}
+                    />
+                </KeyboardAwareScrollView>
+                <Button
+                    isDisabled={this.state.disabledButton}
+                    text={this.state.btnText}
+                    action={this.props.btnAction || this.dataToScreen}
+                />
+            </View>
         );
     }
 }

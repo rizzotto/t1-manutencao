@@ -15,6 +15,13 @@
  *         anamneses: {
  *             [creationDate: number (timestamp)]: AnamnesisRecord
  *         }
+ * 
+ *          journalEntries: {
+ *              [date: number (yyyymmdd)]: {
+ *                  [time: number (HHmmss)]: JournalEntry
+ *              }
+ *          }
+ * 
  *         // demais informações serão definidas conforme necessário
  *     }
  * }
@@ -35,6 +42,17 @@
  *              },
  *              1567609253000: {
  *                  // dados da anamnese
+ *              }
+ *          }
+ * 
+ *          journalEntries: {
+ *              20190906: {
+ *                  141832: {
+ *                      // dados da entrada no diário
+ *                  },
+ *                  212012: {
+ *                      // dados da entrada no diário
+ *                  }
  *              }
  *          }
  *      }
