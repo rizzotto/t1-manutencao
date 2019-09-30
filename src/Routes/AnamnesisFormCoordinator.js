@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtonComponent } from '../Components';
 import CreateCancelAlert from './CreateCancelAlert';
-import { TextInputScreen } from '../Screens';
+import { MultiTextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
@@ -87,7 +87,7 @@ export default class AnamnesisFormCoordinator extends Component {
         }
 
         return (
-            <TextInputScreen {...data} />
+            <MultiTextInputScreen {...data} />
         );
     }
 
