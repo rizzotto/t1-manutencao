@@ -121,6 +121,7 @@ export default class AnamnesisFormCoordinator extends Component {
         this.props.navigation.push("MultiTextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
+            description: ["Peso", "Altura"],
             placeholder: ["00,00kg", "1.50m"],
             required:true,
             progress: 0.1428,
