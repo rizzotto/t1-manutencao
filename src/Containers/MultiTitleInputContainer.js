@@ -31,14 +31,19 @@ export default class MultiTitleInputContainer extends Component{
         super()
         this.state = {
             inputState: false,
-            inputValue: "",
+            inputValue: [],
             disabledButton: props.requiredInput,
             btnText: props.requiredInput ? props.buttonText : (props.altBtnText) ? props.altBtnText : props.buttonText
+        }
+        for (let i = 0; i < props.initialContent.length; i++) {
+            this.state.inputValue.push(props.initialContent[i])
         }
     }
 
     screenHeight = Math.round(Dimensions.get('window').height);
 
+
+    notEmpty = (text) => { return !!text; }
 
     /**
      * @function btnStateCheck
@@ -46,7 +51,8 @@ export default class MultiTitleInputContainer extends Component{
      */
     btnStateCheck = () => {
         if(this.props.requiredInput){
-            if(this.state.inputValue == ""){
+            let allValid = this.state.inputValue.every(this.notEmpty)
+            if(!allValid){
                 this.setState({disabledButton: true});
             }
             else{
@@ -54,7 +60,7 @@ export default class MultiTitleInputContainer extends Component{
             }
         }
         else{
-            if(this.state.inputValue == ""){
+            if(!allValid){
                 this.setState({btnText: this.props.altBtnText ? this.props.altBtnText : this.props.buttonText, disabledButton: false});
             }
             else{
@@ -80,8 +86,9 @@ export default class MultiTitleInputContainer extends Component{
      * @param inputValue String com o valor atual do input.
      * Atualiza o estado com o valor do input quando o usuário digita.
      */
-    updateInputValue = (inputValue) => {
-       this.setState({inputValue: inputValue});
+    updateInputValue = (inputValue, index) => {
+        this.state.inputValue[index] = inputValue;
+        this.setState({inputValue: this.state.inputValue});
     }
 
     /**
@@ -108,6 +115,7 @@ export default class MultiTitleInputContainer extends Component{
                         textCallback={this.updateInputValue}
                         description={this.props.inputDescription[i]}
                         type={this.props.keyboardType[i]}
+                        index={i}
                         />
                 </View>
                 )
