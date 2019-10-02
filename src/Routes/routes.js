@@ -1,10 +1,18 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen, LoadingScreen, AnamnesisDetailScreen } from '../Screens';
+import {
+    AnamnesesRecordsScreen, AnamnesisDetailScreen,
+    JournalsScreen,
+    ListSubitemsScreen, ListScreen, TextInputScreen,
+    LoadingScreen, CreateTabBarIcon
+} from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
-import CreateTabBarIcon from '../Screens/CreateTabBarIcon';
 
-// stack navigator do formulário de anamnese
+//
+// ANAMNESE
+//
+
+// FORM
 const AnamnesisForm = createStackNavigator({
     // uma entrada para o coordinator (rota inicial)
     Coordinator: AnamnesisFormCoordinator,
@@ -27,6 +35,7 @@ const AnamnesisForm = createStackNavigator({
     }
 })
 
+// TAB
 const AnamnesisTab = createStackNavigator({
     AnamnesesRecords: AnamnesesRecordsScreen,
     AnamnesisDetail: AnamnesisDetailScreen
@@ -37,10 +46,28 @@ AnamnesisTab.navigationOptions = {
     tabBarIcon: CreateTabBarIcon(require("../Resources/anamnesesTabBarIcon.png"))
 }
 
-// tabbar do app
+//
+// DIÁRIO
+//
+
+// TAB
+const JournalsTab = createStackNavigator({
+    JournalsHistory: JournalsScreen
+});
+
+JournalsTab.navigationOptions = {
+    title: "Diário",
+    tabBarIcon: CreateTabBarIcon(require("../Resources/journalsTabBarIcon.png"))
+}
+
+//
+// APP
+//
+
 const TabNavigator = createBottomTabNavigator({
-    Anamnesis: AnamnesisTab
-    // entradas para as outras tabs (exames e diário) quando prontas
+    Anamnesis: AnamnesisTab,
+    Journals: JournalsTab,
+    // TODO: exames
 }, {
     tabBarOptions: {
         activeTintColor: AppStyle.colors.main
