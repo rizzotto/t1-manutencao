@@ -6,6 +6,7 @@ import AppStyle from '../styles';
  /**
  * props for ProgressBarComponent
  * - width={porcentagem} (tanto no formato real quanto fracionario)
+ * - style={ViewStyleProps} estilo aplicado na view da barra de progresso
  * example: <ProgressBarComponent width={5/10}/> (estou na tela 5 de um fluxo com 10 telas)
  * example2: <ProgressBarComponent width={0.5}/> (estou na tela 5 de um fluxo com 10 telas)
  */
@@ -14,7 +15,7 @@ const screenSize = Math.round(Dimensions.get('window').width);
  export default class ProgressBarComponent extends Component {
     render() {
         return (
-            <View>
+            <View style={this.props.style}>
                 <View style={styles.RectangleShapeView} />
                 <View style={styles.RectangleShapeViewProgress} width={screenSize*this.props.width}/> 
             </View>

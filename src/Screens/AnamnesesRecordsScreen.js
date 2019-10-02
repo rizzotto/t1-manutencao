@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, StyleSheet, Alert } from 'react-native';
 import { Button } from '../Components';
-import database from '../Database/Firebase';
+import { anamnesisService } from '../Database';
 import AppStyle from '../styles';
 
 /**
@@ -20,7 +20,7 @@ export default class AnamnesesRecordsScreen extends Component {
     }
 
     _editLast = () => {
-        database.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.userId)
             .then(anamnesisRecord => {
                 this.props.navigation.navigate("AnamnesisForm", { anamnesisRecord, userId: this.userId });
             })
@@ -30,7 +30,7 @@ export default class AnamnesesRecordsScreen extends Component {
     }
 
     _viewDetailsLast = () => {
-        database.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.userId)
             .then(anamnesisRecord => {
                 this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.userId });
             })

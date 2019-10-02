@@ -30,9 +30,6 @@ export default class ItemListComponent extends Component {
         const { selected, pressDisabled } = this.props;
         const styles = createStyles(selected);
 
-        submitAndClear = () => {
-            
-          }
         dataToAdd = () => {
             this.props.dataToAdd(this.state.text);
             this.setState({
@@ -49,6 +46,7 @@ export default class ItemListComponent extends Component {
                     autoCorrect={false}
                     onChangeText={(text) => this.setState({text})}
                     value={this.state.text}
+                    onSubmitEditing={() => dataToAdd()}
                     />
                 <DefaultButton 
                     text={this.props.buttonText} 
