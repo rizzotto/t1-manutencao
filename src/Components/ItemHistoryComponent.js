@@ -25,61 +25,69 @@ import AppStyle from '../styles';
         Feliz: 😁
      */
 
-export default class ItemHistoryComponent extends Component {
-        render(){
-            return (
-
-                <View style={styles.button}>
-                        <View style={styles.circle}/>
-                    <TouchableOpacity style={styles.button} onPress={this.props.action}>
-                        <View style={styles.date}>
-                            <Text style={styles.number}>
-                                {this.props.day}
-                            </Text>
-                            <Text style={styles.month}>
-                                {this.props.mes}
-                            </Text>
-                        </View>
-                        <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
-                            
-                            <FlatList
-                                data={this.props.list}
-                                renderItem={({ item }) => (
-                                    <Text style={styles.item} numberOfLines={1}>
-                                        <Text style={styles.title}>
-                                            {item.id}
-                                        </Text>
-                                        <Text style={styles.text}>
-                                            {item.title}
-                                        </Text>
-                                    </Text>
-                                    )}
-                                keyExtractor={item => item.id}
-                            />
-         
-                        </View>
-                        
-                        {this.props.hasEmoji && 
-                        <View style={styles.emojiView}>
-                            <Text style={styles.emoji} >
-                                {this.props.emoji}
-                            </Text>
-                        </View>}
-                        
-                        <View style={styles.enter}>
-                            <Arrow/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
+export default class ItemHistoryComponent extends Component { 
+    state = {
+        day: this.props.day,
+        month:this.props.mes
     }
+    dataToContainer = () => {
+        this.props.callback(this.state);
+    }
+    render(){
+        const day = this.state.day
+        const month = this.state.month
+        return (
+
+            <View style={styles.button}>
+                    <View style={styles.circle}/>
+                    <TouchableOpacity style={styles.button} onPress={() => this.dataToContainer()}>
+                    <View style={styles.date}>
+                        <Text style={styles.day}>
+                            {day}
+                        </Text>
+                        <Text style={styles.month}>
+                            {month}
+                        </Text>
+                    </View>
+                    <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
+                        
+                        <FlatList
+                            data={this.props.list}
+                            renderItem={({ item }) => (
+                                <Text style={styles.item} numberOfLines={1}>
+                                    <Text style={styles.title}>
+                                        {item.id}
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {item.title}
+                                    </Text>
+                                </Text>
+                                )}
+                            keyExtractor={item => item.id}
+                        />
+        
+                    </View>
+                    
+                    {this.props.hasEmoji && 
+                    <View style={styles.emojiView}>
+                        <Text style={styles.emoji} >
+                            {this.props.emoji}
+                        </Text>
+                    </View>}
+                    
+                    <View style={styles.enter}>
+                        <Arrow/>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+}
 
 
 const width = Dimensions.get('window').width
 const styles = StyleSheet.create({
     date: {
-        // flexDirection: "column"
         width: "10%",
     },
     month: {
@@ -91,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    number: {
+    day: {
         fontSize: 25,
         fontWeight: "bold",
         textAlign: "center",
@@ -124,7 +132,8 @@ const styles = StyleSheet.create({
     }, 
     item: {
         flexDirection: "row",
-        textAlign: "justify"
+        textAlign: "justify",
+        marginVertical: 2
     },
     title: {
         fontWeight: "bold"

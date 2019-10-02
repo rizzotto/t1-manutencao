@@ -3,10 +3,17 @@ import {StyleSheet, View, Text, ScrollView, SectionList} from "react-native";
 import ItemHistoryComponent from '../Components/ItemHistoryComponent';
 import { FlatList } from 'react-native-gesture-handler';
 import AppStyle from '../styles';
+test = (state) => {
+    console.warn(state.day, state.month)
+}
+
+
 function Item({ item, action}) {
     return (
         <View style={styles.list}>
             <ItemHistoryComponent
+                // callback={this.HistoryContainer.callback}
+                callback={test}
                 list={item.data}
                 hasEmoji={true}
                 emoji={item.emoji}
@@ -19,7 +26,14 @@ function Item({ item, action}) {
 }
   
 export default class HistoryContainer extends Component {
+    // callback = (state) => {
+    //     console.warn(state.day, state.month)
+    // }
+    // callback = (aaa) => {
+    //     return (aaa)
+    // }
     render(){
+        // console.warn(this.callback("teste"))
         return(
             <View style={styles.container} >
                 <Text style={styles.title}>Histórico</Text>
@@ -55,7 +69,9 @@ const styles = StyleSheet.create({
     },
     list: {
         borderColor: AppStyle.colors.mediumGray,
-        borderLeftWidth: 1
+        borderLeftWidth: 1,
+        padding:5,
+        paddingLeft:0
     },
     year: {
         backgroundColor: "white",
