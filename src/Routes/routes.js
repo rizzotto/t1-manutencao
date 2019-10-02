@@ -8,6 +8,17 @@ import {
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
 
+const defaultNavigationOptions = {
+    headerBackTitle: "Voltar",
+    headerTintColor: AppStyle.colors.main,
+    headerTitleStyle: {
+        color: AppStyle.colors.darkText
+    },
+    headerStyle: {
+        borderBottomWidth: 0
+    }
+}
+
 //
 // ANAMNESE
 //
@@ -22,17 +33,8 @@ const AnamnesisForm = createStackNavigator({
     List: ListScreen,
     SubitemsList: ListSubitemsScreen
 }, {
+    defaultNavigationOptions,
     initialRouteName: "Coordinator",
-    defaultNavigationOptions: {
-        headerBackTitle: "Voltar",
-        headerTintColor: AppStyle.colors.main,
-        headerTitleStyle: {
-            color: AppStyle.colors.darkText
-        },
-        headerStyle: {
-            borderBottomWidth: 0
-        }
-    }
 })
 
 // TAB
@@ -40,11 +42,7 @@ const AnamnesisTab = createStackNavigator({
     AnamnesesRecords: AnamnesesRecordsScreen,
     AnamnesisDetail: AnamnesisDetailScreen
 }, {
-    defaultNavigationOptions: {
-        headerStyle: {
-            borderBottomWidth: 0
-        }
-    }
+    defaultNavigationOptions
 });
 
 AnamnesisTab.navigationOptions = {
@@ -60,11 +58,7 @@ AnamnesisTab.navigationOptions = {
 const JournalsTab = createStackNavigator({
     JournalsHistory: JournalsScreen
 }, {
-    defaultNavigationOptions: {
-        headerStyle: {
-            borderBottomWidth: 0
-        }
-    }
+    defaultNavigationOptions
 });
 
 JournalsTab.navigationOptions = {
