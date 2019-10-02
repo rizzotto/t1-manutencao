@@ -39,6 +39,12 @@ const AnamnesisForm = createStackNavigator({
 const AnamnesisTab = createStackNavigator({
     AnamnesesRecords: AnamnesesRecordsScreen,
     AnamnesisDetail: AnamnesisDetailScreen
+}, {
+    defaultNavigationOptions: {
+        headerStyle: {
+            borderBottomWidth: 0
+        }
+    }
 });
 
 AnamnesisTab.navigationOptions = {

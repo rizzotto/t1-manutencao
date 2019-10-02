@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, StyleSheet, Alert } from 'react-native';
-import { Button } from '../Components';
+import { SafeAreaView, Text, View, StyleSheet, Alert } from 'react-native';
+import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
 import AppStyle from '../styles';
 
@@ -42,10 +42,13 @@ export default class AnamnesesRecordsScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <Text style={{textAlign: "center"}}>Anamnese</Text>
-                <Button text="Nova ficha" action={this._newRecord} />
-                <Button text="Editar última ficha" action={this._editLast} />
-                <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
+                <HeaderTitleComponent title="Sua ficha" />
+                <View style={styles.content}>
+                    <Text style={{textAlign: "center"}}>Anamnese</Text>
+                    <Button text="Nova ficha" action={this._newRecord} />
+                    <Button text="Editar última ficha" action={this._editLast} />
+                    <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
+                </View>
             </SafeAreaView>
         );
     }
@@ -54,8 +57,11 @@ export default class AnamnesesRecordsScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "stretch",
-        justifyContent: "center",
         backgroundColor: AppStyle.colors.background
+    },
+    content: {
+        flex: 1,
+        alignItems: "stretch",
+        justifyContent: "center"
     }
 });
