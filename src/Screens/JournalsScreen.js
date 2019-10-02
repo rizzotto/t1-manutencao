@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import { HeaderTitleComponent } from '../Components';
 
 export default class JournalsScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <Text>DIÁRIO</Text>
+                <HeaderTitleComponent title="Diário" />
             </SafeAreaView>
         )
     }
@@ -13,8 +14,6 @@ export default class JournalsScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        flex: 1
     }
-})
+});

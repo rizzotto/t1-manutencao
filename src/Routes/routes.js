@@ -53,6 +53,12 @@ AnamnesisTab.navigationOptions = {
 // TAB
 const JournalsTab = createStackNavigator({
     JournalsHistory: JournalsScreen
+}, {
+    defaultNavigationOptions: {
+        headerStyle: {
+            borderBottomWidth: 0
+        }
+    }
 });
 
 JournalsTab.navigationOptions = {
