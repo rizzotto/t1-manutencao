@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList } from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import Arrow from './Arrow';
+import AppStyle from '../styles';
 /**
      * @param hasEmoji Indica se o item possui emoji de representacao de sentimento
      * @param list Lista de dados que estarao representados no item
@@ -11,8 +12,8 @@ import Arrow from './Arrow';
      * <ItemHistoryComponent
             list={DATA}
             hasEmoji={true}
-            emoji={"😄"}
-            day={"15"}
+            emoji={'😄'}
+            day={'15'}
         />
 
         EMOJIS:
@@ -24,93 +25,131 @@ import Arrow from './Arrow';
         Feliz: 😁
      */
 
-export default class ItemHistoryComponent extends Component {
-        render(){
-            return (
-
-                <View style={styles.item}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.number}>
-                            {this.props.day}
-                        </Text>
-                        <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
-                            
-                            <FlatList
-                                data={this.props.list}
-                                renderItem={({ item }) => (
-                                    <Text style={styles.item}>
-                                        <Text style={styles.title}>
-                                            {item.id}
-                                        </Text>
-                                        <Text style={styles.text}>
-                                            {item.title}
-                                        </Text>
-                                    </Text>
-                                    )}
-                                keyExtractor={item => item.id}
-                            />
-         
-                        </View>
-                        {this.props.hasEmoji && 
-                        <Text style={styles.emoji}>
-                            {this.props.emoji}
-                        </Text>}
-                        
-                        <View style={styles.enter}>
-                            <Arrow/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
+export default class ItemHistoryComponent extends Component { 
+    state = {
+        date: this.props.date
     }
+    dataToContainer = () => {
+        this.props.callback(this.state);
+    }
+    render(){
+        const date = this.state.date
+        const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() 
+        const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours() 
+        const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes() 
 
+        return (
 
+            <View style={[styles.button, this.props.styleTest]}>
+                    <View style={styles.circle}/>
+                    <TouchableOpacity style={styles.button} onPress={() => this.dataToContainer()}>
+                    <View style={styles.date}>
+                        <Text style={styles.day}>
+                            {day}
+                        </Text>
+                        <Text style={styles.month}>
 
-const styles = StyleSheet.create({
-
-    button: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginHorizontal: "3%"
+                            {hour+':'+minute}
+                        </Text>
+                    </View>
+                    <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
+                        
+                        <FlatList
+                            data={this.props.list}
+                            renderItem={({ item }) => (
+                                <Text style={styles.item} numberOfLines={1}>
+                                    <Text style={styles.title}>
+                                        {item.id}
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {item.title}
+                                    </Text>
+                                </Text>
+                                )}
+                            keyExtractor={item => item.id}
+                        />
         
+                    </View>
+                    
+                    {this.props.hasEmoji && 
+                    <View style={styles.emojiView}>
+                        <Text style={styles.emoji} >
+                            {this.props.emoji}
+                        </Text>
+                    </View>}
+                    
+                    <View style={styles.enter}>
+                        <Arrow/>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+}
+
+
+const width = Dimensions.get('window').width
+const styles = StyleSheet.create({
+    date: {
+        width: '10%',
     },
-    number: {
-        width: "10%",
-        fontSize: 30,
-        fontWeight: "bold",
-        textAlign: "center",
+    month: {
+        fontSize: 14,
+        textAlign: 'center',
+        color: AppStyle.colors.mediumGray
+    },
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    day: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        paddingLeft: 0
 
     },
     textsWithEmoji: {
-        width: "65%",
-        padding: 15,
+        width: '65%',
+        padding: 13,
     },
     textsWithoutEmoji: {
-        width: "80%",
-        padding: 15
+        width: '80%',
+        padding: 13
     },
     emoji: {
-        fontSize: 40,
-        width: "15%",
-        paddingLeft: 10,
+        fontSize: 0.09*width,
+        
+    },
+    emojiView: {
+        width: '15%',
+        justifyContent: 'center',
+        alignItems:'center',
 
     },
     enter: {
-        justifyContent: "center",
-        alignItems:"center",
-        width: "10%"
+        justifyContent: 'center',
+        alignItems:'center',
+        width: '10%',
     
     }, 
     item: {
-        flexDirection: "row",
-        textAlign: "justify"
+        flexDirection: 'row',
+        textAlign: 'justify',
+        marginVertical: 2
     },
     title: {
-        fontWeight: "bold"
+        fontWeight: 'bold'
     },
     text: {
         flex: 1
+    },
+    circle: {
+        width: 5,
+        height: 10,
+        backgroundColor: AppStyle.colors.mediumGray,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10
     }
 })
 
