@@ -45,7 +45,7 @@ const styles=StyleSheet.create({
     centerText:{
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 20,
+        fontSize: 16,
         padding: 16
     },
     centerEmoji:{
