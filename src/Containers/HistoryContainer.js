@@ -1,52 +1,86 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, ScrollView, SectionList} from "react-native";
+import {StyleSheet, View, Text, ScrollView, SectionList} from 'react-native';
 import ItemHistoryComponent from '../Components/ItemHistoryComponent';
-import { FlatList } from 'react-native-gesture-handler';
 import AppStyle from '../styles';
-test = (state) => {
-    console.warn(state.day, state.month)
-}
+/**
+     * @param section listagem com todos itens que estarao dentro da lista 
+     *      Elementos que devem ser passados dentro da section são:
+     *      @param title: mes/ano
+     *      @param data: Lista de itens que são exibidos no container
+     *          @param emoji: emoji passado para o item
+     *          @param date: data passada para o container
+     *          @param list: Lista de itens exibidos no componente, como pressão e medicamentos, passados em list
+     *              @param id: Título (ex: Pressão)
+     *              @param title: Conteúdo do título
+     * @param action o que deve ser realizado quando um item for clicado 
+     * @param hasEmoji: indica se o componente possui emojis
+     * @return Container da listagem do container
+     * 
+     * exemplo:
+     * const items = [
+            {
+            id: 'Pressão: ',
+            title: '10,9',
+            },
+        ];
 
+        const history2017 = [
+            {
+                list: items,
+                emoji: '😡',
+                date: new Date()
+                
+            },
+        ];
 
-function Item({ item, action}) {
-    return (
-        <View style={styles.list}>
-            <ItemHistoryComponent
-                // callback={this.HistoryContainer.callback}
-                callback={test}
-                list={item.data}
-                hasEmoji={true}
-                emoji={item.emoji}
-                day={item.day}
-                mes={item.mes}
-                action={action}
-            />
-        </View>
-    );
-}
-  
+        const data = new Date()
+        const section = [
+            {
+            title: (data.getMonth()+1) + '/' + data.getFullYear(),
+            data: history2017
+            },
+        ]; 
+
+        export default class HistoryScreen extends Component {
+            render(){
+                return(
+                    <HistoryContainer
+                        mes={'Histórico'}
+                        section={section}
+                        hasEmoji={true}
+                    />
+                )
+            }
+        }
+     */
+
 export default class HistoryContainer extends Component {
-    // callback = (state) => {
-    //     console.warn(state.day, state.month)
-    // }
-    // callback = (aaa) => {
-    //     return (aaa)
-    // }
+
+    callback = (state) => {
+        console.warn(state.date)
+    }
     render(){
-        // console.warn(this.callback("teste"))
         return(
             <View style={styles.container} >
                 <Text style={styles.title}>Histórico</Text>
                 <SectionList
-                    
                     stickySectionHeadersEnabled={true}
                     sections={this.props.section}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({ item }) => <Item item={item} action={this.props.action} style={styles.list}/>}
+                    renderItem={({ item }) => 
+                        <ItemHistoryComponent styleTest={styles.list}
+                            callback={this.callback}
+                            list={item.list}
+                            hasEmoji={this.props.hasEmoji}
+                            emoji={item.emoji}
+                            date={item.date}
+                            action={this.props.action}
+                        />
+                    }
+                    showsVerticalScrollIndicator = {false}
                     ItemSeparatorComponent={() => <Separator />}
                     renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.year}>{title}</Text>
-                    
+                        <Text style={styles.year}>{title}</Text>
                     )}
                 />
             </View>
@@ -60,11 +94,11 @@ const styles = StyleSheet.create({
         marginBottom: 43,
     },
     line: {
-        width: "85%",
+        width: '85%',
         height: 1,
         backgroundColor: AppStyle.colors.mediumGray,
-        alignSelf: "flex-end",
-        position: "absolute",
+        alignSelf: 'flex-end',
+        position: 'absolute',
         bottom: 0
     },
     list: {
@@ -74,15 +108,15 @@ const styles = StyleSheet.create({
         paddingLeft:0
     },
     year: {
-        backgroundColor: "white",
-        fontWeight: "bold",
+        backgroundColor: 'white',
+        fontWeight: 'bold',
         fontSize: 20,
-        width: "100%",
+        width: '100%',
         zIndex: 10,
         paddingVertical: 10
     },
     title: {
-        fontWeight: "bold",
+        fontWeight: 'bold',
         fontSize: 25,
         paddingBottom: 10
     }

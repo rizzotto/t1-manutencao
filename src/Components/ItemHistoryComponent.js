@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity, Text, FlatList, Dimensions } from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
 import Arrow from './Arrow';
 import AppStyle from '../styles';
 /**
@@ -12,8 +12,8 @@ import AppStyle from '../styles';
      * <ItemHistoryComponent
             list={DATA}
             hasEmoji={true}
-            emoji={"😄"}
-            day={"15"}
+            emoji={'😄'}
+            day={'15'}
         />
 
         EMOJIS:
@@ -27,18 +27,20 @@ import AppStyle from '../styles';
 
 export default class ItemHistoryComponent extends Component { 
     state = {
-        day: this.props.day,
-        month:this.props.mes
+        date: this.props.date
     }
     dataToContainer = () => {
         this.props.callback(this.state);
     }
     render(){
-        const day = this.state.day
-        const month = this.state.month
+        const date = this.state.date
+        const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() 
+        const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours() 
+        const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes() 
+
         return (
 
-            <View style={styles.button}>
+            <View style={[styles.button, this.props.styleTest]}>
                     <View style={styles.circle}/>
                     <TouchableOpacity style={styles.button} onPress={() => this.dataToContainer()}>
                     <View style={styles.date}>
@@ -46,7 +48,8 @@ export default class ItemHistoryComponent extends Component {
                             {day}
                         </Text>
                         <Text style={styles.month}>
-                            {month}
+
+                            {hour+':'+minute}
                         </Text>
                     </View>
                     <View style={this.props.hasEmoji ? styles.textsWithEmoji : styles.textsWithoutEmoji}>
@@ -88,30 +91,30 @@ export default class ItemHistoryComponent extends Component {
 const width = Dimensions.get('window').width
 const styles = StyleSheet.create({
     date: {
-        width: "10%",
+        width: '10%',
     },
     month: {
-        fontSize: 15,
-        textAlign: "center",
+        fontSize: 14,
+        textAlign: 'center',
         color: AppStyle.colors.mediumGray
     },
     button: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     day: {
         fontSize: 25,
-        fontWeight: "bold",
-        textAlign: "center",
+        fontWeight: 'bold',
+        textAlign: 'center',
         paddingLeft: 0
 
     },
     textsWithEmoji: {
-        width: "65%",
+        width: '65%',
         padding: 13,
     },
     textsWithoutEmoji: {
-        width: "80%",
+        width: '80%',
         padding: 13
     },
     emoji: {
@@ -119,24 +122,24 @@ const styles = StyleSheet.create({
         
     },
     emojiView: {
-        width: "15%",
-        justifyContent: "center",
-        alignItems:"center",
+        width: '15%',
+        justifyContent: 'center',
+        alignItems:'center',
 
     },
     enter: {
-        justifyContent: "center",
-        alignItems:"center",
-        width: "10%",
+        justifyContent: 'center',
+        alignItems:'center',
+        width: '10%',
     
     }, 
     item: {
-        flexDirection: "row",
-        textAlign: "justify",
+        flexDirection: 'row',
+        textAlign: 'justify',
         marginVertical: 2
     },
     title: {
-        fontWeight: "bold"
+        fontWeight: 'bold'
     },
     text: {
         flex: 1
