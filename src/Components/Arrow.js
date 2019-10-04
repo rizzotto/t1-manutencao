@@ -10,6 +10,6 @@ const styles = StyleSheet.create({
     image: {
         width: 25,
         height: 25,
-        tintColor: AppStyle.colors.lightGray
+        tintColor: AppStyle.colors.mediumGray
     }
 });
