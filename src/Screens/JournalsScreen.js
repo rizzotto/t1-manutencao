@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
 import { HistoryContainer, EmptyStateContainer } from '../Containers';
+import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
 import { journalService } from '../Database';
 
 export default class JournalsScreen extends Component {
@@ -12,98 +13,87 @@ export default class JournalsScreen extends Component {
         super(props);
 
         this.state = {
-            sections: [],
-            hasItems: false
+            isLoading: true
         }
 
+        // TODO: tratar erro
         journalService.listEntries(this.userId)
-            .then(entriesByMonth => this.setEntries(entriesByMonth))
-            .catch(err => console.warn(err));
+            .then(entriesByMonth => this.updateUI(entriesByMonth))
+            .catch(() => this.updateUI([]));
     }
 
-    /**
-     * @param {Date} date
-     */
-    _formatMonthYear = (date) => {
-        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        return `${months[date.getMonth()]} / ${date.getFullYear()}`;
+    /** Atualiza a tela com o resultado da requisição para listagem de entradas. */
+    updateUI = (entriesByMonth) => {
+        const entryFormatter = new JournalEntryFormatter()
+        const sections = entryFormatter.buildHistoryEntries(entriesByMonth)
+
+        this.setState({
+            sections,
+            entries: entriesByMonth,
+            hasItems: sections.length !== 0,
+            isLoading: false
+        })
     }
 
-    setEntries = (entriesByMonth) => {
-        const sections = entriesByMonth.map(monthEntries => {
-            const entries = monthEntries.entries.map(entry => {
-                const bloodPressure = {
-                    id: "Pressão:",
-                    title: ` ${entry.bloodPressure} mmHg.`
-                }
+    /** Encontra uma entrada no diário a partir de sua data. */
+    _findEntry = (entriesByMonth, date) => {
+        // para cada mês
+        for (const monthEntry of entriesByMonth) {
+            // achar uma possível entry na mesma data da selecionada
+            const possibleEntry = monthEntry.entries.find(entry => entry.creationDate.getTime() === date.getTime());
 
-                const symptoms = {
-                    id: "Sintomas:",
-                    title: (entry.symptoms || []).length === 0 ? " nenhum." : ` ${entry.symptoms.join(", ")}.`
-                }
-
-                const medicines = {
-                    id: "Medicamentos:",
-                    title: (entry.medicines || []).length === 0 ? " nenhum." : ` ${entry.medicines.join(", ")}.`
-                }
-
-                return {
-                    date: entry.creationDate,
-                    emoji: entry.humor.emotion,
-                    list: [bloodPressure, symptoms, medicines]
-                }
-            });
-
-            return {
-                title: this._formatMonthYear(monthEntries.date),
-                data: entries
-            }
-        });
-
-        this.setState({ sections, entries: entriesByMonth, hasItems: sections.length !== 0 });
-    }
-
-    onSelectEntry = (date) => {
-        let entry;
-
-        for (const monthEntry of this.state.entries) {
-            const foundEntry = monthEntry.entries.find(entry => entry.creationDate.getTime() === date.getTime());
-
-            if (foundEntry !== null && foundEntry !== undefined) {
-                entry = foundEntry;
-                break;
+            // se achou, retorna
+            if (possibleEntry !== null && possibleEntry !== undefined) {
+                return possibleEntry;
             }
         }
+    }
 
-        if (entry === null || entry === undefined) return;
+    /** Invocado quando uma entrada no diário é selecionada. */
+    onSelectEntry = (date) => {
+        const entry = this._findEntry(this.state.entries, date);
 
         // TODO: navegar para tela de detalhes quando estiver pronta.
-        console.warn(entry);
+        console.warn("visualizar entrada", entry);
     }
 
-    createEntry = () => {
+    /** Invocado quando o botão no empty state é clicado. */
+    createEntryFromEmptyState = () => {
         // TODO: navegar para fluxo de criação de entrada no diário
-        console.warn("criar entrada no diário");
+        console.warn("criar entrada a partir do empty state");
     }
 
     render() {
-        const hasItems = this.state.hasItems;
+        const { sections, hasItems, isLoading } = this.state;
+
+        let content;
+
+        if (isLoading) {
+            content = (
+                <View style={styles.containerCenter}>
+                    <ActivityIndicator size="large" />
+                </View>
+            )
+        } else if (!hasItems) {
+            content = (
+                <View style={styles.containerCenter}>
+                    <EmptyStateContainer local="diario" buttonAction={this.createEntryFromEmptyState} />
+                </View>
+            )
+        } else {
+            content = (
+                <HistoryContainer
+                    section={sections}
+                    hasEmoji={true}
+                    action={this.onSelectEntry}
+                />
+            )
+        }
 
         return (
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Diário" />
-                {
-                    !hasItems &&
-                        <EmptyStateContainer local="diario" action={this.createEntry} />
-                }
-                {
-                    hasItems &&
-                        <HistoryContainer
-                            section={this.state.sections}
-                            hasEmoji={true}
-                            action={this.onSelectEntry}
-                        />
-                }
+                { content }
             </SafeAreaView>
         )
     }
@@ -112,5 +102,10 @@ export default class JournalsScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    containerCenter: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
