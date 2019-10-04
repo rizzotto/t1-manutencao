@@ -5,6 +5,7 @@ import {Text, StyleSheet, TouchableOpacity, View } from "react-native";
  * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
  * @param emoji String do emoji
  * @param text Descrição do emoji
+ * @param onPress Função que deve ser executada ao cliar no Card
  *  
  * 
  * Uso do StyleSheet: StyleSheet.create({ ... });
@@ -15,7 +16,7 @@ import {Text, StyleSheet, TouchableOpacity, View } from "react-native";
 export default class CardEmojiComponent extends Component {
     render(){
         return (
-            <TouchableOpacity style={styles.shadow}>
+            <TouchableOpacity style={styles.shadow} onPress={this.props.onPress}>
                 <View>
                     <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
                     <Text style={styles.centerText}> {this.props.text} </Text>

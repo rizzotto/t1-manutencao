@@ -9,6 +9,15 @@ import Arrow from '../Components/Arrow';
  * @param data array com os dados a serem mostrados no carrosel
  */
 
+const DATA = [
+    {text: "RaiclickCardva", emoji: "😡" },
+    {text: "Cansado", emoji: "😞" },
+    {text: "Chateado", emoji: "😕" },
+    {text: "Contente", emoji: "🙂" },
+    {text: "Feliz", emoji: "😄" },
+    {text: "Tanto Faz", emoji: "😐" }
+];
+
 export default class CarouselContainer extends Component {
 
     render() {
@@ -16,7 +25,7 @@ export default class CarouselContainer extends Component {
         function Item({ emoji, text }) {
             return (
                 <View style={styles.item}>
-                    <CardEmojiComponent text={text} emoji={emoji}></CardEmojiComponent>
+                    <CardEmojiComponent text={text} emoji={emoji} onPress={() => console.log(text)}/>
                 </View>
             );
         }
