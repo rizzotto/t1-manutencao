@@ -56,9 +56,6 @@ import AppStyle from '../styles';
 
 export default class HistoryContainer extends Component {
 
-    callback = (state) => {
-        console.warn(state.date)
-    }
     render(){
         return(
             <View style={styles.container} >
@@ -69,12 +66,11 @@ export default class HistoryContainer extends Component {
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => 
                         <ItemHistoryComponent styleTest={styles.list}
-                            callback={this.callback}
+                            callback={(data) => this.props.action(data.date)}
                             list={item.list}
                             hasEmoji={this.props.hasEmoji}
                             emoji={item.emoji}
                             date={item.date}
-                            action={this.props.action}
                         />
                     }
                     showsVerticalScrollIndicator = {false}
