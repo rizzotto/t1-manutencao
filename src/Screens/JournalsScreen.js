@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
-import { HistoryContainer } from '../Containers';
+import { HistoryContainer, EmptyStateContainer } from '../Containers';
 import { journalService } from '../Database';
 
 export default class JournalsScreen extends Component {
@@ -12,7 +12,8 @@ export default class JournalsScreen extends Component {
         super(props);
 
         this.state = {
-            sections: []
+            sections: [],
+            hasItems: false
         }
 
         journalService.listEntries(this.userId)
@@ -59,7 +60,7 @@ export default class JournalsScreen extends Component {
             }
         });
 
-        this.setState({ sections, entries: entriesByMonth });
+        this.setState({ sections, entries: entriesByMonth, hasItems: sections.length !== 0 });
     }
 
     onSelectEntry = (date) => {
@@ -80,15 +81,29 @@ export default class JournalsScreen extends Component {
         console.warn(entry);
     }
 
+    createEntry = () => {
+        // TODO: navegar para fluxo de criação de entrada no diário
+        console.warn("criar entrada no diário");
+    }
+
     render() {
+        const hasItems = this.state.hasItems;
+
         return (
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Diário" />
-                <HistoryContainer
-                    section={this.state.sections}
-                    hasEmoji={true}
-                    action={this.onSelectEntry}
-                />
+                {
+                    !hasItems &&
+                        <EmptyStateContainer local="diario" action={this.createEntry} />
+                }
+                {
+                    hasItems &&
+                        <HistoryContainer
+                            section={this.state.sections}
+                            hasEmoji={true}
+                            action={this.onSelectEntry}
+                        />
+                }
             </SafeAreaView>
         )
     }
