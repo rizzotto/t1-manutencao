@@ -59,7 +59,6 @@ export default class HistoryContainer extends Component {
     render(){
         return(
             <View style={styles.container} >
-                <Text style={styles.title}>Histórico</Text>
                 <SectionList
                     stickySectionHeadersEnabled={true}
                     sections={this.props.section}
@@ -83,25 +82,31 @@ export default class HistoryContainer extends Component {
         )
     }
 }
-const Separator = () => <View style={styles.line} />
+const Separator = () => (
+    <View style={styles.separatorContainer}>
+        <View style={styles.line} />
+    </View>
+);
+
 const styles = StyleSheet.create({
     container: {
-        margin: 20,
-        marginBottom: 43,
+        flex: 1
+    },
+    separatorContainer: {
+        borderLeftColor: AppStyle.colors.mediumGray,
+        borderLeftWidth: 1,
+        marginHorizontal: 20
     },
     line: {
-        width: '85%',
         height: 1,
         backgroundColor: AppStyle.colors.mediumGray,
-        alignSelf: 'flex-end',
-        position: 'absolute',
-        bottom: 0
+        width: "85%",
+        alignSelf: "flex-end"
     },
     list: {
         borderColor: AppStyle.colors.mediumGray,
         borderLeftWidth: 1,
-        padding:5,
-        paddingLeft:0
+        marginHorizontal: 20
     },
     year: {
         backgroundColor: 'white',
@@ -109,12 +114,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         width: '100%',
         zIndex: 10,
-        paddingVertical: 10
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 25,
-        paddingBottom: 10
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        color: AppStyle.colors.darkText
     }
-
 })
