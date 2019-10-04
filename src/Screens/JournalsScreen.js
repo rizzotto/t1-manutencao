@@ -59,11 +59,25 @@ export default class JournalsScreen extends Component {
             }
         });
 
-        this.setState({ sections });
+        this.setState({ sections, entries: entriesByMonth });
     }
 
     onSelectEntry = (date) => {
-        console.warn("selected entry on date", date);
+        let entry;
+
+        for (const monthEntry of this.state.entries) {
+            const foundEntry = monthEntry.entries.find(entry => entry.creationDate.getTime() === date.getTime());
+
+            if (foundEntry !== null && foundEntry !== undefined) {
+                entry = foundEntry;
+                break;
+            }
+        }
+
+        if (entry === null || entry === undefined) return;
+
+        // TODO: navegar para tela de detalhes quando estiver pronta.
+        console.warn(entry);
     }
 
     render() {
