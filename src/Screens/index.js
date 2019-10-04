@@ -8,6 +8,7 @@ export { default as ListSubitemsScreen } from './ListSubitemsScreen';
 export { default as TextInputScreen } from './TextInputScreen';
 export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen'
 
+export { default as EmojiScreen } from './EmojiScreen'
 export { default as LoadingScreen } from './LoadingScreen';
 
 // funções

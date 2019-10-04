@@ -30,6 +30,11 @@ export default class CardEmojiContainer extends Component{
 
         return (
             <SafeAreaView>
+
+                <View style={styles.title}>
+                    <TitleDescription titleText={"Como está seu humor hoje?"}/>
+                </View>
+
                 <FlatList
                     data={this.state.data}
                     keyExtractor={item => item.text}
@@ -42,6 +47,11 @@ export default class CardEmojiContainer extends Component{
                         );
                     }}
                     />
+                    
+                    <Button
+                        isDisabled={false}
+                        text={"Mude-me"}
+                    />
             </SafeAreaView>
         );
     }
@@ -52,5 +62,9 @@ const styles = StyleSheet.create({
         padding: 2,
         marginLeft: 5,
         marginRight: 5,
+    },
+    title: {
+        marginTop: 50,
+        marginBottom: 40
     }
 })
