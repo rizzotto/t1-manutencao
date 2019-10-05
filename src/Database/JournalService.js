@@ -33,7 +33,7 @@ export default class JournalService {
      * Lista as entradas do diário de um usuário.
      * 
      * @param {string} userId id do usuário de quem as entradas do diário devem ser listadas
-     * @returns {{ date: Date, entries: any[] }[]} entradas do diário agrupadas por mês e ordenadas da mais recente para a mais antiga (itens em `entries` seguem padrão definido em `docs/JournalEntry.js`)
+     * @returns {Promise<{ date: Date, entries: any[] }[]>} entradas do diário agrupadas por mês e ordenadas da mais recente para a mais antiga (itens em `entries` seguem padrão definido em `docs/JournalEntry.js`)
      */
     listEntries = async (userId) => {
         const snapshot = await this.db.ref(`${userId}/journalEntries`).orderByKey().once("value");

@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import CreateCancelAlert from './CreateCancelAlert';
+import { HeaderButtonComponent } from '../Components';
 import { TextInputScreen } from '../Screens';
+import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
 import { journalService } from '../Database';
 
 export default class JournalEntryFormCoordinator extends Component {
+    static navigationOptions = ({ navigation }) => {
+        const dismiss = () => navigation.navigate("Main"); // voltar para tabbar (dismiss no modal)
+        const onCancel = () => {
+            // só mostra o alerta quando o usuário já tiver entrado com algum dado
+            if (navigation.getParam("hasData", false)) {
+                Alert.alert(...CreateCancelAlert(dismiss));
+            } else {
+                // se não tem dados, então apenas dá o dismiss no fluxo
+                dismiss();
+            }
+        }
+
+        return {
+            title: "Diário",
+            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+        };
+    }
 
     constructor(props) {
         super(props);
@@ -29,6 +47,16 @@ export default class JournalEntryFormCoordinator extends Component {
 
         this.defaultStressLevel = ["Baixo", "Médio", "Alto"];
         this.defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
+
+        this.defaultParams = {
+            title: "Diário",
+            onCancel: this._onCancel
+        }
+    }
+
+    _onCancel = () => {
+        const dismiss = () => this.props.navigation.navigate("Main");
+        Alert.alert(...CreateCancelAlert(dismiss));
     }
 
     render() {
@@ -38,6 +66,7 @@ export default class JournalEntryFormCoordinator extends Component {
         }
 
         const data = {
+            ...this.defaultParams,
             callout: "Pressão Arterial",
             placeholder: "00/00 mmHg",
             progress: 0.33,
@@ -57,6 +86,7 @@ export default class JournalEntryFormCoordinator extends Component {
         const items = this.inputProducers.closedList.singleSelected(this.defaultStressLevel, this.journalEntry.stressLevel);
 
         this.props.navigation.push("List", {
+            ...this.defaultParams,
             titleText: "Nível de estresse",
             list: items,
             width: 0.5, // barra de progresso
@@ -74,6 +104,7 @@ export default class JournalEntryFormCoordinator extends Component {
         const items = this.inputProducers.closedList.multipleSelected(this.defaultSymptoms, this.journalEntry.symptoms);
 
         this.props.navigation.push("List", {
+            ...this.defaultParams,
             titleText: "Sintomas",
             list: items,
             width: 0.66,
@@ -90,6 +121,7 @@ export default class JournalEntryFormCoordinator extends Component {
         const items = this.inputProducers.closedList.multipleSelected([], this.journalEntry.medicines);
 
         this.props.navigation.push("List", {
+            ...this.defaultParams,
             titleText: "Medicamentos do dia",
             list: items,
             width: 0.83,
