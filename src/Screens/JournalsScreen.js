@@ -59,8 +59,7 @@ export default class JournalsScreen extends Component {
 
     /** Invocado quando o botão no empty state é clicado. */
     createEntryFromEmptyState = () => {
-        // TODO: navegar para fluxo de criação de entrada no diário
-        console.warn("criar entrada a partir do empty state");
+        this.props.navigation.navigate("JournalEntryForm", { userId: this.userId });
     }
 
     render() {
