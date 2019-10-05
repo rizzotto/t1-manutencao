@@ -135,19 +135,19 @@ export default class JournalEntryFormCoordinator extends Component {
 
         // TODO: remover quando tela de emojis estiver pronta
         this.journalEntry.humor = {
-            emotion: "🤔",
-            text: "só quero que o semestre acabe"
+            emotion: "😞",
+            text: "Cansado"
         }
 
         const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
             .then(() => this.props.navigation.navigate("Main"))
             .catch(() => {
                 return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
-            });
+            })
         
         this.props.navigation.push("Loading", {
             operation: save
-        });
+        })
     }
 }
 

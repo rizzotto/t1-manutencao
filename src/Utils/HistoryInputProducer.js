@@ -56,8 +56,11 @@ export default class HistoryInputProducer {
                 content = textItems[0]
                 break;
             default:
-                const last = textItems.pop()
-                const list = textItems.join(`${separator} `)
+                // precisamos fazer uma cópia para evitar mutar o array original no pop
+                const items = textItems.slice(0)
+
+                const last = items.pop()
+                const list = items.join(`${separator} `)
                 content = `${list} e ${last}`
                 break;
         }
