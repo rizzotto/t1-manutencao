@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     year: {
         backgroundColor: 'white',
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 19,
         width: '100%',
         zIndex: 10,
         paddingVertical: 10,

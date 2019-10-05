@@ -6,6 +6,7 @@ import {
     LoadingScreen, CreateTabBarIcon
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
+import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
 import AppStyle from '../styles';
 
 const defaultNavigationOptions = {
@@ -54,6 +55,16 @@ AnamnesisTab.navigationOptions = {
 // DIÁRIO
 //
 
+// FORM
+const JournalEntryForm = createStackNavigator({
+    Coordinator: JournalEntryFormCoordinator,
+    TextInput: TextInputScreen,
+    List: ListScreen
+}, {
+    defaultNavigationOptions,
+    initialRouteName: "Coordinator",
+})
+
 // TAB
 const JournalsTab = createStackNavigator({
     JournalsHistory: JournalsScreen
@@ -90,6 +101,7 @@ const AppNavigator = createStackNavigator({
 
     // as demais são os fluxos de cadastro/edição
     AnamnesisForm: AnamnesisForm,
+    JournalEntryForm: JournalEntryForm,
 
     // tela de carregamento
     Loading: LoadingScreen
