@@ -4,6 +4,7 @@ import CreateCancelAlert from './CreateCancelAlert';
 import { TextInputScreen } from '../Screens';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
+import { journalService } from '../Database';
 
 export default class JournalEntryFormCoordinator extends Component {
 
@@ -100,15 +101,21 @@ export default class JournalEntryFormCoordinator extends Component {
     endFlow = () => {
         this.journalEntry.creationDate = new Date();
 
-        // const save = database.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
-        //     .then(() => this.props.navigation.navigate("Main"))
-        //     .catch(() => {
-        //         return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
-        //     })
+        // TODO: remover quando tela de emojis estiver pronta
+        this.journalEntry.humor = {
+            emotion: "🤔",
+            text: "só quero que o semestre acabe"
+        }
 
-        // this.props.navigation.push("Loading", {
-        //     operation: save
-        // });
+        const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
+            .then(() => this.props.navigation.navigate("Main"))
+            .catch(() => {
+                return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+            });
+        
+        this.props.navigation.push("Loading", {
+            operation: save
+        });
     }
 }
 
