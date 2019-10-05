@@ -10,7 +10,7 @@ import Arrow from '../Components/Arrow';
  */
 
 const DATA = [
-    {text: "RaiclickCardva", emoji: "😡" },
+    {text: "Raiva", emoji: "😡" },
     {text: "Cansado", emoji: "😞" },
     {text: "Chateado", emoji: "😕" },
     {text: "Contente", emoji: "🙂" },
@@ -20,26 +20,33 @@ const DATA = [
 
 export default class CarouselContainer extends Component {
 
+
+
+    onPressEmoji = (emoji) => {
+        console.log(emoji);
+    }   
+
+
     render() {
 
-        function Item({ emoji, text }) {
-            return (
-                <View style={styles.item}>
-                    <CardEmojiComponent text={text} emoji={emoji} onPress={() => console.log(text)}/>
-                </View>
-            );
-        }
 
         return (
 
             <SafeAreaView style={styles.container}>
                 <FlatList
                     data={this.props.data || DATA}
-                    renderItem={({ item }) => <Item text={item.text} emoji={item.emoji} />}
+                    renderItem={({ item }) => (
+                    <View>
+                        <CardEmojiComponent
+                        text={item.text}
+                        emoji={item.emoji}
+                        onPress={() => this.props.click()}
+                        />
+                    </View>
+                    )}
                     keyExtractor={item => item.text }
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={true}
                 />
                 <Arrow></Arrow>
             </SafeAreaView>
@@ -53,6 +60,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 15
+        marginLeft: 15,
     }
 });

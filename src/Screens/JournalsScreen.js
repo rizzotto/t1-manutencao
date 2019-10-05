@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
-import { HistoryContainer, EmptyStateContainer } from '../Containers';
+import { HistoryContainer, EmptyStateContainer, CarouselContainer } from '../Containers';
 import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
 import { journalService } from '../Database';
 
@@ -84,11 +84,15 @@ export default class JournalsScreen extends Component {
             )
         } else {
             content = (
-                <HistoryContainer
-                    section={sections}
-                    hasEmoji={true}
-                    action={this.onSelectEntry}
-                />
+                <>
+                    <CarouselContainer
+                    />
+                    <HistoryContainer
+                        section={sections}
+                        hasEmoji={true}
+                        action={this.onSelectEntry}
+                    />
+                </>
             )
         }
 
