@@ -6,3 +6,4 @@ export { default as TitleDescription } from './TitleDescComponent';
 export { default as HeaderButtonComponent } from './HeaderButtonComponent';
 export { default as ProgressBar } from './ProgressBarComponent';
 export { default as TabBarIcon } from './TabBarIcon';
+export { default as HeaderTitleComponent } from './HeaderTitleComponent';

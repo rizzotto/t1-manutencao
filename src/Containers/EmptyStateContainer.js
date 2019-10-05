@@ -16,8 +16,8 @@ export default class EmptyStateContainer extends Component {
     render() {
         buttonAction = this.props.buttonAction
         if (this.props.local === 'diario') {
-            title = 'Acompanhe seu dia-a-dia'
-            description = 'Com o HiperBem, você consegue acompanhar seu humor, medicação e sintomas diariamente.'
+            title = 'Acompanhe seu\ndia-a-dia'
+            description = 'Com o HiperBem, você consegue\nacompanhar seu humor, medicação e\nsintomas diariamente.'
             buttonTitle = 'Adicionar ao diário'
         }
         else if (this.props.local === 'exames') {
@@ -34,7 +34,7 @@ export default class EmptyStateContainer extends Component {
             <View style={styles.container}>
 
                 <Image 
-                style={{width: '30%', height: '25%', alignSelf:'center'}} 
+                style={{width: 100, height: 100, alignSelf:'center'}} 
                 source={require('../Resources/emptyState.png')} />
                 <TitleDescription 
                 styleView={styles.titleDescView}
