@@ -53,8 +53,11 @@ export default class JournalsScreen extends Component {
     onSelectEntry = (date) => {
         const entry = this._findEntry(this.state.entries, date);
 
-        // TODO: navegar para tela de detalhes quando estiver pronta.
-        console.warn("visualizar entrada", entry);
+        // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
+        this.props.navigation.navigate("JournalEntryForm", {
+            userId: this.userId,
+            journalEntry: entry
+        });
     }
 
     /** Invocado quando o botão no empty state é clicado. */
