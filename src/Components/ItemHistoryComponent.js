@@ -7,6 +7,7 @@ import AppStyle from '../styles';
      * @param list Lista de dados que estarao representados no item
      * @param emoji Codigo do emoji a ser inserido na lista
      * @param day Dia do Item que fora adicionado 
+     * @param styleTest Estilo aplicado ao componente
      * @return Component do item de historico
      * EXAMPLE:
      * <ItemHistoryComponent
@@ -87,11 +88,10 @@ export default class ItemHistoryComponent extends Component {
     }
 }
 
-
-const width = Dimensions.get('window').width
 const styles = StyleSheet.create({
     date: {
-        width: '10%',
+        minWidth: 40,
+        marginLeft: 5
     },
     month: {
         fontSize: 14,
@@ -106,23 +106,24 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
         textAlign: 'center',
-        paddingLeft: 0
+        paddingLeft: 0,
+        color: AppStyle.colors.darkText
 
     },
     textsWithEmoji: {
-        width: '65%',
+        flex: 1,
         padding: 13,
     },
     textsWithoutEmoji: {
-        width: '80%',
+        flex: 1,
         padding: 13
     },
     emoji: {
-        fontSize: 0.09*width,
-        
+        fontSize: 40,
+        textAlign: "center"
     },
     emojiView: {
-        width: '15%',
+        minWidth: 50,
         justifyContent: 'center',
         alignItems:'center',
 
@@ -130,13 +131,14 @@ const styles = StyleSheet.create({
     enter: {
         justifyContent: 'center',
         alignItems:'center',
-        width: '10%',
     
     }, 
     item: {
         flexDirection: 'row',
         textAlign: 'justify',
-        marginVertical: 2
+        marginVertical: 2,
+        color: AppStyle.colors.darkText,
+        fontSize: 13
     },
     title: {
         fontWeight: 'bold'
@@ -152,5 +154,3 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10
     }
 })
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
