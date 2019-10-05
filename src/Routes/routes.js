@@ -3,6 +3,7 @@ import { AnamnesesRecordsScreen, ListSubitemsScreen, ListScreen, TextInputScreen
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import AppStyle from '../styles';
 import CreateTabBarIcon from '../Screens/CreateTabBarIcon';
+import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
 
 // stack navigator do formulário de anamnese
 const AnamnesisForm = createStackNavigator({
@@ -37,6 +38,25 @@ AnamnesisTab.navigationOptions = {
     tabBarIcon: CreateTabBarIcon(require("../Resources/anamnesesTabBarIcon.png"))
 }
 
+// stack do formulário de entradas no diário
+const JournalEntryForm = createStackNavigator({
+    Coordinator: JournalEntryFormCoordinator,
+    TextInput: TextInputScreen,
+    List: ListScreen
+}, {
+    initialRouteName: "Coordinator",
+    defaultNavigationOptions: {
+        headerBackTitle: "Voltar",
+        headerTintColor: AppStyle.colors.main,
+        headerTitleStyle: {
+            color: AppStyle.colors.darkText
+        },
+        headerStyle: {
+            borderBottomWidth: 0
+        }
+    }
+})
+
 // tabbar do app
 const TabNavigator = createBottomTabNavigator({
     Anamnesis: AnamnesisTab
@@ -57,6 +77,7 @@ const AppNavigator = createStackNavigator({
 
     // as demais são os fluxos de cadastro/edição
     AnamnesisForm: AnamnesisForm,
+    JournalEntryForm: JournalEntryForm,
 
     // tela de carregamento
     Loading: LoadingScreen
