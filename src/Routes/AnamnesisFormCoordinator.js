@@ -67,10 +67,10 @@ export default class AnamnesisFormCoordinator extends Component {
 
     render() {
         const saveResult = (result) => {
-            this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result);
+            this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result[0]);
             this.props.navigation.setParams({ hasData: true });
-            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result);
-            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result);
+            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result[1]);
+            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result[2]);
         }
 
         const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
@@ -80,7 +80,7 @@ export default class AnamnesisFormCoordinator extends Component {
             callout: "Informe seus dados pessoais",
             description: ["Nome", "E-mail", "Data de Nascimento"],
             placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
-            progress: 0.0713,
+            progress: 0.0909,
             required: true,
             content: [this.anamnesisRecord.name, this.anamnesisRecord.email, currentDate],
             keyboardType: ["text", "email", "date"],
@@ -110,8 +110,8 @@ export default class AnamnesisFormCoordinator extends Component {
 
     pushEmail = () => {
         const saveResult = (result) => {
-            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
-            this.anamnesisRecord.height = this.outputFilters.textInput.number(result);
+            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result[0]);
+            this.anamnesisRecord.height = this.outputFilters.textInput.number(result[1]);
         }
 
         const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
@@ -124,8 +124,8 @@ export default class AnamnesisFormCoordinator extends Component {
             description: ["Peso", "Altura"],
             placeholder: ["00,00kg", "1.50m"],
             required:true,
-            progress: 0.1428,
-            keyboardType: ["number", "number"],
+            progress: 0.1818,
+            keyboardType: ["numeric", "numeric"],
             content: [currentWeight, currentHeight],
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })
@@ -143,7 +143,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Informe suas principais queixas/sintomas",
             list: items,
             minSelected: 1,
-            width: 0.42,
+            width: 0.2727,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
         })
@@ -162,7 +162,7 @@ export default class AnamnesisFormCoordinator extends Component {
             descriptionText: "Informe os medicamentos que você usa atualmente.",
             required:true,
             list: items,
-            width: 0.4998,
+            width: 0.3636,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicinesFrequency)
         });
@@ -189,7 +189,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: true,
                 items
             },
-            progress: 0.5712,
+            progress: 0.4545,
             onComplete: composeSavePush(saveResult, this.pushPathologies)
         });
     }
@@ -206,7 +206,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Você tem ou teve alguma patologia?",
             list: items,
             minSelected: 1,
-            width: 0.6426,
+            width: 0.5455,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushFamilyPathologies)
         })
@@ -224,7 +224,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Histórico familiar",
             descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
             list: items,
-            width: 0.714,
+            width: 0.6364,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushHabits)
         })
@@ -251,7 +251,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: true,
                 items
             },
-            progress: 0.7853,
+            progress: 0.7273,
             onComplete: composeSavePush(saveResult, this.pushLifeRhythm)
         })
     }
@@ -270,7 +270,7 @@ export default class AnamnesisFormCoordinator extends Component {
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            width: 0.8568,
+            width: 0.8182,
             onComplete: composeSavePush(saveResult, this.pushEatingStyle)
         })
     }
@@ -289,7 +289,7 @@ export default class AnamnesisFormCoordinator extends Component {
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            width: 0.9282,
+            width: 0.9091,
             onComplete: composeSavePush(saveResult, this.endFlow)
         })
     }

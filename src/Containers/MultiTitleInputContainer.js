@@ -11,9 +11,9 @@ import TextInputContainer from './TextInputContainer';
  * @param titleDescViewStyle StyleSheet com os estilos do <View> do componente TitleDescComponent (opcional)
  * @param titleDescStyle StyleSheet com os estilos do texto do componente TitleDescComponente (opcional)
  * @param requiredInput Booleano que indica se o input é obrigatório ou não
- * @param inputDescription Descrição do input do TextInputContainer
- * @param initialContent Conteúdo inicial do input do TextInputContainer
- * @param keyboardType Tipo do teclado do TextInputContainer
+ * @param inputDescription Títulos dos inputs de cada TextInputContainer
+ * @param initialContent Conteúdo inicial dos input de cada TextInputContainer
+ * @param keyboardType Tipo do teclado de cada TextInputContainer
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
  * @param btnAction (Opcional) Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
