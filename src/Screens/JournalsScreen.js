@@ -52,7 +52,6 @@ export default class JournalsScreen extends Component {
     /** Invocado quando uma entrada no diário é selecionada. */
     onSelectEntry = (date) => {
         const entry = this._findEntry(this.state.entries, date);
-
         // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
         this.props.navigation.navigate("JournalEntryForm", {
             userId: this.userId,
@@ -65,9 +64,8 @@ export default class JournalsScreen extends Component {
         this.props.navigation.navigate("JournalEntryForm", { userId: this.userId });
     }
 
-    onSelectEmoji = () => {
-
-        this.props.navigation.navigate("JournalEntryForm")
+    onSelectEmoji = (item) => {
+        this.props.navigation.navigate("JournalEntryForm", {emoji: item, userId: this.userId})
     }
 
     render() {

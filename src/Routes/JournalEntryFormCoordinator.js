@@ -63,7 +63,7 @@ export default class JournalEntryFormCoordinator extends Component {
         const saveResult = (result) => {
             this.journalEntry.humor = {
                 emotion: result.emoji,
-                text:result.text
+                text: result.text
             }
         }
 
@@ -71,7 +71,8 @@ export default class JournalEntryFormCoordinator extends Component {
             ...this.defaultParams,
             progress: 0,
             content: this.journalEntry.humor,
-            onComplete: composeSavePush(saveResult, this.pushBloodPressure)
+            onComplete: composeSavePush(saveResult, this.pushBloodPressure),
+            emoji:  this.props.navigation.state.params.emoji ? this.props.navigation.state.params.emoji : this.journalEntry.humor 
         }
         return <EmojiScreen {...data}/>
     }
@@ -152,10 +153,10 @@ export default class JournalEntryFormCoordinator extends Component {
         this.journalEntry.creationDate = new Date();
 
         // TODO: remover quando tela de emojis estiver pronta
-        this.journalEntry.humor = {
+        /*this.journalEntry.humor = {
             emotion: "😞",
             text: "Cansado"
-        }
+        }*/
 
         const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
             .then(() => this.props.navigation.navigate("Main"))

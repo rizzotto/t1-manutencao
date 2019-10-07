@@ -20,6 +20,10 @@ const DATA = [
 
 export default class CarouselContainer extends Component {
 
+    handlePress(item){
+        this.props.action(item);
+    }
+
     render() {
 
         return (
@@ -32,7 +36,7 @@ export default class CarouselContainer extends Component {
                         <CardEmojiComponent
                         text={item.text}
                         emoji={item.emoji}
-                        onPress={() => this.props.action()}
+                        onPress={() => this.handlePress(item)}
                         />
                     </View>
                     )}

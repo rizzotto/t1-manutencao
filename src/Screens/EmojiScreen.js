@@ -25,6 +25,7 @@ export default class EmojiScreen extends Component{
                 <ProgressBar width={progress}/>
                 <CardEmojiContainer
                     callback={this.selectedEmoji}
+                    firstSelected={this.getParam('emoji')}
                 />
             </SafeAreaView>
         )

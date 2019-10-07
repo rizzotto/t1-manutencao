@@ -34,7 +34,7 @@ const createStyles = (selected) => {
     return StyleSheet.create({
         shadow: {
             shadowColor: '#000',
-            borderColor: 'white',
+            borderColor: 'black',
             shadowOffset: {
                 width: 0,
                 height: 1
@@ -44,7 +44,7 @@ const createStyles = (selected) => {
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 10,
-            backgroundColor: selected ? "#c9d" : "#fff",
+            backgroundColor: selected ? "#FDBB61" : "#fff",
             margin: 5
         },
         centerText: {
