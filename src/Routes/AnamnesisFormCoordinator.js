@@ -6,7 +6,7 @@ import { MultiTextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
-import database from '../Database/Firebase';
+import { anamnesisService } from '../Database';
 
 /**
  * Coordinator do formulário de criação/edição de anamnese.
@@ -297,7 +297,7 @@ export default class AnamnesisFormCoordinator extends Component {
     endFlow = () => {
         this.anamnesisRecord.creationDate = new Date();
 
-        const save = database.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
+        const save = anamnesisService.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
             .then(() => this.props.navigation.navigate("Main"))
             .catch(() => {
                 return { title: "Algo deu errado", description: "Tente novamente mais tarde." }

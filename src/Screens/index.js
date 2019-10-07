@@ -1,6 +1,10 @@
 
-// tabbar
+// anamnese
 export { default as AnamnesesRecordsScreen } from './AnamnesesRecordsScreen';
+export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen';
+
+// diário
+export { default as JournalsScreen } from './JournalsScreen';
 
 // form
 export { default as ListScreen } from './ListScreen';
