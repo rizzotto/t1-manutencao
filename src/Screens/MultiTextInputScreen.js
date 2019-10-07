@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from "react-native";
 import createDefaultNavigationOption from './CreateDefaultNavigationOptions';
-import { SimpleTextInputContainer } from '../Containers';
+import { MultiTitleInputContainer } from '../Containers';
 import { ProgressBar } from '../Components';
 
 /**
@@ -19,7 +19,7 @@ import { ProgressBar } from '../Components';
  *   - `onCancel`: função chamada quando o usuário clica no botão `Cancelar` no header;
  *   - `title`: título exibido no header.
  */
-export default class TextInputScreen extends Component{
+export default class MultiTextInputScreen extends Component{
 
     static navigationOptions = createDefaultNavigationOption;
 
@@ -40,8 +40,8 @@ export default class TextInputScreen extends Component{
 
         return (
             <SafeAreaView style={styles.container}>
-                <ProgressBar width={progress} style={styles.progressBar} />
-                <SimpleTextInputContainer
+                <ProgressBar width={progress} />
+                <MultiTitleInputContainer
                     title={callout}
                     description={description}
                     buttonText="Continuar"
@@ -61,8 +61,5 @@ export default class TextInputScreen extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    progressBar: {
-        zIndex: 100
     }
 });

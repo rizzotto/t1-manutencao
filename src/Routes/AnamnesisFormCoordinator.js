@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtonComponent } from '../Components';
 import CreateCancelAlert from './CreateCancelAlert';
-import { TextInputScreen } from '../Screens';
+import { MultiTextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
-import database from '../Database/Firebase';
+import { anamnesisService } from '../Database';
 
 /**
  * Coordinator do formulário de criação/edição de anamnese.
@@ -67,22 +67,28 @@ export default class AnamnesisFormCoordinator extends Component {
 
     render() {
         const saveResult = (result) => {
-            this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result);
+            this.anamnesisRecord.name = this.outputFilters.textInput.removeWhitespace(result[0]);
             this.props.navigation.setParams({ hasData: true });
+            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result[1]);
+            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result[2]);
         }
+
+        const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
 
         const data = {
             ...this.defaultParams,
-            callout: "Informe seu nome completo",
-            placeholder: "Insira seu nome...",
-            progress: 0.0713,
+            callout: "Informe seus dados pessoais",
+            description: ["Nome", "E-mail", "Data de Nascimento"],
+            placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
+            progress: 0.0909,
             required: true,
-            content: this.anamnesisRecord.name,
+            content: [this.anamnesisRecord.name, this.anamnesisRecord.email, currentDate],
+            keyboardType: ["text", "email", "date"],
             onComplete: composeSavePush(saveResult, this.pushEmail)
         }
 
         return (
-            <TextInputScreen {...data} />
+            <MultiTextInputScreen {...data} />
         );
     }
 
@@ -104,74 +110,23 @@ export default class AnamnesisFormCoordinator extends Component {
 
     pushEmail = () => {
         const saveResult = (result) => {
-            this.anamnesisRecord.email = this.outputFilters.textInput.removeWhitespace(result);
-        }
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe seu e-mail",
-            placeholder: "email@exemplo.com",
-            required:true,
-            progress: 0.1428,
-            keyboardType: "email",
-            content: this.anamnesisRecord.email,
-            onComplete: composeSavePush(saveResult, this.pushBirthDate)
-        })
-    }
-
-    pushBirthDate = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.birthDate = this.outputFilters.textInput.date(result);
-        }
-
-        const currentDate = this.inputProducers.textInput.dayMonthYear(this.anamnesisRecord.birthDate);
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe sua data de nascimento",
-            placeholder: "DD/MM/AAAA",
-            required:true,
-            progress: 0.2141,
-            keyboardType: "date",
-            content: currentDate,
-            onComplete: composeSavePush(saveResult, this.pushWeight)
-        })
-    }
-
-    pushWeight = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result);
-        }
-
-        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
-
-        this.props.navigation.push("TextInput", {
-            ...this.defaultParams,
-            callout: "Informe seu peso atual",
-            placeholder: "00,00 kg",
-            required:true,
-            progress: 0.2856,
-            keyboardType: "numeric",
-            content: currentWeight,
-            onComplete: composeSavePush(saveResult, this.pushHeight)
-        })
-    }
-
-    pushHeight = () => {
-        const saveResult = (result) => {
-            this.anamnesisRecord.height = this.outputFilters.textInput.number(result);
+            this.anamnesisRecord.weight = this.outputFilters.textInput.number(result[0]);
+            this.anamnesisRecord.height = this.outputFilters.textInput.number(result[1]);
         }
 
         const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
+        const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
-        this.props.navigation.push("TextInput", {
+
+        this.props.navigation.push("MultiTextInput", {
             ...this.defaultParams,
-            callout: "Informe sua altura",
-            placeholder: "1.50 m",
+            callout: "Informe seu peso e altura",
+            description: ["Peso", "Altura"],
+            placeholder: ["00,00kg", "1.50m"],
             required:true,
-            progress: 0.3570,
-            keyboardType: "numeric",
-            content: currentHeight,
+            progress: 0.1818,
+            keyboardType: ["numeric", "numeric"],
+            content: [currentWeight, currentHeight],
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })
     }
@@ -188,7 +143,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Informe suas principais queixas/sintomas",
             list: items,
             minSelected: 1,
-            width: 0.42,
+            width: 0.2727,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
         })
@@ -207,7 +162,7 @@ export default class AnamnesisFormCoordinator extends Component {
             descriptionText: "Informe os medicamentos que você usa atualmente.",
             required:true,
             list: items,
-            width: 0.4998,
+            width: 0.3636,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicinesFrequency)
         });
@@ -234,7 +189,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: true,
                 items
             },
-            progress: 0.5712,
+            progress: 0.4545,
             onComplete: composeSavePush(saveResult, this.pushPathologies)
         });
     }
@@ -251,7 +206,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Você tem ou teve alguma patologia?",
             list: items,
             minSelected: 1,
-            width: 0.6426,
+            width: 0.5455,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushFamilyPathologies)
         })
@@ -269,7 +224,7 @@ export default class AnamnesisFormCoordinator extends Component {
             titleText: "Histórico familiar",
             descriptionText: "Alguém na sua família tem ou teve alguma dessas patologias?",
             list: items,
-            width: 0.714,
+            width: 0.6364,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushHabits)
         })
@@ -296,7 +251,7 @@ export default class AnamnesisFormCoordinator extends Component {
                 requiresAllSelected: true,
                 items
             },
-            progress: 0.7853,
+            progress: 0.7273,
             onComplete: composeSavePush(saveResult, this.pushLifeRhythm)
         })
     }
@@ -315,7 +270,7 @@ export default class AnamnesisFormCoordinator extends Component {
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            width: 0.8568,
+            width: 0.8182,
             onComplete: composeSavePush(saveResult, this.pushEatingStyle)
         })
     }
@@ -334,7 +289,7 @@ export default class AnamnesisFormCoordinator extends Component {
             list: items,
             minSelected: 1,
             maxSelected: 1,
-            width: 0.9282,
+            width: 0.9091,
             onComplete: composeSavePush(saveResult, this.endFlow)
         })
     }
@@ -342,7 +297,7 @@ export default class AnamnesisFormCoordinator extends Component {
     endFlow = () => {
         this.anamnesisRecord.creationDate = new Date();
 
-        const save = database.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
+        const save = anamnesisService.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
             .then(() => this.props.navigation.navigate("Main"))
             .catch(() => {
                 return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
