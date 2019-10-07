@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
 import { HistoryContainer, EmptyStateContainer, CarouselContainer } from '../Containers';
 import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
@@ -91,6 +91,7 @@ export default class JournalsScreen extends Component {
                     <CarouselContainer
                         action={this.onSelectEmoji}
                     />
+                    <Text style={styles.carouselLabel}>Como você está se sentindo hoje?</Text>
                     <HistoryContainer
                         section={sections}
                         hasEmoji={true}
@@ -117,5 +118,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
+    },
+    carouselLabel: {
+        alignItems: "center",
+        fontWeight: "bold",
+        fontSize: 17,
+        padding: 18,
+        textAlign: "center"
     }
 });

@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-navigation';
 
 export default class CardEmojiContainer extends Component {
     state = {
-        selectedEmoji: this.props.firstSelected,
+        selectedEmoji: this.props.firstSelected ? this.props.firstSelected : null,
         DATA : [
             { text: "Raiva", emoji: "😡", isSelected: false },
             { text: "Cansado", emoji: "😞", isSelected: false},
@@ -28,13 +28,15 @@ export default class CardEmojiContainer extends Component {
     };
 
     componentDidMount(){
-        let emoji = this.state.selectedEmoji;
-        const index = this.state.DATA.findIndex(x => x.text === emoji.text);
-        this.state.DATA.forEach(item => item.isSelected = false);
-        this.state.DATA[index].isSelected = true;
-        this.setState({
-            selectedEmoji: emoji
-        });
+        if(this.state.selectedEmoji){
+            let emoji = this.state.selectedEmoji;
+            const index = this.state.DATA.findIndex(x => x.text === emoji.text);
+            this.state.DATA.forEach(item => item.isSelected = false);
+            this.state.DATA[index].isSelected = true;
+            this.setState({
+                selectedEmoji: emoji
+            });
+        }
     }
     
     selectItem = (item) => {
