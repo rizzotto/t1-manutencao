@@ -65,6 +65,11 @@ export default class JournalsScreen extends Component {
         this.props.navigation.navigate("JournalEntryForm", { userId: this.userId });
     }
 
+    onSelectEmoji = () => {
+
+        this.props.navigation.navigate("JournalEntryForm")
+    }
+
     render() {
         const { sections, hasItems, isLoading } = this.state;
 
@@ -86,6 +91,7 @@ export default class JournalsScreen extends Component {
             content = (
                 <>
                     <CarouselContainer
+                        action={this.onSelectEmoji}
                     />
                     <HistoryContainer
                         section={sections}

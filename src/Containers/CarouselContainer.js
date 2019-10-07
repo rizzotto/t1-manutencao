@@ -10,25 +10,17 @@ import Arrow from '../Components/Arrow';
  */
 
 const DATA = [
-    {text: "Raiva", emoji: "😡" },
-    {text: "Cansado", emoji: "😞" },
-    {text: "Chateado", emoji: "😕" },
-    {text: "Contente", emoji: "🙂" },
-    {text: "Feliz", emoji: "😄" },
-    {text: "Tanto Faz", emoji: "😐" }
+    { text: "Raiva", emoji: "😡", isSelected: false },
+    { text: "Cansado", emoji: "😞", isSelected: false},
+    { text: "Chateado", emoji: "😕", isSelected: false},
+    { text: "Contente", emoji: "🙂", isSelected: false},
+    { text: "Feliz", emoji: "😄", isSelected: false},
+    { text: "Tanto Faz", emoji: "😐", isSelected: false}
 ];
 
 export default class CarouselContainer extends Component {
 
-
-
-    onPressEmoji = (emoji) => {
-        console.log(emoji);
-    }   
-
-
     render() {
-
 
         return (
 
@@ -40,7 +32,7 @@ export default class CarouselContainer extends Component {
                         <CardEmojiComponent
                         text={item.text}
                         emoji={item.emoji}
-                        onPress={() => this.props.click()}
+                        onPress={() => this.props.action()}
                         />
                     </View>
                     )}

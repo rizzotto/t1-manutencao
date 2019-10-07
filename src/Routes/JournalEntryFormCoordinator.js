@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtonComponent } from '../Components';
-import { TextInputScreen } from '../Screens';
+import { TextInputScreen, EmojiScreen } from '../Screens';
 import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
@@ -61,11 +61,29 @@ export default class JournalEntryFormCoordinator extends Component {
 
     render() {
         const saveResult = (result) => {
+            this.journalEntry.humor = {
+                emotion: result.emoji,
+                text:result.text
+            }
+        }
+
+        const data = {
+            ...this.defaultParams,
+            progress: 0,
+            content: this.journalEntry.humor,
+            onComplete: composeSavePush(saveResult, this.pushBloodPressure)
+        }
+        return <EmojiScreen {...data}/>
+    }
+
+    pushBloodPressure = () => {
+        console.log(this.journalEntry);
+        const saveResult = (result) => {
             this.journalEntry.bloodPressure = this.outputFilters.textInput.removeWhitespace(result);
             this.props.navigation.setParams({ hasData: true });
         }
 
-        const data = {
+        this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Pressão Arterial",
             placeholder: "00/00 mmHg",
@@ -73,12 +91,12 @@ export default class JournalEntryFormCoordinator extends Component {
             required: true,
             content: this.journalEntry.bloodPressure,
             onComplete: composeSavePush(saveResult, this.pushStressLevel)
-        }
+        })
 
-        return <TextInputScreen {...data} />;
     }
 
     pushStressLevel = () => {
+        
         const saveResult = (result) => {
             this.journalEntry.stressLevel = this.outputFilters.closedList.singleItem(result);
         }

@@ -3,7 +3,6 @@ import CardEmojiContainer from '../Containers/CardEmojiContainer';
 import { SafeAreaView } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import createDefaultNavigationOption from './CreateDefaultNavigationOptions';
-import ProgressBarComponent from '../Components/ProgressBarComponent';
 import { ProgressBar } from '../Components';
 
 
@@ -12,12 +11,21 @@ export default class EmojiScreen extends Component{
     static navigationOptions = createDefaultNavigationOption;
 
 
+    selectedEmoji = (emoji) => {
+        const onComplete = this.getParam("onComplete");
+        if (!onComplete) return;
+        onComplete(emoji);
+    }
+
     render(){
 
+        const progress = this.getParam("progress");
         return (
             <SafeAreaView style={styles.container}>
-                <ProgressBar width={50}/>
-                <CardEmojiContainer></CardEmojiContainer>
+                <ProgressBar width={progress}/>
+                <CardEmojiContainer
+                    callback={this.selectedEmoji}
+                />
             </SafeAreaView>
         )
 

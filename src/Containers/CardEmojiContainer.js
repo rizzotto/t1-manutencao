@@ -13,45 +13,68 @@ import { SafeAreaView } from 'react-navigation';
  */
 
 
-export default class CardEmojiContainer extends Component{
-    state = {
-        data: [
-          { text: "Raiva", emoji: "😡" },
-          { text: "Cansado", emoji: "😞" },
-          { text: "Chateado", emoji: "😕" },
-          { text: "Contente", emoji: "🙂" },
-          { text: "Feliz", emoji: "😄" },
-          { text: "Tanto Faz", emoji: "😐" }
-        ]
-      };
-   
-    
-    render(){
 
+export default class CardEmojiContainer extends Component {
+    state = {
+        selectedEmoji: null,
+        DATA : [
+            { text: "Raiva", emoji: "😡", isSelected: false },
+            { text: "Cansado", emoji: "😞", isSelected: false},
+            { text: "Chateado", emoji: "😕", isSelected: false},
+            { text: "Contente", emoji: "🙂", isSelected: false},
+            { text: "Feliz", emoji: "😄", isSelected: false},
+            { text: "Tanto Faz", emoji: "😐", isSelected: false}
+        ]
+    };
+
+    
+    selectItem = (item) => {
+        const index = this.state.DATA.indexOf(item);
+        const wasSelected = this.state.DATA[index].isSelected;
+
+        this.state.DATA.forEach(item => item.isSelected = false);
+
+        this.state.DATA[index].isSelected = !wasSelected;
+        
+        this.setState({
+            selectedEmoji: item,
+        });      
+        
+    }
+
+
+    emojiSelected = () => {
+        this.props.callback(this.state.selectedEmoji);
+    }
+
+
+    render() {
         return (
             <SafeAreaView>
 
-                <View style={styles.title}>
-                    <TitleDescription titleText={"Como está seu humor hoje?"}/>
-                </View>
+                <TitleDescription titleText={"Como está seu humor hoje?"} />
 
                 <FlatList
-                    data={this.state.data}
+                    data={this.state.DATA}
                     keyExtractor={item => item.text}
                     numColumns={3}
-                    renderItem={({ item }) => {
-                        return (
-                        <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                            <CardEmojiComponent text={item.text} emoji={item.emoji}/>
-                        </View>
-                        );
-                    }}
-                    />
-                    
-                    <Button
-                        isDisabled={false}
-                        text={"Mude-me"}
-                    />
+                    extraData={this.state}
+                    renderItem={({ item }) => (
+                                <CardEmojiComponent 
+                                    text={item.text} 
+                                    emoji={item.emoji} 
+                                    onPress={() => this.selectItem(item)}
+                                    selected={item.isSelected}
+                                />
+                        )
+                    }
+                />
+
+                <Button
+                    action={this.emojiSelected}
+                    isDisabled={this.state.selectedEmoji == null}
+                    text={"Continuar"}
+                />
             </SafeAreaView>
         );
     }
