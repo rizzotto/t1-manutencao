@@ -5,7 +5,7 @@ import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
  * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
  * @param emoji String do emoji
  * @param text Descrição do emoji
- * @param onPress Função que deve ser executada ao cliar no Card
+ * @param onPress Função que deve ser executada ao clicar no Card
  *  
  * 
  * Uso do StyleSheet: StyleSheet.create({ ... });
