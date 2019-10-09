@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
-import { HistoryContainer, EmptyStateContainer } from '../Containers';
+import { HistoryContainer, EmptyStateContainer, CarouselContainer } from '../Containers';
 import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
 import { journalService } from '../Database';
 
@@ -52,7 +52,6 @@ export default class JournalsScreen extends Component {
     /** Invocado quando uma entrada no diário é selecionada. */
     onSelectEntry = (date) => {
         const entry = this._findEntry(this.state.entries, date);
-
         // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
         this.props.navigation.navigate("JournalEntryForm", {
             userId: this.userId,
@@ -63,6 +62,10 @@ export default class JournalsScreen extends Component {
     /** Invocado quando o botão no empty state é clicado. */
     createEntryFromEmptyState = () => {
         this.props.navigation.navigate("JournalEntryForm", { userId: this.userId });
+    }
+
+    onSelectEmoji = (item) => {
+        this.props.navigation.navigate("JournalEntryForm", {emoji: item, userId: this.userId})
     }
 
     render() {
@@ -84,11 +87,17 @@ export default class JournalsScreen extends Component {
             )
         } else {
             content = (
-                <HistoryContainer
-                    section={sections}
-                    hasEmoji={true}
-                    action={this.onSelectEntry}
-                />
+                <>
+                    <CarouselContainer
+                        action={this.onSelectEmoji}
+                    />
+                    <Text style={styles.carouselLabel}>Como você está se sentindo hoje?</Text>
+                    <HistoryContainer
+                        section={sections}
+                        hasEmoji={true}
+                        action={this.onSelectEntry}
+                    />
+                </>
             )
         }
 
@@ -109,5 +118,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
+    },
+    carouselLabel: {
+        alignItems: "center",
+        fontWeight: "bold",
+        fontSize: 17,
+        padding: 18,
+        textAlign: "center"
     }
 });

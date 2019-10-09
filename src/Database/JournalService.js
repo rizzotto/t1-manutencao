@@ -30,6 +30,20 @@ export default class JournalService {
     }
 
     /**
+     * Atualiza uma entrada de acompanhamento diário já existente
+     * 
+     * @param {String} userId identificador do usuário de quem a entrada se refere
+     * @param {any} entry objeto com as informações do acompanhamento diário (ver `docs/JournalEntry.js`)
+     * @param {date} date data de criação da entrada no journal
+     * @returns {Promise<any>} promise que completa quando a operação de atualização é finalizada
+     */
+    updateEntry = (userId, entry, date) => {
+        const datePath = this._mapDatePath(date);
+        const currentEntry = this.db.ref(`${userId}/journalEntries/${datePath}`);
+        return currentEntry.update(entry);
+    }
+
+    /**
      * Lista as entradas do diário de um usuário.
      * 
      * @param {string} userId id do usuário de quem as entradas do diário devem ser listadas

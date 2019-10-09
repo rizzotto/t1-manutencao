@@ -12,6 +12,7 @@ export { default as ListSubitemsScreen } from './ListSubitemsScreen';
 export { default as TextInputScreen } from './TextInputScreen';
 export { default as MultiTextInputScreen } from './MultiTextInputScreen';
 
+export { default as EmojiScreen } from './EmojiScreen'
 export { default as LoadingScreen } from './LoadingScreen';
 
 // funções
