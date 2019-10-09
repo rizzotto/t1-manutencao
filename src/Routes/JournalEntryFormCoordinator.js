@@ -78,7 +78,6 @@ export default class JournalEntryFormCoordinator extends Component {
     }
 
     pushBloodPressure = () => {
-        console.log(this.journalEntry);
         const saveResult = (result) => {
             this.journalEntry.bloodPressure = this.outputFilters.textInput.removeWhitespace(result);
             this.props.navigation.setParams({ hasData: true });
@@ -150,17 +149,32 @@ export default class JournalEntryFormCoordinator extends Component {
     }
 
     endFlow = () => {
-        this.journalEntry.creationDate = new Date();
-
-        const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
-            .then(() => this.props.navigation.navigate("Main"))
-            .catch(() => {
-                return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+        //Se já possui creationDate, atualiza o registro com os novos dados (não troca a data).
+        if(this.journalEntry.creationDate){
+            const update = journalService.updateEntry(this.getParam("userId"), this.journalEntry, this.journalEntry.creationDate)
+                .then(() => this.props.navigation.navigate("Main"))
+                .catch(() => {
+                    return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+                })
+            
+            this.props.navigation.push("Loading", {
+                operation: update
             })
-        
-        this.props.navigation.push("Loading", {
-            operation: save
-        })
+        }
+        //Caso contrário, realiza a criação de uma nova entrada.
+        else{
+            this.journalEntry.creationDate = new Date();
+
+            const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
+                .then(() => this.props.navigation.navigate("Main"))
+                .catch(() => {
+                    return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+                })
+            
+            this.props.navigation.push("Loading", {
+                operation: save
+            })
+        }
     }
 }
 
