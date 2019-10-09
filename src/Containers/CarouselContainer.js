@@ -6,7 +6,8 @@ import Arrow from '../Components/Arrow';
 /**
  * @author Bruno Guerra e Eduardo Lessa
  * Container com carrossel de itens, passados por props.
- * @param data array com os dados a serem mostrados no carrosel
+ * @param {array} data com os dados a serem mostrados no carrosel
+ * @param {function} action função a ser executada ao clicar no card do emoji
  */
 
 const DATA = [
