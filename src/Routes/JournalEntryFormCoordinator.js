@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtonComponent } from '../Components';
-import CreateCancelAlert from './CreateCancelAlert';
 import { TextInputScreen } from '../Screens';
-import { frequencyCodes } from '../Utils/frequencies';
+import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
-import database from '../Database/Firebase';
+import { journalService } from '../Database';
 
 export default class JournalEntryFormCoordinator extends Component {
+    static navigationOptions = ({ navigation }) => {
+        const dismiss = () => navigation.navigate("Main"); // voltar para tabbar (dismiss no modal)
+        const onCancel = () => {
+            // só mostra o alerta quando o usuário já tiver entrado com algum dado
+            if (navigation.getParam("hasData", false)) {
+                Alert.alert(...CreateCancelAlert(dismiss));
+            } else {
+                // se não tem dados, então apenas dá o dismiss no fluxo
+                dismiss();
+            }
+        }
+
+        return {
+            title: "Diário",
+            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+        };
+    }
 
     constructor(props) {
         super(props);
@@ -31,37 +47,51 @@ export default class JournalEntryFormCoordinator extends Component {
 
         this.defaultStressLevel = ["Baixo", "Médio", "Alto"];
         this.defaultSymptoms = ["Dor de cabeça", "Cansaço", "Falta de ar", "Desânimo", "Náusea", "Dor no peito"];
+
+        this.defaultParams = {
+            title: "Diário",
+            onCancel: this._onCancel
+        }
     }
 
-    render (){
+    _onCancel = () => {
+        const dismiss = () => this.props.navigation.navigate("Main");
+        Alert.alert(...CreateCancelAlert(dismiss));
+    }
+
+    render() {
         const saveResult = (result) => {
-            this.journalEntry.bloodPressure = result;
+            this.journalEntry.bloodPressure = this.outputFilters.textInput.removeWhitespace(result);
             this.props.navigation.setParams({ hasData: true });
         }
 
         const data = {
+            ...this.defaultParams,
             callout: "Pressão Arterial",
             placeholder: "00/00 mmHg",
-            progress: 0.20,
+            progress: 0.33,
             required: true,
             content: this.journalEntry.bloodPressure,
             onComplete: composeSavePush(saveResult, this.pushStressLevel)
         }
-        return (<TextInputScreen {...data}/>);
+
+        return <TextInputScreen {...data} />;
     }
 
     pushStressLevel = () => {
         const saveResult = (result) => {
-            this.journalEntry.stressLevel = result;
+            this.journalEntry.stressLevel = this.outputFilters.closedList.singleItem(result);
         }
 
-        const items = this.inputProducers.closedList.multipleSelected(this.defaultStressLevel, this.journalEntry.stressLevel);
+        const items = this.inputProducers.closedList.singleSelected(this.defaultStressLevel, this.journalEntry.stressLevel);
 
         this.props.navigation.push("List", {
             ...this.defaultParams,
-            titleText: "Nível de Stress",
+            titleText: "Nível de estresse",
             list: items,
-            width: 0.4, //barra de progresso
+            width: 0.5, // barra de progresso
+            minSelected: 1,
+            maxSelected: 1,
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })
     }
@@ -77,8 +107,7 @@ export default class JournalEntryFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Sintomas",
             list: items,
-            minSelected: 1,
-            width: 0.6,
+            width: 0.66,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
         })
@@ -93,10 +122,9 @@ export default class JournalEntryFormCoordinator extends Component {
 
         this.props.navigation.push("List", {
             ...this.defaultParams,
-            titleText: "Medicamentos",
+            titleText: "Medicamentos do dia",
             list: items,
-            minSelected: 1,
-            width: 0.8,
+            width: 0.83,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.endFlow),
         })
@@ -105,15 +133,21 @@ export default class JournalEntryFormCoordinator extends Component {
     endFlow = () => {
         this.journalEntry.creationDate = new Date();
 
-        // const save = database.saveAnamnesis(this.getParam("userId"), this.anamnesisRecord)
-        //     .then(() => this.props.navigation.navigate("Main"))
-        //     .catch(() => {
-        //         return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
-        //     })
+        // TODO: remover quando tela de emojis estiver pronta
+        this.journalEntry.humor = {
+            emotion: "😞",
+            text: "Cansado"
+        }
 
-        // this.props.navigation.push("Loading", {
-        //     operation: save
-        // });
+        const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
+            .then(() => this.props.navigation.navigate("Main"))
+            .catch(() => {
+                return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+            })
+        
+        this.props.navigation.push("Loading", {
+            operation: save
+        })
     }
 }
 
