@@ -17,6 +17,7 @@ import AppStyle from '../styles';
  *      'date': date validation
  *      '': all
  * - parentCall: (optional) callback function that recieves the validate and text states. 
+ * - maskType: (optional) tipo de mascara para input
  * bottom border:
  *        green: valid
  *        gray: not valid
@@ -153,6 +154,7 @@ export default class TextInputContainer extends React.Component {
         value={this.state.text} 
         inputMessage={this.props.description} 
         validate={this.state.validate}
+        mask={this.props.maskType ? this.props.maskType : undefined}
       />
     );
   }

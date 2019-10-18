@@ -18,6 +18,7 @@ import TextInputContainer from './TextInputContainer';
  * @param buttonText Texto do botão do container
  * @param altBtnText Texto alternativo do botão
  * @param btnAction (Opcional) Ação (função) que o botão deve executar quando clicado. Por padrão, envia os dados para o componente pai utilizando callback.
+ * @param maskType (Opcional) Tipo da mascara de input
  * 
  * Utiliza os componentes: TitleDescComponent, DefaultButtonComponent e TextInputContainer
  * 
@@ -111,6 +112,7 @@ export default class TitleInputContainer extends Component{
                         textCallback={this.updateInputValue}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
+                        maskType={this.props.maskType}
                     />
                 </KeyboardAwareScrollView>
                 <Button
