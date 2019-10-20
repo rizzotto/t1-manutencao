@@ -57,6 +57,20 @@ export default class ExamService {
     }
 
     /**
+     * Busca as URLs para download das imagens de um exame.
+     * 
+     * @param {string} userId ID do usuário que criou o exame
+     * @param {any} exam exame cujas URLs das imagens são requisitadas
+     * @returns {Promise<string>[]} array com promises que completam com uma URL de download de imagem, na mesma ordem das imagens em `exam.images`
+     */
+    getImagesDownloadURLs = (userId, exam) => {
+        const basePath = this._buildBasePath(userId, exam)
+        return exam.images.map(imageName => {
+            return this.storage.ref(`${basePath}/${imageName}`).getDownloadURL()
+        })
+    }
+
+    /**
      * Persiste uma imagem no Firebase Storage.
      * 
      * @param {string} basePath caminho base para a imagem no storage
