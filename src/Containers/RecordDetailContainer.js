@@ -14,6 +14,7 @@ export default class RecordDetailContainer extends Component {
         styleDescription={styles.generalDescription}
         titleText={this.props.anamnese.name}
         descriptionText={formatDate(this.props.anamnese.creationDate)} />
+
         <DetailedRecordComponent
         styleDescription={styles.detailRecordDescription}
         styleTitle={styles.detailRecordTitle}
@@ -92,17 +93,19 @@ const styles = StyleSheet.create({
       marginBottom: 7
   },
   styleView:{
-    paddingVertical: 4,
+    paddingVertical: 5,
     paddingRight: 7,
     paddingLeft: 7
   },
   detailRecordTitle:{
-    paddingVertical: 7
+    paddingVertical: 0,
+    fontWeight:'bold',
   },
   detailRecordDescription:{
-    paddingHorizontal: 2
+    paddingHorizontal: 0
   },
   generalTitle:{
+    fontWeight:"bold",
     marginLeft: 7,
     marginTop: 15,
   },
