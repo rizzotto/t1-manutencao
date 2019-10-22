@@ -3,7 +3,15 @@ import { Text, StyleSheet, TouchableOpacity, View, Image, ScrollView } from "rea
 import AppStyle from '../styles';
 import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 
-
+/**
+ * @param item item selecionado, a ser detalhado pelo container
+ * @param action função que permite editar o item selecionado, para ser repassada ao botão de editar
+ *  - Example:
+ *    <DiaryDetailContainer 
+ *          item={selectedItem}
+ *          action={_editItem()}
+ *    />
+ */
 
 export default class DiaryDetailContainer extends Component {
     
@@ -46,7 +54,7 @@ export default class DiaryDetailContainer extends Component {
                         {item.medicines.length===0 ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.medicines)}</Text> }
                     </View>
                 </ScrollView>
-                <DefaultButtonComponent text={"Editar"} action={this.test()}></DefaultButtonComponent>
+                <DefaultButtonComponent text={"Editar"} action={action}></DefaultButtonComponent>
             </View>
         )
     }
