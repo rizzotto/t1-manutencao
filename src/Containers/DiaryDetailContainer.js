@@ -7,31 +7,26 @@ import TitleDescComponent from '../Components/TitleDescComponent';
 export default class DiaryDetailContainer extends Component {
 
     
-    // format = (list) => {
-    //     for(i = 0; list.length; i++){
-    //         console.warn("DSDSA")
-    //     }
-    // }
+    format = (list) => {
+        let array = ''
+        for (var i = 0; i < list.length; i++) {
+            if(i===list.length-1) array = array + list[i] + '.'
+            else array = array + list[i] + ', '
+         }
+         return array
+    }
+
     render() {
-        const item = {
-            creationDate: new Date(),
-            comida: 12,
-            humor: {
-                emotion: "😡",
-                text: "Raiva",
-            },
-            bloodPressure: "12/8",
-            stressLevel: "Alto",
-            symptoms: ["Desânimo", "Dores no corpo"],
-            medicines: ["Diclofenaco", "ASS"]
-        }
+        const item = this.props.item
         
         return (
             <View style={styles.main}>
+
                 <View style={styles.emojiView}>
                     <Text style={styles.emojiImage}>{item.humor.emotion}</Text>
                     <Text style={styles.emojiText}>{item.humor.text}</Text>
                 </View>
+
                 <ScrollView style={styles.info}>
                     <Text style={styles.date}>{'Horário: ' + item.creationDate.getHours() + 'h' + item.creationDate.getMinutes() + 'min'}</Text>
                     <View>
@@ -39,34 +34,24 @@ export default class DiaryDetailContainer extends Component {
                         <Text style={styles.text}>{item.bloodPressure + ' mmHg.'} </Text>
                     </View>
                     <View>
+                        <Text style={styles.title}>Nível de Estresse:</Text>
+                        <Text style={styles.text}>{item.stressLevel + '.'}</Text>
+                    </View>
+
+
+
+                    <View>
                         <Text style={styles.title}>Sintomas:</Text>
-                        <Text style={styles.text}>ODISAODIJSA</Text>
+                        {item.symptoms.length===0 ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.symptoms)}</Text> }
                     </View>
+
+
                     <View>
-                        <Text style={styles.title}>OLA</Text>
-                        <Text style={styles.text}>OLDSADSAA</Text>
+                        <Text style={styles.title}>Medicamentos:</Text>
+                        {item.medicines.length===0 ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.medicines)}</Text> }
                     </View>
-                    <View>
-                        <Text style={styles.title}>OLA</Text>
-                        <Text style={styles.text}>OLDSADSAA</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.title}> OLA</Text>
-                        <Text style={styles.text}>OLDSADSAA</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.title}> OLA</Text>
-                        <Text style={styles.text}>OLDSADSAA</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.title}> OLA</Text>
-                        <Text style={styles.text}>OLDSADSAA</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.title}> OLA</Text>
-                        <Text style={styles.text}>SAUIDHISAUHDIUSSHIUDHSAIUDHASIUDHASIUHDSAIUHDIUSAHDIUSAHDIAUSHDSAIUHDAIUHDSIUUHDIUASHDHSAIUHDUSAIHDIUAHSDIUSHAIUDHSAIUDHISAUHDIUSAHDIUSAHDIUHSAIDUHSAIUHDSAIUHDIUHSAIDHUSAIUHDSAHIU</Text>
-                    </View>
-                    
+
+
                 </ScrollView>
             </View>
         )
@@ -76,7 +61,6 @@ export default class DiaryDetailContainer extends Component {
 const styles = StyleSheet.create({
     main:{
         flex: 1,
-        // backgroundColor: '#f33'
     },
     emojiView:{
         alignItems: 'center',
@@ -92,7 +76,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     date: {
-        // backgroundColor: '#d34666',
         fontSize: 20,
         color: AppStyle.colors.mediumGray,
     },
