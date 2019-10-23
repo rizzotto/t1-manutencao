@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     emojiImage:{
-        fontSize: 60,
+        fontSize: 70,
         marginTop: '4%' 
     },
     emojiText:{
