@@ -25,22 +25,30 @@ export default class ImageSelectionScreen extends Component {
     selectPhotos = () => {
         selectImages()
             .then(images => {
-                console.log("selecionou imagens", images)
+                // o react-native-image-crop-picker retorna um array de imagens ou uma única imagem
+                // temos que normalizar se ele retornar apenas uma imagem
+                if (!Array.isArray(images)) {
+                    images = [images]
+                }
+
+                images.forEach(img => img.uri = img.path)
                 this.setState({ ...this.state, images })
+
+                console.warn("selecionou imagens", images)
             })
     }
 
     render() {
         return (
-            <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+            <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#fff" }}>
                 <Button text="Adicionar fotos" action={this.selectPhotos} />
                 {/* TODO: remover quando o container de lista de imagens estiver pronto */}
                 <FlatList
                     style={{ flex: 1 }}
                     data={this.state.images}
-                    renderItem={(image) => {
+                    renderItem={({ item: image }) => {
                         return <Image
-                            source={{uri: `data:${image.mime};base64,${image.data}`}}
+                            source={{url: image.path}}
                             style={{ width: 100, height: 100, margin: 10 }}
                         />
                     }}
@@ -63,11 +71,12 @@ const selectImages = () => {
     const options = {
         mediaType: "photo",
         multiple: true,
-        includeBase64: true,
+        maxSelected: 10, // setar `0` ou `-1` volta para valor padrão, que é `5`
+        compressImageQuality: 0.7,
+        forceJpg: true,
         loadingLabelText: "Carregando imagens...",
         waitAnimationEnd: true,
         smartAlbums: ["RecentlyAdded", "UserLibrary", "Panoramas", "Favorites", "Bursts"],
-        maxSelected: 999 // setar `0` ou `-1` volta para valor padrão, que é `5`
     }
 
     return showImageSourceAlert().then(source => {
