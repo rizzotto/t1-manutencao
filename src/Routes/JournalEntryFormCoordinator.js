@@ -152,8 +152,8 @@ export default class JournalEntryFormCoordinator extends Component {
         //Se já possui creationDate, atualiza o registro com os novos dados (não troca a data).
         if(this.journalEntry.creationDate){
             const update = journalService.updateEntry(this.getParam("userId"), this.journalEntry, this.journalEntry.creationDate)
-                .then(() => this.props.navigation.navigate("JournalsHistory", {
-                    update: true
+                .then((x) => this.props.navigation.navigate("JournalsHistory", {
+                    updatedData: this.journalEntry
                 }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
@@ -163,13 +163,13 @@ export default class JournalEntryFormCoordinator extends Component {
                 operation: update
             })
         }
-        //Caso contrário, realiza a criação de uma nova entrada.
+        //Caso contrário, realiza a criação de u    ma nova entrada.
         else{
             this.journalEntry.creationDate = new Date();
 
             const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
-                .then(() => this.props.navigation.navigate("JournalsHistory", {
-                    update: true
+                .then((x) => this.props.navigation.navigate("JournalsHistory", {
+                    updatedData: this.journalEntry
                 }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
@@ -185,14 +185,4 @@ export default class JournalEntryFormCoordinator extends Component {
 const composeSavePush = (save, push) => (result) => {
     save(result);
     push();
-}
-
-const updateAfterOp = () => {
-    var x;
-    journalService.listEntries("user-id-001").then(entriesByMonth => {
-        const entryFormatter = new JournalEntryFormatter()
-        const sections = entryFormatter.buildHistoryEntries(entriesByMonth);
-        x = {entries: entriesByMonth, sections}
-        return x;
-    })
 }

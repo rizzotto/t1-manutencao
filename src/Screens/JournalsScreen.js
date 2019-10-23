@@ -13,7 +13,9 @@ export default class JournalsScreen extends Component {
         super(props);
 
         this.state = {
-            isLoading: true
+            isLoading: true,
+            updatedData: null,
+            hasUpdated: false
         }
 
         // TODO: tratar erro
@@ -31,8 +33,7 @@ export default class JournalsScreen extends Component {
             sections,
             entries: entriesByMonth,
             hasItems: sections.length !== 0,
-            isLoading: false,
-            update: false
+            isLoading: false
         })
     }
 
@@ -79,11 +80,20 @@ export default class JournalsScreen extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if(this.props.navigation.state.params){
-            if(this.props.navigation.state.params.update && this.state.update != this.props.navigation.state.params.update){
-                this.updateAfterOp();
-            }
+        console.log('update')
+        if(this.props.navigation.getParam('updatedData') && this.state.updatedData == null){
+            this.updateList(this.props.navigation.getParam('updatedData'));
         }
+    }
+
+    updateList = (item) => { 
+        let newEntries = this.state.entries;
+        let newSections = this.state.sections;
+        let indexEntries = this.state.entries[0].entries.findIndex(obj => obj.creationDate == item.creationDate);
+        let indexSections = this.state.sections[0].data.findIndex(obj => obj.date == item.creationDate);
+        newEntries[0].entries[indexEntries] = item;
+        newSections[0].data[indexSections] = item;
+        this.setState({sections: newSections, entries: newEntries, updatedData: null});
     }
 
     render() {
