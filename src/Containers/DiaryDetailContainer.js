@@ -27,6 +27,7 @@ export default class DiaryDetailContainer extends Component {
     render() {
         const item = this.props.item
         const action = this.props.action
+        console.log(item)
         return (
             <View style={styles.main}>
                 <ScrollView style={styles.info}>
@@ -45,11 +46,11 @@ export default class DiaryDetailContainer extends Component {
                     </View>
                     <View>
                         <Text style={styles.title}>Sintomas:</Text>
-                        {item.symptoms.length===0 ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.symptoms)}</Text> }
+                        {!item.symptoms ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.symptoms)}</Text> }
                     </View>
                     <View>
                         <Text style={styles.title}>Medicamentos:</Text>
-                        {item.medicines.length===0 ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.medicines)}</Text> }
+                        {!item.medicines ? <Text style={styles.text}>Nenhum.</Text> : <Text style={styles.text}>{this.format(item.medicines)}</Text> }
                     </View>
                 </ScrollView>
                 <DefaultButtonComponent text={"Editar"} action={action}></DefaultButtonComponent>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     emojiImage:{
-        fontSize: 70,
+        fontSize: 60,
         marginTop: '4%' 
     },
     emojiText:{

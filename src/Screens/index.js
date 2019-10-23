@@ -5,6 +5,7 @@ export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen';
 
 // diário
 export { default as JournalsScreen } from './JournalsScreen';
+export { default as DiaryDetailScreen } from './DiaryDetailScreen';
 
 // form
 export { default as ListScreen } from './ListScreen';
