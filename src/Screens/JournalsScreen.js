@@ -31,7 +31,8 @@ export default class JournalsScreen extends Component {
             sections,
             entries: entriesByMonth,
             hasItems: sections.length !== 0,
-            isLoading: false
+            isLoading: false,
+            update: false
         })
     }
 
@@ -66,6 +67,23 @@ export default class JournalsScreen extends Component {
 
     onSelectEmoji = (item) => {
         this.props.navigation.navigate("JournalEntryForm", {emoji: item, userId: this.userId})
+    }
+
+    updateAfterOp = () => {
+        let scope = this;
+        journalService.listEntries(this.userId).then(entriesByMonth => {
+            const entryFormatter = new JournalEntryFormatter()
+            const sections = entryFormatter.buildHistoryEntries(entriesByMonth)
+            scope.setState({sections, entries: entriesByMonth});
+        })
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.navigation.state.params){
+            if(this.props.navigation.state.params.update && this.state.update != this.props.navigation.state.params.update){
+                this.updateAfterOp();
+            }
+        }
     }
 
     render() {
