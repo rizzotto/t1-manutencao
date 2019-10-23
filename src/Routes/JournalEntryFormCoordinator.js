@@ -186,3 +186,13 @@ const composeSavePush = (save, push) => (result) => {
     save(result);
     push();
 }
+
+const updateAfterOp = () => {
+    var x;
+    journalService.listEntries("user-id-001").then(entriesByMonth => {
+        const entryFormatter = new JournalEntryFormatter()
+        const sections = entryFormatter.buildHistoryEntries(entriesByMonth);
+        x = {entries: entriesByMonth, sections}
+        return x;
+    })
+}
