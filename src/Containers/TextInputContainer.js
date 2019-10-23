@@ -50,7 +50,7 @@ export default class TextInputContainer extends React.Component {
   }
 
   textCallback = () => {
-    this.props.textCallback(this.state.text);
+    this.props.textCallback(this.state.text, this.props.index);
   }
 
   onChangeText = (text, type) => {
@@ -64,7 +64,13 @@ export default class TextInputContainer extends React.Component {
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
       var reEmail =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
-      if (type === 'numeric') {
+      if (this.props.required && !this.state.text) {
+        this.setState({
+          validate: false
+        })
+      }
+
+      else if (type === 'numeric') {
         if (reNumeric.test(this.state.text)) {
           this.setState({
             validate: true

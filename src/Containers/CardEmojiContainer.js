@@ -13,35 +13,87 @@ import { SafeAreaView } from 'react-navigation';
  */
 
 
-export default class CardEmojiContainer extends Component{
-    state = {
-        data: [
-          { text: "Raiva", emoji: "😡" },
-          { text: "Cansado", emoji: "😞" },
-          { text: "Chateado", emoji: "😕" },
-          { text: "Contente", emoji: "🙂" },
-          { text: "Feliz", emoji: "😄" },
-          { text: "Tanto Faz", emoji: "😐" }
-        ]
-      };
-   
-    
-    render(){
 
+export default class CardEmojiContainer extends Component {
+    state = {
+        selectedEmoji: this.props.firstSelected ? this.props.firstSelected : null,
+        DATA : [
+            { text: "Raiva", emoji: "😡", isSelected: false },
+            { text: "Cansado", emoji: "😞", isSelected: false},
+            { text: "Chateado", emoji: "😕", isSelected: false},
+            { text: "Contente", emoji: "🙂", isSelected: false},
+            { text: "Feliz", emoji: "😄", isSelected: false},
+            { text: "Tanto Faz", emoji: "😐", isSelected: false}
+        ]
+    };
+
+    componentDidMount(){
+        if(this.state.selectedEmoji){
+            let emoji = this.state.selectedEmoji;
+            const index = this.state.DATA.findIndex(x => x.text === emoji.text);
+            this.state.DATA.forEach(item => item.isSelected = false);
+            this.state.DATA[index].isSelected = true;
+            this.setState({
+                selectedEmoji: emoji
+            });
+        }
+    }
+    
+    selectItem = (item) => {
+        const index = this.state.DATA.indexOf(item);
+        const wasSelected = this.state.DATA[index].isSelected;
+
+        this.state.DATA.forEach(item => item.isSelected = false);
+
+        this.state.DATA[index].isSelected = !wasSelected;
+
+        if(wasSelected){
+            this.setState({
+                selectedEmoji: null,
+            });
+        }
+        else{
+        
+            this.setState({
+                selectedEmoji: item,
+            });      
+        } 
+        
+    }
+
+
+    emojiSelected = () => {
+        this.props.callback(this.state.selectedEmoji);
+    }
+
+
+    render() {
         return (
             <SafeAreaView>
+
+                <TitleDescription titleText={"Como está seu humor hoje?"} />
+
                 <FlatList
-                    data={this.state.data}
+                    data={this.state.DATA}
                     keyExtractor={item => item.text}
                     numColumns={3}
-                    renderItem={({ item }) => {
-                        return (
-                        <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                            <CardEmojiComponent text={item.text} emoji={item.emoji}/>
-                        </View>
-                        );
-                    }}
-                    />
+                    extraData={this.state}
+                    renderItem={({ item }) => (
+                                <CardEmojiComponent 
+                                    text={item.text} 
+                                    emoji={item.emoji} 
+                                    onPress={() => this.selectItem(item)}
+                                    selected={item.isSelected}
+                                />
+                        )
+                    }
+                />
+
+                <Button
+                    action={this.emojiSelected}
+                    isDisabled={this.state.selectedEmoji == null}
+                    text={"Continuar"}
+                />
             </SafeAreaView>
         );
     }
@@ -52,5 +104,9 @@ const styles = StyleSheet.create({
         padding: 2,
         marginLeft: 5,
         marginRight: 5,
+    },
+    title: {
+        marginTop: 50,
+        marginBottom: 40
     }
 })

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { HeaderButtonComponent } from '../Components';
-import { TextInputScreen } from '../Screens';
+import { TextInputScreen, EmojiScreen } from '../Screens';
 import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
@@ -60,25 +60,43 @@ export default class JournalEntryFormCoordinator extends Component {
     }
 
     render() {
+        const emojiAux = this.props.navigation.state.params.emoji;
+        const saveResult = (result) => {
+            this.journalEntry.humor = {
+                emotion: result.emotion ? result.emotion : result.emoji,
+                text: result.text
+            }
+        }
+        const data = {
+            ...this.defaultParams,
+            progress: 0,
+            content: this.journalEntry.humor,
+            onComplete: composeSavePush(saveResult, this.pushBloodPressure),
+            emoji:  emojiAux ? emojiAux : this.journalEntry.humor 
+        }
+        return <EmojiScreen {...data}/>
+    }
+
+    pushBloodPressure = () => {
         const saveResult = (result) => {
             this.journalEntry.bloodPressure = this.outputFilters.textInput.removeWhitespace(result);
             this.props.navigation.setParams({ hasData: true });
         }
 
-        const data = {
+        this.props.navigation.push("TextInput", {
             ...this.defaultParams,
             callout: "Pressão Arterial",
             placeholder: "00/00 mmHg",
-            progress: 0.33,
+            progress: 0.2,
             required: true,
             content: this.journalEntry.bloodPressure,
             onComplete: composeSavePush(saveResult, this.pushStressLevel)
-        }
+        })
 
-        return <TextInputScreen {...data} />;
     }
 
     pushStressLevel = () => {
+        
         const saveResult = (result) => {
             this.journalEntry.stressLevel = this.outputFilters.closedList.singleItem(result);
         }
@@ -89,7 +107,7 @@ export default class JournalEntryFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Nível de estresse",
             list: items,
-            width: 0.5, // barra de progresso
+            width: 0.4, // barra de progresso
             minSelected: 1,
             maxSelected: 1,
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
@@ -107,7 +125,7 @@ export default class JournalEntryFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Sintomas",
             list: items,
-            width: 0.66,
+            width: 0.6,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.pushMedicines),
         })
@@ -124,30 +142,39 @@ export default class JournalEntryFormCoordinator extends Component {
             ...this.defaultParams,
             titleText: "Medicamentos do dia",
             list: items,
-            width: 0.83,
+            width: 0.8,
             hasInput: true,
             onComplete: composeSavePush(saveResult, this.endFlow),
         })
     }
 
     endFlow = () => {
-        this.journalEntry.creationDate = new Date();
-
-        // TODO: remover quando tela de emojis estiver pronta
-        this.journalEntry.humor = {
-            emotion: "😞",
-            text: "Cansado"
-        }
-
-        const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
-            .then(() => this.props.navigation.navigate("Main"))
-            .catch(() => {
-                return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+        //Se já possui creationDate, atualiza o registro com os novos dados (não troca a data).
+        if(this.journalEntry.creationDate){
+            const update = journalService.updateEntry(this.getParam("userId"), this.journalEntry, this.journalEntry.creationDate)
+                .then(() => this.props.navigation.navigate("Main"))
+                .catch(() => {
+                    return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+                })
+            
+            this.props.navigation.push("Loading", {
+                operation: update
             })
-        
-        this.props.navigation.push("Loading", {
-            operation: save
-        })
+        }
+        //Caso contrário, realiza a criação de uma nova entrada.
+        else{
+            this.journalEntry.creationDate = new Date();
+
+            const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
+                .then(() => this.props.navigation.navigate("Main"))
+                .catch(() => {
+                    return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
+                })
+            
+            this.props.navigation.push("Loading", {
+                operation: save
+            })
+        }
     }
 }
 

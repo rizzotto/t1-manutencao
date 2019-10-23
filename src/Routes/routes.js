@@ -3,7 +3,7 @@ import {
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
     JournalsScreen,
     ListSubitemsScreen, ListScreen, TextInputScreen,
-    LoadingScreen, CreateTabBarIcon
+    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
@@ -31,6 +31,7 @@ const AnamnesisForm = createStackNavigator({
 
     // demais entradas para os tipos de telas do form (entrada de texto, listagem fechada, ...)
     TextInput: TextInputScreen,
+    MultiTextInput: MultiTextInputScreen,
     List: ListScreen,
     SubitemsList: ListSubitemsScreen
 }, {
@@ -59,7 +60,8 @@ AnamnesisTab.navigationOptions = {
 const JournalEntryForm = createStackNavigator({
     Coordinator: JournalEntryFormCoordinator,
     TextInput: TextInputScreen,
-    List: ListScreen
+    List: ListScreen,
+    Emoji: EmojiScreen
 }, {
     defaultNavigationOptions,
     initialRouteName: "Coordinator",
