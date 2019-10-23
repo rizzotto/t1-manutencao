@@ -29,13 +29,11 @@ export default class DiaryDetailContainer extends Component {
         const action = this.props.action
         return (
             <View style={styles.main}>
-
-                <View style={styles.emojiView}>
-                    <Text style={styles.emojiImage}>{item.humor.emotion}</Text>
-                    <Text style={styles.emojiText}>{item.humor.text}</Text>
-                </View>
-
                 <ScrollView style={styles.info}>
+                    <View style={styles.emojiView}>
+                        <Text style={styles.emojiImage}>{item.humor.emotion}</Text>
+                        <Text style={styles.emojiText}>{item.humor.text}</Text>
+                    </View>
                     <Text style={styles.date}>{'Horário: ' + item.creationDate.getHours() + 'h' + item.creationDate.getMinutes() + 'min'}</Text>
                     <View>
                         <Text style={styles.title}>Pressão:</Text>
@@ -70,7 +68,7 @@ const styles = StyleSheet.create({
     },
     emojiImage:{
         fontSize: 70,
-        marginTop: '5%' 
+        marginTop: '4%' 
     },
     emojiText:{
         fontSize: 25,
@@ -79,14 +77,13 @@ const styles = StyleSheet.create({
     },
     date: {
         fontSize: 20,
-        color: AppStyle.colors.mediumGray,
+        color: AppStyle.colors.darkGray,
+        marginTop: "4%"
     },
     info: {
         margin: '5%',
-        // backgroundColor: '#4ff'
     },
     title:{
-        // backgroundColor: '#e3e',
         marginTop: '7%',
         fontWeight: 'bold',
         fontSize: 18
