@@ -27,7 +27,6 @@ export default class DiaryDetailContainer extends Component {
     render() {
         const item = this.props.item
         const action = this.props.action
-        console.log(item)
         return (
             <View style={styles.main}>
                 <ScrollView style={styles.info}>

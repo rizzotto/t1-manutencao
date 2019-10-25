@@ -3,7 +3,7 @@ import {
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
     JournalsScreen,
     ListSubitemsScreen, ListScreen, TextInputScreen,
-    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen
+    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
@@ -106,8 +106,9 @@ const AppNavigator = createStackNavigator({
     AnamnesisForm: AnamnesisForm,
     JournalEntryForm: JournalEntryForm,
 
-    // tela de carregamento
-    Loading: LoadingScreen
+    // telas auxiliares
+    Loading: LoadingScreen,
+    Gallery: GalleryScreen
 }, {
     // esconder header e apresentar com animação de modal (de baixo para cima)
     mode: "modal",

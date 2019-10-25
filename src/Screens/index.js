@@ -15,6 +15,7 @@ export { default as MultiTextInputScreen } from './MultiTextInputScreen';
 
 export { default as EmojiScreen } from './EmojiScreen'
 export { default as LoadingScreen } from './LoadingScreen';
+export { default as GalleryScreen } from './GalleryScreen';
 
 // funções
 export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';
