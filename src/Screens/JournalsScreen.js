@@ -13,9 +13,7 @@ export default class JournalsScreen extends Component {
         super(props);
 
         this.state = {
-            isLoading: true,
-            updatedData: null,
-            hasUpdated: false
+            isLoading: true
         }
 
         // TODO: tratar erro
@@ -80,20 +78,24 @@ export default class JournalsScreen extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log('update')
-        if(this.props.navigation.getParam('updatedData') && this.state.updatedData == null){
+        if(this.props.navigation.getParam('updatedData')){
             this.updateList(this.props.navigation.getParam('updatedData'));
         }
     }
 
-    updateList = (item) => { 
+    updateList = (item) => {
+        const creationDate = this.props.navigation.getParam('creationDate') ? this.props.navigation.getParam('creationDate') : item.creationDate;
         let newEntries = this.state.entries;
-        let newSections = this.state.sections;
-        let indexEntries = this.state.entries[0].entries.findIndex(obj => obj.creationDate == item.creationDate);
-        let indexSections = this.state.sections[0].data.findIndex(obj => obj.date == item.creationDate);
-        newEntries[0].entries[indexEntries] = item;
-        newSections[0].data[indexSections] = item;
-        this.setState({sections: newSections, entries: newEntries, updatedData: null});
+        let indexEntries = this.state.entries[0].entries.findIndex(obj => obj.creationDate == creationDate);
+        if(indexEntries == -1){
+            item.creationDate = creationDate;
+            newEntries[0].entries.push(item);
+        }
+        else{
+            newEntries[0].entries[indexEntries] = item;
+        }
+        this.props.navigation.state.params.updatedData = null;
+        this.updateUI(newEntries);
     }
 
     render() {
