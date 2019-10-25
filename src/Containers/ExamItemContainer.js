@@ -1,17 +1,23 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, FlatList, TouchableOpacity, ImageBackground, Image} from 'react-native';
+import {StyleSheet, View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import AppStyle from '../styles';
-import { bold } from 'ansi-colors';
+
 /**
-     * @param 
-     * @return Container do item da lista de exames
-     */
+ * @author Gabriel Franzoni, João Leão
+ * 
+ * @param
+ * Uso do StyleSheet: StyleSheet.create({ ... });
+ * 
+ * Exemplo de uso: <ExamItemContainer></ExamItemContainer>
+ * @return Container do Item dos Exames
+ */
 
 export default class ExamItemContainer extends Component {
     defaultAction = () => {
         console.log("Funcionalidade não implementada");
     }
     state = {
+        // O data precisa ser futuramente substituido por callbacks
         data: [
             { id: 0, src: require("../Resources/00.jpg") },
             { id: 1, src: require("../Resources/01.jpeg") },
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         flex: 1,
         fontSize: 50,
-        // fontWeight: "bold",
         color: AppStyle.colors.darkGray,
     }
 })
