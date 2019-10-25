@@ -80,6 +80,7 @@ export default class AnamnesisFormCoordinator extends Component {
             callout: "Informe seus dados pessoais",
             description: ["Nome", "E-mail", "Data de Nascimento"],
             placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
+            inputMask: [null, null, {mask: 'datetime', options:{format: 'DD/MM/YYYY'}}],
             progress: 0.0909,
             required: true,
             content: [this.anamnesisRecord.name, this.anamnesisRecord.email, currentDate],

@@ -38,6 +38,7 @@ export default class TextInputScreen extends Component{
         const content = this.getParam("content");
         const keyboardType = this.getParam("keyboardType");
         const required = this.getParam("required", false);
+        const mask = this.getParam("inputMask");
 
         return (
             <SafeAreaView style={styles.container}>
@@ -52,7 +53,7 @@ export default class TextInputScreen extends Component{
                     keyboardType={keyboardType}
                     requiredInput={required}
                     callbackToScreen={this._onComplete}
-                    maskType={this.props.inputMask ? this.props.inputMask : undefined}
+                    maskType={mask ? mask : undefined}
                 />
             </SafeAreaView>
         );

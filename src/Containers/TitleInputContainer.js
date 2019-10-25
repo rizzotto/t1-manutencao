@@ -92,7 +92,6 @@ export default class TitleInputContainer extends Component{
     }
     
     render(){
-
         return (
             <View style={styles.container}>
                 <KeyboardAwareScrollView style={styles.content}
@@ -112,7 +111,7 @@ export default class TitleInputContainer extends Component{
                         textCallback={this.updateInputValue}
                         description={this.props.inputDescription}
                         type={this.props.keyboardType}
-                        maskType={this.props.maskType}
+                        inputMask={this.props.maskType}
                     />
                 </KeyboardAwareScrollView>
                 <Button
