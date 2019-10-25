@@ -3,7 +3,7 @@ import {
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
     JournalsScreen,
     ListSubitemsScreen, ListScreen, TextInputScreen,
-    LoadingScreen, GalleryScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen
+    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
@@ -69,7 +69,8 @@ const JournalEntryForm = createStackNavigator({
 
 // TAB
 const JournalsTab = createStackNavigator({
-    JournalsHistory: JournalsScreen
+    JournalsHistory: JournalsScreen,
+    DiaryDetail: DiaryDetailScreen
 }, {
     defaultNavigationOptions
 });
