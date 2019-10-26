@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Icon, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { Icon } from 'react-native-elements';
 import AppStyle from '../styles';
 
 export default class SearchInputComponent extends Component {
@@ -19,8 +20,8 @@ export default class SearchInputComponent extends Component {
 
     render() {
       return (
-        <View style={styles.searchView}>
-          <Icon name="ios-search"/>
+        <View style={styles.searchView} >
+          <Icon name="search" type='font-awesome'/>
           <TextInput
             style={[styles.searchImput, this.props.style]}
             placeholder={this.props.inputMessage || 'Pesquisar'}
@@ -46,5 +47,8 @@ const styles = StyleSheet.create({
   searchView: {
     borderRadius: 10,
     backgroundColor: AppStyle.colors.lightGray
+  },
+  searchIcon: {
+
   }
 })
