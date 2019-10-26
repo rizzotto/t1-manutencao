@@ -1,22 +1,45 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 
 /**
  * @param onClick ação ao clickar na imagem.
  * @param sourceImage require('source da imagem')
- * @param promisse promisse do request do firebase
+ * @param promise promise do request do firebase
+ * Exemplo de promise
+ * const ttt = new Promise((res, rej) => {
+      setTimeout(() => {
+        res("https://i.pinimg.com/236x/eb/fa/0a/ebfa0af9eda21be41e635bbdd8149323--pool-scrap.jpg")
+      }, 3000);
+    })
  */
 
 export default class ImageComponent extends Component {
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        sourceImage: null
+      }
+
+      props.promise.then(url => {
+        this.setState({ ...this.state, sourceImage: url })
+      })
+    }
+
     render() {
-        sourceImage = this.props.sourceImage
-        ready = false
+        const sourceImage = this.state.sourceImage
+        const ready = sourceImage !== null
         imageStyle = this.props.imageStyle
       return (
             <TouchableOpacity onClick={this.props.onClick}>
-                    <Image style={imageStyle==null ? styles.defaultImageStyle : imageStyle}
-                        source = {ready ? sourceImage : require('../Resources/loading.gif')}
-                    />
+              {
+                ready
+                ? <Image style={[styles.defaultImageStyle, imageStyle]}
+                    source = {{ uri: sourceImage }}
+                />
+                : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
+              }
+                    
             </TouchableOpacity>
       );
     }
