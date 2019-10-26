@@ -15,7 +15,7 @@ import ImageComponent from '../Components/ImageComponent';
  * 
  * @return Container da lista de imagem
  * Exemplo de uso: 
- * <ItemListContainer 
+ * <ImageListContainer 
  *  add={true} 
  *  data={imageList} 
  *  addAction={selectImages}
@@ -23,7 +23,7 @@ import ImageComponent from '../Components/ImageComponent';
  *  isTouchable={true} />
  */
 
-export default class ItemListContainer extends Component {
+export default class ImageListContainer extends Component {
     constructor(props) {
         super(props);
         add = this.props.add
