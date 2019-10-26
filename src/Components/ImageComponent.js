@@ -5,6 +5,7 @@ import { Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-na
  * @param onClick ação ao clickar na imagem.
  * @param sourceImage require('source da imagem')
  * @param promise promise do request do firebase
+ * @param isTouch isTouch=true ou isTouch=false
  * Exemplo de promise
  * const ttt = new Promise((res, rej) => {
       setTimeout(() => {
@@ -14,41 +15,63 @@ import { Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-na
  */
 
 export default class ImageComponent extends Component {
-    constructor(props) {
-      super(props)
+  constructor(props) {
+    super(props)
 
+    if (props.sourceImage) {
+      this.state = {
+        sourceImage: props.sourceImage
+      }
+    } else {
       this.state = {
         sourceImage: null
       }
 
       props.promise.then(url => {
-        this.setState({ ...this.state, sourceImage: url })
+        this.setState({ ...this.state, sourceImage: { uri: url } })
       })
-    }
-
-    render() {
-        const sourceImage = this.state.sourceImage
-        const ready = sourceImage !== null
-        imageStyle = this.props.imageStyle
-      return (
-            <TouchableOpacity onClick={this.props.onClick}>
-              {
-                ready
-                ? <Image style={[styles.defaultImageStyle, imageStyle]}
-                    source = {{ uri: sourceImage }}
-                />
-                : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
-              }
-                    
-            </TouchableOpacity>
-      );
     }
   }
 
-  const styles = StyleSheet.create({
-    defaultImageStyle: {
-        width: 100,
-        height: 100,
-        margin: '0.5%',
+  render() {
+    const sourceImage = this.state.sourceImage
+    const ready = sourceImage !== null
+    const isTouch = this.props.isTouch === null ? false : this.props.isTouch
+    imageStyle = this.props.imageStyle
+    if (isTouch === true) {
+      return (
+
+        <TouchableOpacity onPress={this.props.onClick}>
+          {
+            ready
+              ? <Image style={[styles.defaultImageStyle, imageStyle]}
+                source={sourceImage}
+              />
+              : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
+          }
+
+        </TouchableOpacity>
+      );
     }
+
+
+    else {
+      return (
+            ready
+              ? <Image style={[styles.defaultImageStyle, imageStyle]}
+                source={ sourceImage }
+              />
+              : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
+      );
+    }
+
+  }
+}
+
+const styles = StyleSheet.create({
+  defaultImageStyle: {
+    width: 110,
+    height: 110,
+    // margin: '0.5%',
+  }
 });
