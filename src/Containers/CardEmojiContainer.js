@@ -79,12 +79,12 @@ export default class CardEmojiContainer extends Component {
                     numColumns={3}
                     extraData={this.state}
                     renderItem={({ item }) => (
-                                <CardEmojiComponent 
-                                    text={item.text} 
-                                    emoji={item.emoji} 
-                                    onPress={() => this.selectItem(item)}
-                                    selected={item.isSelected}
-                                />
+                        <CardEmojiComponent style={styles.card}
+                            text={item.text} 
+                            emoji={item.emoji} 
+                            onPress={() => this.selectItem(item)}
+                            selected={item.isSelected}
+                        />
                         )
                     }
                 />
@@ -101,9 +101,10 @@ export default class CardEmojiContainer extends Component {
 
 const styles = StyleSheet.create({
     card: {
-        padding: 2,
-        marginLeft: 5,
-        marginRight: 5,
+        flexGrow: 1,
+        flexBasis: 0,
+        margin: 9,
+        minHeight: 130
     },
     title: {
         marginTop: 50,
