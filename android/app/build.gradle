@@ -202,9 +202,6 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-     // For animated GIF support (src/Resources/loading.gif)
-    compile 'com.facebook.fresco:animated-gif:1.+'
-    
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
