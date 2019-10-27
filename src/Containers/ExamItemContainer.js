@@ -17,6 +17,7 @@ const IMAGES_PER_PAGE = 3
  * @param date data da criação do exame
  * @param images imagens do exame; lista de objetos com promises ou imagens locais (ver exemplo abaixo)
  * @param onPress função chamada quando um item é clicado
+ * @param style estilo aplicado ao componente
  * 
  * Exemplo de uso:
  * 

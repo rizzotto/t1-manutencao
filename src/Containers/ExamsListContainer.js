@@ -11,6 +11,7 @@ import ExamItemContainer from './ExamItemContainer';
  *   - `description`: descrição do exame
  *   - `date`: data de cadastro do exame
  *   - `images`: lista de imagens dos exames, com objetos no formato esperado pelo `ImageComponent` (ver exemplo abaixo)
+ * - `onSelect`: função chamada quando um exame é tocado; índice do exame é passado como parâmetro
  * - `style`: estilo aplicado à lista
  * 
  * Exemplo de uso:
