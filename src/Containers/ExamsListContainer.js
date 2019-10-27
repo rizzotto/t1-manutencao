@@ -2,72 +2,50 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import ExamItemContainer from './ExamItemContainer';
 
-const makePromise = (url) => {
-    return Promise.resolve(url)
-}
-
-const data = [
-    {
-        title: "Lorem Ipsum",
-        description: "Dolor sit amet, consectetur adipiscing elit",
-        date: new Date(),
-        images: [
-            { promise: makePromise("https://via.placeholder.com/150") },
-            { promise: makePromise("https://via.placeholder.com/300") },
-            { promise: makePromise("https://via.placeholder.com/450") },
-            { promise: makePromise("https://via.placeholder.com/600") }
-        ]
-    },
-    {
-        title: "Item 2",
-        description: "Descrição bem legal que deve ser bem grande para testar se vai dar certo mesmo",
-        date: new Date("2010-12-12"),
-        images: [
-            { promise: makePromise("https://via.placeholder.com/150") },
-            { promise: makePromise("https://via.placeholder.com/300") },
-            { promise: makePromise("https://via.placeholder.com/450") },
-            { promise: makePromise("https://via.placeholder.com/600") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") }
-        ]
-    },
-    {
-        title: "Terceiro item (váááárias ibagens)",
-        description: "beloved...?",
-        date: new Date("2009-10-01"),
-        images: [
-            { promise: makePromise("https://via.placeholder.com/150") },
-            { promise: makePromise("https://via.placeholder.com/300") },
-            { promise: makePromise("https://via.placeholder.com/450") },
-            { promise: makePromise("https://via.placeholder.com/600") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") },
-            { promise: makePromise("https://via.placeholder.com/750") }
-        ]
-    },
-    {
-        title: "4444444",
-        description: "4",
-        date: new Date("2005-09-10"),
-        images: [
-            { promise: makePromise("https://images.unsplash.com/photo-1569271836752-ed9351b75521?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9") },
-            { promise: makePromise("https://images.unsplash.com/photo-1569448829586-2e4995a3d607?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9") }
-        ]
-    }
-]
-
+/**
+ * Container de lista de exames.
+ * 
+ * Parâmetros:
+ * - `data`: lista com exames a serem exibidos, onde cada objeto tem as seguintes propriedades:
+ *   - `title`: título do exame
+ *   - `description`: descrição do exame
+ *   - `date`: data de cadastro do exame
+ *   - `images`: lista de imagens dos exames, com objetos no formato esperado pelo `ImageComponent` (ver exemplo abaixo)
+ * - `style`: estilo aplicado à lista
+ * 
+ * Exemplo de uso:
+ * 
+ *     <ExamsListContainer
+ *         data={[
+ *             {
+ *                 title: "Dr. Carlos",
+ *                 description: "Exame de sangue, cardiograma, hemograma, mais texto",
+ *                 date: new Date("2019-10-10"),
+ *                 images: [{ promise: Promise.value("...url") }, { sourceImage: require("...path") }]
+ *             }
+ *         ]}
+ *     >
+ * />
+ */
 export default class ExamsListContainer extends Component {
+    /**
+     * Função chamada quando um exame é clicado.
+     * @param {number} index índice do elemento clicado
+     */
+    onSelect = (index) => {
+        const onSelect = this.props.onSelect
+        if (!onSelect) return;
+        onSelect(index)
+    }
+
     render() {
         return (
-            <FlatList style={styles.list}
-                data={data}
+            <FlatList style={[styles.list, this.props.style]}
+                data={this.props.data}
                 renderItem={({ item, index }) => (
                     <ExamItemContainer { ...item }
                         style={styles.item}
-                        onPress={() => console.warn("press", index)} />
+                        onPress={() => this.onSelect(index)} />
                 )}
                 keyExtractor={(item) => `exam#${item.date.getTime()}` }
             />

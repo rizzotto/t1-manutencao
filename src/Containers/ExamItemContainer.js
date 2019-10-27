@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { ImageComponent } from '../Components';
 import AppStyle from '../styles';
-import ImageComponent from '../Components/ImageComponent';
 
 // total de imagens exibidas
 const MAX_IMAGES = 6
@@ -16,6 +16,7 @@ const IMAGES_PER_PAGE = 3
  * @param description descrição do exame
  * @param date data da criação do exame
  * @param images imagens do exame; lista de objetos com promises ou imagens locais (ver exemplo abaixo)
+ * @param onPress função chamada quando um item é clicado
  * 
  * Exemplo de uso:
  * 
@@ -99,8 +100,13 @@ export default class ExamItemContainer extends Component {
                         if (item.empty) {
                             return <View style={styles.item} />
                         } else if (item.multiple) {
-                            // TODO: usar item.count para exibir quantidade de imagens extras
-                            return <View style={[styles.item, { backgroundColor: "#f00" }]} />
+                            return (
+                                <ImageComponent imageStyle={styles.item} { ...item }>
+                                    <View style={styles.darkOverlay}>
+                                        <Text style={styles.darkOverlayText}>+{item.count}</Text>
+                                    </View>
+                                </ImageComponent>
+                            )
                         } else {
                             return <ImageComponent imageStyle={styles.item} { ...item } />
                         }
@@ -139,5 +145,18 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         margin: 1,
         backgroundColor: AppStyle.colors.background
+    },
+
+    darkOverlay: {
+        flex: 1,
+        alignSelf: "stretch",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    darkOverlayText: {
+        fontSize: 20,
+        fontWeight: Platform.OS === "ios" ? "600" : "bold",
+        color: AppStyle.colors.lightText
     }
 })

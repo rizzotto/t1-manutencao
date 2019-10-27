@@ -37,6 +37,9 @@ export default class ImageComponent extends Component {
   render() {
     const { source, isLoaded } = this.state
 
+    // se tem algum children, não mostra o loading
+    const showsLoading = this.props.children === null || this.props.children === undefined
+
     return (
       <TouchableOpacity disabled={!this.props.isTouch} onPress={this.props.onClick}>
         <ImageBackground
@@ -44,7 +47,10 @@ export default class ImageComponent extends Component {
           source={source}
           onLoad={this.onLoad}
         >
-            { !isLoaded && <ActivityIndicator /> }
+          { showsLoading && !isLoaded
+              ? <ActivityIndicator />
+              : this.props.children
+          }
         </ImageBackground>
       </TouchableOpacity>
     )
@@ -57,5 +63,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 110,
     height: 110
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    justifyContent: "center"
   }
 })
