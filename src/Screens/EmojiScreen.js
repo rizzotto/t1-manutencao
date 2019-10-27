@@ -22,7 +22,7 @@ export default class EmojiScreen extends Component{
         const progress = this.getParam("progress");
         return (
             <SafeAreaView style={styles.container}>
-                <ProgressBar width={progress}/>
+                <ProgressBar width={progress} style={styles.progressBar}/>
                 <CardEmojiContainer
                     callback={this.selectedEmoji}
                     firstSelected={this.getParam('emoji')}
@@ -36,5 +36,8 @@ export default class EmojiScreen extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    progressBar: {
+        zIndex: 100
     }
 });
