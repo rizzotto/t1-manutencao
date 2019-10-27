@@ -53,7 +53,7 @@ export default class JournalsScreen extends Component {
     onSelectEntry = (date) => {
         const entry = this._findEntry(this.state.entries, date);
         // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
-        this.props.navigation.navigate("JournalEntryForm", {
+        this.props.navigation.navigate("DiaryDetail", {
             userId: this.userId,
             journalEntry: entry
         });
