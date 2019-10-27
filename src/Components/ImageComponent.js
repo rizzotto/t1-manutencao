@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 
 /**
  * @param onClick ação ao clickar na imagem.
@@ -18,60 +18,44 @@ export default class ImageComponent extends Component {
   constructor(props) {
     super(props)
 
-    if (props.sourceImage) {
-      this.state = {
-        sourceImage: props.sourceImage
-      }
-    } else {
-      this.state = {
-        sourceImage: null
-      }
+    this.state = {
+      isLoaded: false,
+      source: props.sourceImage
+    }
 
+    if (props.promise) {
       props.promise.then(url => {
-        this.setState({ ...this.state, sourceImage: { uri: url } })
+        this.setState({ ...this.state, source: { uri: url } })
       })
     }
   }
 
+  onLoad = () => {
+    this.setState({ ...this.state, isLoaded: true })
+  }
+
   render() {
-    const sourceImage = this.state.sourceImage
-    const ready = sourceImage !== null
-    const isTouch = this.props.isTouch === null ? false : this.props.isTouch
-    imageStyle = this.props.imageStyle
-    if (isTouch === true) {
-      return (
+    const { source, isLoaded } = this.state
 
-        <TouchableOpacity onPress={this.props.onClick}>
-          {
-            ready
-              ? <Image style={[styles.defaultImageStyle, imageStyle]}
-                source={sourceImage}
-              />
-              : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
-          }
-
-        </TouchableOpacity>
-      );
-    }
-
-
-    else {
-      return (
-            ready
-              ? <Image style={[styles.defaultImageStyle, imageStyle]}
-                source={ sourceImage }
-              />
-              : <ActivityIndicator style={styles.defaultImageStyle} color="#f00" />
-      );
-    }
-
+    return (
+      <TouchableOpacity disabled={!this.props.isTouch} onPress={this.props.onClick}>
+        <ImageBackground
+          style={[styles.image, this.props.imageStyle]}
+          source={source}
+          onLoad={this.onLoad}
+        >
+            { !isLoaded && <ActivityIndicator /> }
+        </ImageBackground>
+      </TouchableOpacity>
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  defaultImageStyle: {
+  image: {
+    justifyContent: "center",
+    alignItems: "center",
     width: 110,
-    height: 110,
-    // margin: '0.5%',
+    height: 110
   }
-});
+})
