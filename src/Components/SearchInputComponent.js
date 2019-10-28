@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
-import { Icon } from 'react-native-elements';
 import AppStyle from '../styles';
 
 /**
