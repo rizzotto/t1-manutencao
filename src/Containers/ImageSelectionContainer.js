@@ -4,6 +4,8 @@ import { TitleDescription, Button } from '../Components';
 import { ImageListContainer } from '../Containers';
 
 /**
+ * Container de seleção de imagens, com suporte a título, descrição, visualização e adição de imagens.
+ * 
  * Parâmetros:
  * - `title`: título do container
  * - `description`: descrição do container

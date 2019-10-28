@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import ImagePicker from "react-native-image-crop-picker";
 import { ProgressBar } from '../Components';
 import { ImageSelecionContainer } from '../Containers';
@@ -9,9 +10,15 @@ import AppStyle from '../styles';
  * Screen para seleção de imagens de exames.
  * 
  * Parâmetros:
- * - ...
+ * - `progress`: porcentagem da barra de progresso
+ * - `title`: título da tela
+ * - `description`: descrição da tela
+ * - `onComplete`: função chamada quando o usuário toca no botão "Continuar", com as imagens selecionadas
+ * 
+ * NOTA: essa screen depende do react-navigation, portanto a classe não é exportada na definição
+ * (ver `export default` abaixo da definição da classe).
  */
-export default class ImageSelectionScreen extends Component {
+class ImageSelectionScreen extends Component {
 
     constructor(props) {
         super(props)
@@ -79,7 +86,9 @@ export default class ImageSelectionScreen extends Component {
     }
 
     render() {
-        const { progress, title, description } = this.props
+        const progress = this.getParam("progress", 0)
+        const title = this.getParam("title", "")
+        const description = this.getParam("description", "")
         const { images } = this.state
 
         return (
@@ -97,6 +106,12 @@ export default class ImageSelectionScreen extends Component {
         )
     }
 }
+
+/**
+ * Precisamos usar o react-navigation para ter acesso ao `navigation` quando essa screen é
+ * renderizada como um componente (no `render`).
+ */
+export default withNavigation(ImageSelectionScreen);
 
 const styles = StyleSheet.create({
     container: {
