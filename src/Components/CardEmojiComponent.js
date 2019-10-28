@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View, Platform } from "react-native";
+import AppStyle from '../styles';
 
 /**
  * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
@@ -19,10 +20,14 @@ export default class CardEmojiComponent extends Component {
         const styles = createStyles(selected);
 
         return (
-            <TouchableOpacity style={styles.shadow} onPress={this.props.onPress}>
-                <View>
-                    <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
-                    <Text style={styles.centerText}> {this.props.text} </Text>
+            <TouchableOpacity style={[styles.shadow, this.props.style]} onPress={this.props.onPress}>
+                <View style={styles.container}>
+                    <View>
+                        <Text style={styles.centerEmoji}> {this.props.emoji} </Text>
+                    </View>
+                    <View>
+                        <Text style={styles.centerText}> {this.props.text} </Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
@@ -33,32 +38,34 @@ export default class CardEmojiComponent extends Component {
 const createStyles = (selected) => {
     return StyleSheet.create({
         shadow: {
-            shadowColor: '#000',
-            borderColor: selected ? "#FDBB61" : '#fff',
-            borderWidth: 3,
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            elevation: 5,
+            shadowColor: AppStyle.colors.lightGray,
+            shadowOpacity: 2,
             shadowOffset: {
                 width: 0,
-                height: 1
+                height: 4
             },
-            shadowOpacity: 2,
-            elevation: 5,
-            alignItems: "center",
-            justifyContent: "center",
+            borderColor: selected ? AppStyle.colors.main : AppStyle.colors.background,
             borderRadius: 10,
-            backgroundColor: "#fff",
-            margin: 5
+            borderWidth: 2,
+            backgroundColor: AppStyle.colors.background
+        },
+        container: {
+            flex: 1,
+            justifyContent: "space-between",
+            alignItems: "center"
         },
         centerText: {
             textAlign: "center",
-            fontWeight: "bold",
             fontSize: 16,
-            padding: 16
+            marginLeft: Platform.OS === "ios" ? -5 : 0 // por algum motivo, no iOS fica com espaço no início do texto
         },
         centerEmoji: {
             textAlign: "center",
-            fontSize: 50,
-            paddingBottom: "8%",
-            padding: 16
+            fontSize: Platform.OS === "android" ? 50 : 40,
+            marginLeft: Platform.OS === "ios" ? -5 : 0 // por algum motivo, no iOS fica com espaço no início do texto
         },
     })
 }

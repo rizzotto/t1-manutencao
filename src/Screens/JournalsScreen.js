@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { View, ActivityIndicator, ScrollView, SafeAreaView, StyleSheet, Text, Platform } from 'react-native';
 import { HeaderTitleComponent } from '../Components';
 import { HistoryContainer, EmptyStateContainer, CarouselContainer } from '../Containers';
 import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
 import { journalService } from '../Database';
+import AppStyle from '../styles';
 
 export default class JournalsScreen extends Component {
     // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
@@ -53,7 +54,7 @@ export default class JournalsScreen extends Component {
     onSelectEntry = (date) => {
         const entry = this._findEntry(this.state.entries, date);
         // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
-        this.props.navigation.navigate("JournalEntryForm", {
+        this.props.navigation.navigate("DiaryDetail", {
             userId: this.userId,
             journalEntry: entry
         });
@@ -87,17 +88,17 @@ export default class JournalsScreen extends Component {
             )
         } else {
             content = (
-                <>
-                    <CarouselContainer
-                        action={this.onSelectEmoji}
-                    />
-                    <Text style={styles.carouselLabel}>Como você está se sentindo hoje?</Text>
+                <ScrollView>
+                    <View style={styles.carouselContainer}>
+                        <CarouselContainer action={this.onSelectEmoji} />
+                        <Text style={styles.carouselLabel}>Como você está se sentindo hoje?</Text>
+                    </View>
                     <HistoryContainer
                         section={sections}
                         hasEmoji={true}
                         action={this.onSelectEntry}
                     />
-                </>
+                </ScrollView>
             )
         }
 
@@ -121,9 +122,14 @@ const styles = StyleSheet.create({
     },
     carouselLabel: {
         alignItems: "center",
-        fontWeight: "bold",
+        fontWeight: Platform.OS === "ios" ? "600" : "bold",
         fontSize: 17,
-        padding: 18,
+        marginTop: 25,
+        marginBottom: 20,
         textAlign: "center"
+    },
+    carouselContainer: {
+        borderBottomWidth: 2,
+        borderBottomColor: AppStyle.colors.mediumGray
     }
 });

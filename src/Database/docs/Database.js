@@ -1,6 +1,6 @@
 
 /**
- * Documentação da estrutura geral dos dados armazenados no Firebase.
+ * Documentação da estrutura geral dos dados armazenados no Firebase Realtime Database.
  */
 
 // =========================================================
@@ -8,7 +8,7 @@
 // =========================================================
 
 /**
- * Estrutura a partir da raiz do Firebase:
+ * Estrutura a partir da raiz do Realtime Database:
  * 
  * {
  *     [userId: string]: {
@@ -22,7 +22,9 @@
  *              }
  *          }
  * 
- *         // demais informações serão definidas conforme necessário
+ *          exams: {
+ *              [creationDate: number (timestamp)]: Exam
+ *          }
  *     }
  * }
  */
@@ -32,7 +34,7 @@
 // =========================================================
 
 /**
- * Exemplo a partir da raiz do Firebase:
+ * Exemplo a partir da raiz do Realtime Database:
  * 
  * {
  *      "id-usuario-0": {
@@ -53,6 +55,15 @@
  *                  212012: {
  *                      // dados da entrada no diário
  *                  }
+ *              }
+ *          }
+ * 
+ *          exams: {
+ *              1567790349000: {
+ *                  // dados do exame
+ *              },
+ *              1567609733000: {
+ *                  // dados do exame
  *              }
  *          }
  *      }
