@@ -20,7 +20,8 @@ export default class TextInputComponent extends Component {
   }
 
   render() {
-    if (!this.props.mask) {
+    const mask = this.props.mask;
+    if (!mask) {
       return (
         <TextInput
           style={[this.props.validate ? styles.textInput : styles.error, this.props.style]}
@@ -32,34 +33,19 @@ export default class TextInputComponent extends Component {
       );
     }
     else {
-      const options = this.props.mask.options.format ? this.props.mask.options.format : null;
-      if (options) {
-        console.log(options)
-        return (
-          <TextInputMask
-            style={[this.props.validate ? styles.textInput : styles.error, this.props.style]}
-            placeholder={this.props.inputMessage}
-            onChangeText={this.props.onChangeText}
-            value={this.props.value}
-            keyboardType={this.props.keyboardType}
-            type={this.props.mask.mask}
-            options={{
-              format: options
-            }}
-          />
-        );
-      }else{
-        return (
-          <TextInputMask
-            style={[this.props.validate ? styles.textInput : styles.error, this.props.style]}
-            placeholder={this.props.inputMessage}
-            onChangeText={this.props.onChangeText}
-            value={this.props.value}
-            keyboardType={this.props.keyboardType}
-            type={this.props.mask.mask}
-          />
-        );
-      }
+      const options = mask.options ? mask.options : null;
+      return (
+        <TextInputMask
+          style={[this.props.validate ? styles.textInput : styles.error, this.props.style]}
+          placeholder={this.props.inputMessage}
+          onChangeText={this.props.onChangeText}
+          value={this.props.value}
+          keyboardType={this.props.keyboardType}
+        type={mask.maskType}
+        options={options}
+        />
+      );
+
     }
   }
 }

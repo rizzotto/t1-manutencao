@@ -154,7 +154,7 @@ export default class TextInputContainer extends React.Component {
         value={this.state.text} 
         inputMessage={this.props.description} 
         validate={this.state.validate}
-        mask={this.props.inputMask ? this.props.inputMask : undefined}
+        mask={this.props.inputMask}
       />
     );
   }

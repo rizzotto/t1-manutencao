@@ -89,7 +89,12 @@ export default class JournalEntryFormCoordinator extends Component {
             placeholder: "00/00 mmHg",
             progress: 0.2,
             required: true,
-            inputMask: 'cpf',
+            inputMask: {
+                maskType: 'custom', 
+                options: {
+                    mask: "99/99"
+                }
+            },
             content: this.journalEntry.bloodPressure,
 
             onComplete: composeSavePush(saveResult, this.pushStressLevel)

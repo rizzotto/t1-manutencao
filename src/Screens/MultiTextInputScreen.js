@@ -53,7 +53,7 @@ export default class MultiTextInputScreen extends Component{
                     requiredInput={required}
                     callbackToScreen={this._onComplete}
                     inputMask={inputMask}
-                />
+                /> 
             </SafeAreaView>
         );
     }
