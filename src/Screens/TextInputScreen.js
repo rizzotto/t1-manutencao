@@ -53,7 +53,7 @@ export default class TextInputScreen extends Component{
                     keyboardType={keyboardType}
                     requiredInput={required}
                     callbackToScreen={this._onComplete}
-                    maskType={mask ? mask : undefined}
+                    maskType={mask}
                 />
             </SafeAreaView>
         );

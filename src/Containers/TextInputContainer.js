@@ -3,28 +3,29 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import TextInputComponent from '../Components/TextInputComponent';
 import AppStyle from '../styles';
+import * as OutputFilters from '../Utils/OutputFilters';
 
 
- /**
- * props for a TextInputContainer
- * - description: the text behind
- * - initialContent: text initially set on text input
- * - type: can be: 
- *      'alphanum': only numbers and letters
- *      'alpha': only letter
- *      'numeric': only numbers
- *      'email': email validation
- *      'date': date validation
- *      '': all
- * - parentCall: (optional) callback function that recieves the validate and text states. 
- * - maskType: (optional) tipo de mascara para input
- * bottom border:
- *        green: valid
- *        gray: not valid
- * example: <TextInputContainer type= {'numeric'} description={'Cellphone number'}/>
- */
+/**
+* props for a TextInputContainer
+* - description: the text behind
+* - initialContent: text initially set on text input
+* - type: can be: 
+*      'alphanum': only numbers and letters
+*      'alpha': only letter
+*      'numeric': only numbers
+*      'email': email validation
+*      'date': date validation
+*      '': all
+* - parentCall: (optional) callback function that recieves the validate and text states. 
+* - maskType: (optional) tipo de mascara para input
+* bottom border:
+*        green: valid
+*        gray: not valid
+* example: <TextInputContainer type= {'numeric'} description={'Cellphone number'}/>
+*/
 export default class TextInputContainer extends React.Component {
- 
+
   constructor() {
     super()
     this.state = {
@@ -33,21 +34,22 @@ export default class TextInputContainer extends React.Component {
     }
   }
 
+
   componentDidMount() {
     // setar valor inicial e rodar validação
     this.onChangeText(this.props.initialContent || "", this.props.type);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
-    if(this.props.validateCallback !== undefined){
-      if(this.state.validate != prevState.validate || prevState.text == "" && this.state.text.length >= 1 || prevState.text != "" && this.state.text == ""){
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.validateCallback !== undefined) {
+      if (this.state.validate != prevState.validate || prevState.text == "" && this.state.text.length >= 1 || prevState.text != "" && this.state.text == "") {
         this.validateCallback();
       }
     }
   }
 
   validateCallback = () => {
-      this.props.validateCallback(this.state.validate);
+    this.props.validateCallback(this.state.validate);
   }
 
   textCallback = () => {
@@ -55,15 +57,20 @@ export default class TextInputContainer extends React.Component {
   }
 
   onChangeText = (text, type) => {
+    const textInput = new OutputFilters.TextInputOutputFilter();
+
+
     this.setState({ text: text }, () => {
-      if(this.props.textCallback !== undefined){
+      if (this.props.textCallback !== undefined) {
         this.textCallback();
       }
       var reNumeric = /^\d+(?:[\.,]\d+)?$/
       var reAlphNum = /^[a-z0-9 ]+$/i
       var reAlph = /^[a-zA-Z ]+$/
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
-      var reEmail =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      var reEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      var rePressure = /^([0-9][0-9])(\/)([0-9][0-9])/
+      var reHeight = /^([0-2])(\.)([0-9][0-9])/
 
       if (this.props.required && !this.state.text) {
         this.setState({
@@ -86,9 +93,13 @@ export default class TextInputContainer extends React.Component {
 
       else if (type === 'date') {
         if (reDate.test(this.state.text)) {
+          var dateFormat = textInput.date(this.state.text);
+          var dateToday = new Date();
+          if (dateFormat < dateToday) {
             this.setState({
               validate: true
             })
+          }
         }
         else {
           this.setState({
@@ -96,18 +107,33 @@ export default class TextInputContainer extends React.Component {
           })
         }
       }
-      
 
-      else if(type === 'email'){
-        if(reEmail.test(this.state.text)){
+
+      else if (type === 'email') {
+        if (reEmail.test(this.state.text)) {
           this.setState({
             validate: true
           })
         }
-        else{
+        else {
           this.setState({
             validate: false
           })
+        }
+      }
+      else if (type === 'height') {
+        if (reHeight.test(this.state.text)) {
+          this.setState({ validate: true })
+        } else {
+          this.setState({ validate: false })
+        }
+      }
+
+      else if (type === 'pressure') {
+        if (rePressure.test(this.state.text)) {
+          this.setState({ validate: true })
+        } else {
+          this.setState({ validate: false })
         }
       }
 
@@ -149,10 +175,10 @@ export default class TextInputContainer extends React.Component {
   render() {
     return (
       <TextInputComponent style={styles.container}
-        keyboardType={this.props.type==='numeric'?'numeric':'default'} 
-        onChangeText={(text) => this.onChangeText(text, this.props.type)} 
-        value={this.state.text} 
-        inputMessage={this.props.description} 
+        keyboardType={this.props.type === 'numeric' ? 'numeric' : 'default'}
+        onChangeText={(text) => this.onChangeText(text, this.props.type)}
+        value={this.state.text}
+        inputMessage={this.props.description}
         validate={this.state.validate}
         mask={this.props.inputMask}
       />

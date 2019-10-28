@@ -96,6 +96,7 @@ export default class JournalEntryFormCoordinator extends Component {
                 }
             },
             content: this.journalEntry.bloodPressure,
+            keyboardType: "pressure",
 
             onComplete: composeSavePush(saveResult, this.pushStressLevel)
         })

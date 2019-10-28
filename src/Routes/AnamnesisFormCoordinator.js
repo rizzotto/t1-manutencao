@@ -115,7 +115,7 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.height = this.outputFilters.textInput.number(result[1]);
         }
 
-        const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
+        const currentHeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.height, 2);
         const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
 
@@ -127,7 +127,7 @@ export default class AnamnesisFormCoordinator extends Component {
             inputMask: [null,{maskType: "custom", options:{mask: "9.99"}}],
             required:true,
             progress: 0.1818,
-            keyboardType: ["numeric", "numeric"],
+            keyboardType: ["numeric", "height"],
             content: [currentWeight, currentHeight],
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })

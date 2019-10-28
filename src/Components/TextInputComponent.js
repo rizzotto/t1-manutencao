@@ -41,8 +41,8 @@ export default class TextInputComponent extends Component {
           onChangeText={this.props.onChangeText}
           value={this.props.value}
           keyboardType={this.props.keyboardType}
-        type={mask.maskType}
-        options={options}
+          type={mask.maskType}
+          options={options}
         />
       );
 
