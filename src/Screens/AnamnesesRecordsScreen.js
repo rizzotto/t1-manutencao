@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, View, StyleSheet, Alert } from 'react-native';
-import { Button, HeaderTitleComponent, SearchInputComponent } from '../Components';
+import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
 import AppStyle from '../styles';
 
@@ -39,14 +39,9 @@ export default class AnamnesesRecordsScreen extends Component {
             })
     }
 
-    myCallBack = (text) => {
-        console.warn(text);
-    }
-
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <SearchInputComponent textCallback={this.myCallBack}></SearchInputComponent>
                 <HeaderTitleComponent title="Sua ficha" />
                 <View style={styles.content}>
                     <Text style={{textAlign: "center"}}>Anamnese</Text>
