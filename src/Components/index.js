@@ -7,3 +7,5 @@ export { default as HeaderButtonComponent } from './HeaderButtonComponent';
 export { default as ProgressBar } from './ProgressBarComponent';
 export { default as TabBarIcon } from './TabBarIcon';
 export { default as HeaderTitleComponent } from './HeaderTitleComponent';
+export { default as Arrow } from './Arrow';
+export { default as ImageComponent } from './ImageComponent';

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, FlatList, ScrollView } from "react-native";
 import CardEmojiComponent from '../Components/CardEmojiComponent'
 import { TitleDescription, Button } from '../Components';
-import { SafeAreaView } from 'react-navigation';
 
 /**
  * @author Pâmela Mendonça, Felipe Boff, Gabriel Sutério, Ardel Junior 
@@ -69,44 +68,49 @@ export default class CardEmojiContainer extends Component {
 
     render() {
         return (
-            <SafeAreaView>
-
-                <TitleDescription titleText={"Como está seu humor hoje?"} />
-
-                <FlatList
-                    data={this.state.DATA}
-                    keyExtractor={item => item.text}
-                    numColumns={3}
-                    extraData={this.state}
-                    renderItem={({ item }) => (
-                                <CardEmojiComponent 
-                                    text={item.text} 
-                                    emoji={item.emoji} 
-                                    onPress={() => this.selectItem(item)}
-                                    selected={item.isSelected}
-                                />
-                        )
-                    }
-                />
+            <View style={styles.container}>
+                <ScrollView>
+                    <TitleDescription titleText={"Como está seu humor hoje?"} />
+                    <FlatList style={styles.list}
+                        data={this.state.DATA}
+                        keyExtractor={item => item.text}
+                        numColumns={3}
+                        extraData={this.state}
+                        renderItem={({ item }) => (
+                            <CardEmojiComponent style={styles.card}
+                                text={item.text} 
+                                emoji={item.emoji} 
+                                onPress={() => this.selectItem(item)}
+                                selected={item.isSelected}
+                            />
+                            )
+                        }
+                    />
+                </ScrollView>
 
                 <Button
                     action={this.emojiSelected}
                     isDisabled={this.state.selectedEmoji == null}
                     text={"Continuar"}
                 />
-            </SafeAreaView>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    card: {
-        padding: 2,
-        marginLeft: 5,
-        marginRight: 5,
+    container: {
+        flex: 1,
+        justifyContent: "space-between"
     },
-    title: {
-        marginTop: 50,
-        marginBottom: 40
+    list: {
+        marginHorizontal: 11,
+        marginTop: 30
+    },
+    card: {
+        flexGrow: 1,
+        flexBasis: 0,
+        margin: 9,
+        minHeight: 130
     }
 })
