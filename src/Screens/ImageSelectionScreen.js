@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Platform, ActionSheetIOS } from 'react-native';
+import { View, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
 import ImagePicker from "react-native-image-crop-picker";
-import { Button } from '../Components';
-
-// TODO: remover quando tiver o componente de imagem
-import { FlatList, Image } from 'react-native';
+import { TitleDescription, Button, ProgressBar } from '../Components';
+import { ImageSelecionContainer } from '../Containers';
+import { SafeAreaView } from 'react-navigation';
+import AppStyle from '../styles';
 
 /**
  * Screen para seleção de imagens de exames.
@@ -22,43 +22,96 @@ export default class ImageSelectionScreen extends Component {
         }
     }
 
-    selectPhotos = () => {
+    addImages = () => {
         selectImages()
-            .then(images => {
+            .then(newImages => {
                 // o react-native-image-crop-picker retorna um array de imagens ou uma única imagem
                 // temos que normalizar se ele retornar apenas uma imagem
-                if (!Array.isArray(images)) {
-                    images = [images]
+                if (!Array.isArray(newImages)) {
+                    newImages = [newImages]
                 }
 
-                images.forEach(img => img.uri = img.path)
-                this.setState({ ...this.state, images })
+                // se o usuário cancelou, fazer nada
+                if (newImages.length === 0) return;
 
-                console.warn("selecionou imagens", images)
+                // adicionar imagens selecionadas
+                const allImages = this.state.images.slice()
+
+                console.log("add images BEFORE", newImages, allImages)
+
+                newImages.forEach(img => {
+                    allImages.push({
+                        local: true,
+                        path: img.path,
+                        promise: Promise.resolve(img.path)
+                    })
+                })
+
+                console.log("add images AFTER", newImages, allImages)
+
+                this.setState({ ...this.state, images: allImages })
             })
     }
 
+    continue = () => {
+        console.warn("continue")
+    }
+
+    /**
+     * @param {number} index
+     */
+    selectImage = (index) => {
+        const { images } = this.state
+
+        this.props.navigation.navigate("GalleryScreen", {
+            images,
+            page: index,
+            showsDelete: true,
+            deleteAction: this.deleteImage
+        })
+    }
+
+    /**
+     * @param {number} index
+     */
+    deleteImage = (index) => {
+        const images = this.state.images.slice()
+        images.splice(index, 1)
+        this.setState({ ...this.state, images })
+    }
+
     render() {
+        // const { progress, title, description } = this.props
+        const { images } = this.state
+
+        console.log("rendering", this.state)
+
         return (
-            <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#fff" }}>
-                <Button text="Adicionar fotos" action={this.selectPhotos} />
-                {/* TODO: remover quando o container de lista de imagens estiver pronto */}
-                <FlatList
-                    style={{ flex: 1 }}
-                    data={this.state.images}
-                    renderItem={({ item: image }) => {
-                        return <Image
-                            source={{url: image.path}}
-                            style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                    }}
-                    extraData={this.state.images}
-                    keyExtractor={(item, index) => "loc-" + index.toString()}
+            <SafeAreaView style={styles.container}>
+                <ProgressBar width={0.33} />
+                <ImageSelecionContainer
+                    title="Adicione imagens"
+                    description="Você deve adicionar pelo menos uma imagem para continuar, e pode adicionar quantas imagens quiser."
+                    onSelectImage={this.selectImage}
+                    onAdd={this.addImages}
+                    onContinue={this.continue}
+                    images={images}
                 />
             </SafeAreaView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // alignItems: "stretch",
+        backgroundColor: AppStyle.colors.background
+    },
+    titleDescription: {
+        marginBottom: 30
+    }
+})
 
 /**
  * Mostra ao usuário uma interface para seleção de imagens, a partir da câmera ou da galeria.

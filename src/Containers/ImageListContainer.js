@@ -25,31 +25,47 @@ import ImageComponent from '../Components/ImageComponent';
 
 export default class ImageListContainer extends Component {
     constructor(props) {
-        super(props);
-        add = this.props.add
-        this.format()
-    }
-    state = {
-        data: this.props.data
-    };
+        super(props)
 
-    
-    format = () =>{
-        if(add){
-            this.state.data.unshift({id:0,sourceImage:require("../Resources/add.png")});
-            for(var i=1;i<this.state.data.length;i++){
-                this.state.data[i].id += 1
+        const state = this.normalizeData(props)
+        this.state = {
+            ...state
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const newState = this.normalizeData(nextProps)
+        console.log("willreceiveprops", nextProps, newState)
+        this.setState({ ...this.state, ...newState })
+    }
+
+    normalizeData = ({ data, add }) => {
+        const finalImages = data.slice()
+
+        if (add) {
+            // TODO: simplify
+            finalImages.unshift({ sourceImage: require("../Resources/add.png") })
+        }
+
+        const imagesPerLine = 3
+        const imagesOnLastLine = finalImages.length % imagesPerLine
+        if (imagesOnLastLine !== 0) {
+            let whitespaceToAdd = imagesPerLine - imagesOnLastLine
+            while (whitespaceToAdd > 0) {
+                // TODO: simplify
+                finalImages.push({ sourceImage: require("../Resources/whiteImage.png"), white: true })
+                whitespaceToAdd = whitespaceToAdd - 1
             }
         }
-        
-        whiteImages = 3-(this.state.data.length%3)
-        for(var i=1;i<=whiteImages;i++){
-            this.state.data.push({id:this.state.data.length-1+i, sourceImage: require("../Resources/whiteImage.png"), white: true})
+
+        return {
+            add,
+            data: finalImages
         }
     }
 
     onClickItem = (index) => {
-        if (add) {
+        if (this.state.add) {
             if (index === 0) {
                 this.props.addAction()
             } else {
@@ -67,16 +83,20 @@ export default class ImageListContainer extends Component {
                 <FlatList
                     style={styles.list}
                     numColumns={3}
-                    initialNumToRender={5}
                     data={this.state.data}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
-                        return (
-                            <View style={styles.item}>
-                                {item.white?<Image source={item.sourceImage} style={styles.image}></Image>
-                                :<ImageComponent onClick={() => this.onClickItem(index)} isTouch={this.props.isTouchable} style = {styles.image} {...item}/>}
-                            </View>
-                        );   
+                        if (item.white) {
+                            return <View style={styles.item} />
+                        } else {
+                            return (
+                                <ImageComponent style={styles.item}
+                                    onClick={() => this.onClickItem(index)}
+                                    isTouch={this.props.isTouchable}
+                                    {...item}
+                                />
+                            )
+                        }
                     }}
                 />
             </View>
@@ -88,7 +108,6 @@ export default class ImageListContainer extends Component {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: "3%",
-        
     },
     item: {
         flexBasis: 0,
@@ -103,3 +122,5 @@ const styles = StyleSheet.create({
         height: 125
     },
 })
+
+// promise={Promise.resolve("https://via.placeholder.com/150?text=vai")}
