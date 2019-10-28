@@ -11,7 +11,7 @@ export default class ListExamsScreen extends Component {
                              title: "Dr. Carlos",
                              description: "Exame de sangue, cardiograma, hemograma, mais texto",
                              date: new Date("2019-10-10"),
-                             images: [{ promise: Promise.value("...url") }, { sourceImage: require("...path") }]
+                             images: [ { sourceImage: require('../Resources/search.png') }]
                          }
                      ]
         return(
