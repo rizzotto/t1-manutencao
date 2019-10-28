@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
 import ImagePicker from "react-native-image-crop-picker";
-import { TitleDescription, Button, ProgressBar } from '../Components';
+import { ProgressBar } from '../Components';
 import { ImageSelecionContainer } from '../Containers';
-import { SafeAreaView } from 'react-navigation';
 import AppStyle from '../styles';
 
 /**
@@ -36,25 +35,24 @@ export default class ImageSelectionScreen extends Component {
 
                 // adicionar imagens selecionadas
                 const allImages = this.state.images.slice()
-
-                console.log("add images BEFORE", newImages, allImages)
-
                 newImages.forEach(img => {
                     allImages.push({
                         local: true,
                         path: img.path,
+
+                        uri: img.path,
                         promise: Promise.resolve(img.path)
                     })
                 })
-
-                console.log("add images AFTER", newImages, allImages)
 
                 this.setState({ ...this.state, images: allImages })
             })
     }
 
     continue = () => {
-        console.warn("continue")
+        const onComplete = this.getParam("onComplete")
+        if (!onComplete) return;
+        onComplete(this.state.images)
     }
 
     /**
@@ -63,7 +61,7 @@ export default class ImageSelectionScreen extends Component {
     selectImage = (index) => {
         const { images } = this.state
 
-        this.props.navigation.navigate("GalleryScreen", {
+        this.props.navigation.navigate("Gallery", {
             images,
             page: index,
             showsDelete: true,
@@ -81,20 +79,18 @@ export default class ImageSelectionScreen extends Component {
     }
 
     render() {
-        // const { progress, title, description } = this.props
+        const { progress, title, description } = this.props
         const { images } = this.state
-
-        console.log("rendering", this.state)
 
         return (
             <SafeAreaView style={styles.container}>
-                <ProgressBar width={0.33} />
+                <ProgressBar width={progress} />
                 <ImageSelecionContainer
-                    title="Adicione imagens"
-                    description="Você deve adicionar pelo menos uma imagem para continuar, e pode adicionar quantas imagens quiser."
+                    title={title}
+                    description={description}
                     onSelectImage={this.selectImage}
                     onAdd={this.addImages}
-                    onContinue={this.continue}
+                    onComplete={this.continue}
                     images={images}
                 />
             </SafeAreaView>
@@ -105,7 +101,6 @@ export default class ImageSelectionScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: "stretch",
         backgroundColor: AppStyle.colors.background
     },
     titleDescription: {

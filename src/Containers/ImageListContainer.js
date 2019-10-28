@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, FlatList, Image} from 'react-native';
 import ImageComponent from '../Components/ImageComponent';
 
-
+// imagens exibidas por linha
+const IMAGES_PER_LINE = 3
 
 /**
  * @author Guilherme Rizzotto, Lucas Justo
@@ -35,7 +36,6 @@ export default class ImageListContainer extends Component {
 
     componentWillReceiveProps(nextProps) {
         const newState = this.normalizeData(nextProps)
-        console.log("willreceiveprops", nextProps, newState)
         this.setState({ ...this.state, ...newState })
     }
 
@@ -43,17 +43,14 @@ export default class ImageListContainer extends Component {
         const finalImages = data.slice()
 
         if (add) {
-            // TODO: simplify
-            finalImages.unshift({ sourceImage: require("../Resources/add.png") })
+            finalImages.unshift({ add: true })
         }
 
-        const imagesPerLine = 3
-        const imagesOnLastLine = finalImages.length % imagesPerLine
+        const imagesOnLastLine = finalImages.length % IMAGES_PER_LINE
         if (imagesOnLastLine !== 0) {
-            let whitespaceToAdd = imagesPerLine - imagesOnLastLine
+            let whitespaceToAdd = IMAGES_PER_LINE - imagesOnLastLine
             while (whitespaceToAdd > 0) {
-                // TODO: simplify
-                finalImages.push({ sourceImage: require("../Resources/whiteImage.png"), white: true })
+                finalImages.push({ white: true })
                 whitespaceToAdd = whitespaceToAdd - 1
             }
         }
@@ -65,26 +62,35 @@ export default class ImageListContainer extends Component {
     }
 
     onClickItem = (index) => {
-        if (this.state.add) {
-            if (index === 0) {
-                this.props.addAction()
-            } else {
-                this.props.onSelectItem(index - 1)
-            }
-        } 
-        else {
-            this.props.onSelectItem(index)
-        }
+        const onSelectItem = this.props.onSelectItem
+        if (!onSelectItem) return;
+
+        // se tiver o botão de adicionar no início, normalizar índice
+        onSelectItem(this.state.add ? index - 1 : index)
+    }
+
+    onClickAdd = () => {
+        const addAction = this.props.addAction
+        if (!addAction) return;
+        addAction()
     }
 
     render(){
         return(
             <FlatList style={this.props.style}
-                numColumns={3}
+                numColumns={IMAGES_PER_LINE}
                 data={this.state.data}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
-                    if (item.white) {
+                    if (item.add) {
+                        return (
+                            <ImageComponent imageStyle={styles.item}
+                                sourceImage={require("../Resources/add.png")}
+                                isTouch={this.props.isTouchable}
+                                onClick={this.onClickAdd}
+                            />
+                        )
+                    } else if (item.white) {
                         return <View style={styles.item} />
                     } else {
                         return (
