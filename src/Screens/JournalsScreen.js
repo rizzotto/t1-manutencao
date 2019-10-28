@@ -52,6 +52,7 @@ export default class JournalsScreen extends Component {
 
     /** Invocado quando uma entrada no diário é selecionada. */
     onSelectEntry = (date) => {
+        console.warn(date);
         const entry = this._findEntry(this.state.entries, date);
         // TODO: navegar para tela de detalhes quando estiver pronta (fica para a edição por enquanto)
         this.props.navigation.navigate("DiaryDetail", {
@@ -90,7 +91,7 @@ export default class JournalsScreen extends Component {
         let indexEntries = this.state.entries[0].entries.findIndex(obj => obj.creationDate == creationDate);
         if(indexEntries == -1){
             item.creationDate = creationDate;
-            newEntries[0].entries.push(item);
+            newEntries[0].entries.unshift(item);
         }
         else{
             newEntries[0].entries[indexEntries] = item;
