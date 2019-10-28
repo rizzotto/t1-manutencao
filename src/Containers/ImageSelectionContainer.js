@@ -45,7 +45,7 @@ export default class ImageSelectionContainer extends Component {
                         titleText={title}
                         descriptionText={description}
                     />
-                    <ImageListContainer
+                    <ImageListContainer style={styles.imageList}
                         add={true}
                         addAction={this.add}
                         isTouchable={true}
@@ -68,5 +68,8 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 10
+    },
+    imageList: {
+        marginHorizontal: 20
     }
 })

@@ -79,48 +79,35 @@ export default class ImageListContainer extends Component {
 
     render(){
         return(
-            <View style = {styles.container}>
-                <FlatList
-                    style={styles.list}
-                    numColumns={3}
-                    data={this.state.data}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => {
-                        if (item.white) {
-                            return <View style={styles.item} />
-                        } else {
-                            return (
-                                <ImageComponent style={styles.item}
-                                    onClick={() => this.onClickItem(index)}
-                                    isTouch={this.props.isTouchable}
-                                    {...item}
-                                />
-                            )
-                        }
-                    }}
-                />
-            </View>
+            <FlatList style={this.props.style}
+                numColumns={3}
+                data={this.state.data}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => {
+                    if (item.white) {
+                        return <View style={styles.item} />
+                    } else {
+                        return (
+                            <ImageComponent imageStyle={styles.item}
+                                onClick={() => this.onClickItem(index)}
+                                isTouch={this.props.isTouchable}
+                                {...item}
+                            />
+                        )
+                    }
+                }}
+            />
         )
         
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: "3%",
-    },
     item: {
-        flexBasis: 0,
-        alignItems: "center",
         flexGrow: 1,
-        margin: 5,
-        minWidth: 100,
-        minHeight: 100
-    },
-    image:{
-        width: "100%",
-        height: 125
-    },
+        flexBasis: 0,
+        margin: 1,
+        width: 110,
+        height: 110
+    }
 })
-
-// promise={Promise.resolve("https://via.placeholder.com/150?text=vai")}
