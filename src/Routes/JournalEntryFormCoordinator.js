@@ -153,7 +153,8 @@ export default class JournalEntryFormCoordinator extends Component {
         if(this.journalEntry.creationDate){
             const update = journalService.updateEntry(this.getParam("userId"), this.journalEntry, this.journalEntry.creationDate)
                 .then((x) => this.props.navigation.navigate("JournalsHistory", {
-                    updatedData: true
+                    updatedData: true,
+                    date: this.journalEntry.creationDate
                 }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }

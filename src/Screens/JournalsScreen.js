@@ -73,6 +73,9 @@ export default class JournalsScreen extends Component {
         if(this.props.navigation.getParam('updatedData')){
             this.setState({isLoading: true})
             this.props.navigation.state.params.updatedData = false;
+            if(this.props.navigation.getParam('date')){
+                this.onSelectEntry(this.props.navigation.getParam('date'));
+            }
             journalService.listEntries(this.userId).then(dataDB => this.updateUI(dataDB))
         }
     }
