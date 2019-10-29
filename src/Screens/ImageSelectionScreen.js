@@ -14,6 +14,7 @@ import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
  * - `progress`: porcentagem da barra de progresso
  * - `title`: título da tela
  * - `description`: descrição da tela
+ * - `images`: imagens inicialmente exibidas pela tela; pega apenas o valor inicial, não atualiza quando `props` for atualizado
  * - `onComplete`: função chamada quando o usuário toca no botão "Continuar", com as imagens selecionadas
  * 
  * NOTA: essa screen depende do react-navigation, portanto a classe não é exportada na definição
@@ -26,7 +27,7 @@ class ImageSelectionScreen extends Component {
         super(props)
 
         this.state = {
-            images: []
+            images: this.getParam("images", [])
         }
     }
 
@@ -42,15 +43,13 @@ class ImageSelectionScreen extends Component {
                 // se o usuário cancelou, fazer nada
                 if (newImages.length === 0) return;
 
-                // adicionar imagens selecionadas
+                // adicionar imagens selecionadas (todas são locais)
                 const allImages = this.state.images.slice()
                 newImages.forEach(img => {
                     allImages.push({
-                        local: true,
-                        path: img.path,
-
-                        uri: img.path,
-                        promise: Promise.resolve(img.path)
+                        type: "local",
+                        mime: img.mime,
+                        uri: img.path
                     })
                 })
 
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
  * 
  * Mostra um alerta pedindo de onde selecionar fotos (câmera ou galeria), e depois exibe a interface adequada.
  * 
- * @returns {Promise<{ data: string, mime: string }[]>} promise que completa com uma lista com as imagens selecionadas
+ * @returns {Promise<{ path: string, mime: string }[]>} promise que completa com uma lista com as imagens selecionadas
  */
 const selectImages = () => {
     const options = {

@@ -37,8 +37,11 @@ export default class ImageSelectionContainer extends Component {
     }
 
     render() {
-        const { title, description, images } = this.props
-        const buttonEnabled = images.length > 0
+        const { title, description, images: originalImages } = this.props
+        const buttonEnabled = originalImages.length > 0
+        const images = originalImages.map(imageObject => {
+            return { imageObject }
+        })
 
         return (
             <View style={styles.container}>
