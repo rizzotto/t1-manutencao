@@ -12,8 +12,11 @@ import EmptyStateContainer from '../Containers/EmptyStateContainer';
 var isEmpty=false
 
 
-export default class AnamnesisDetailScreen extends Component {
-    
+export default class ListExamsScreen extends Component {
+
+    searchCallback = (text) => {
+        console.warn(text);
+    }
 
     render() {
         if (isEmpty) {
@@ -32,14 +35,13 @@ export default class AnamnesisDetailScreen extends Component {
             //Adicionar na bottom bar o icone de exames, sendo essa a primeira screen
             //Setar o Titulo da screen : Exames
 
-
             <SafeAreaView>
                 <SearchInputComponent
                     //Arrumar o css do pesquisar
                     //textStyle={styles.text}
                     //viewStyle={styles.view}
                     placeholder={"Pesquisar"}
-                    callback={this.myCallBack}></SearchInputComponent>
+                    callback={this.searchCallback}></SearchInputComponent>
                 <ExamsListContainer
                     //Verificar como pegar a url do firebase, como conseguir passar por promise..
                     data={[
@@ -53,8 +55,8 @@ export default class AnamnesisDetailScreen extends Component {
                             ]
                         },
                         {
-                            title: "Dr. Carlos",
-                            description: "Exame de sangue, cardiograma, hemograma, mais texto",
+                            title: "Dr. André",
+                            description: "descrição de teste",
                             date: new Date("2019-10-10"),
                             images: [{ sourceImage: require("../Resources/add.png") },
                             { sourceImage: require("../Resources/add.png") },
