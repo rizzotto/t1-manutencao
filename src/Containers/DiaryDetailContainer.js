@@ -34,7 +34,7 @@ export default class DiaryDetailContainer extends Component {
                         <Text style={styles.emojiImage}>{item.humor.emotion}</Text>
                         <Text style={styles.emojiText}>{item.humor.text}</Text>
                     </View>
-                    <Text style={styles.date}>{'Horário: ' + item.creationDate.getHours() + 'h' + item.creationDate.getMinutes() + 'min'}</Text>
+                    <Text style={styles.date}>{'Horário: ' + ("0" + item.creationDate.getHours()).slice(-2)+ 'h' + ("0" + item.creationDate.getMinutes()).slice(-2) + 'min'}</Text>
                     <View>
                         <Text style={styles.title}>Pressão:</Text>
                         <Text style={styles.text}>{item.bloodPressure + ' mmHg.'} </Text>
