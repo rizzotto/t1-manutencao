@@ -5,6 +5,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import { ProgressBar } from '../Components';
 import { ImageSelecionContainer } from '../Containers';
 import AppStyle from '../styles';
+import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
 
 /**
  * Screen para seleção de imagens de exames.
@@ -19,6 +20,7 @@ import AppStyle from '../styles';
  * (ver `export default` abaixo da definição da classe).
  */
 class ImageSelectionScreen extends Component {
+    static navigationOptions = CreateDefaultNavigationOptions;
 
     constructor(props) {
         super(props)
