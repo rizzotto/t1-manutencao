@@ -170,7 +170,8 @@ export default class JournalEntryFormCoordinator extends Component {
 
             const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
                 .then((x) => this.props.navigation.navigate("JournalsHistory", {
-                    updatedData: true
+                    updatedData: true,
+                    date: false
                 }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
