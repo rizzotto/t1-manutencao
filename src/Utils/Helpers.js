@@ -5,14 +5,14 @@ import {getFrequencyDescription} from './frequencies';
  * @returns {String}
  */
 export function formatDate(date){
+    console.warn(date.getDate());
     if(!_isEmpty(date)){
-        let correctedMonth = date.getMonth()+1;
-        if(correctedMonth < 10){
-            correctedMonth = "0"+correctedMonth;
-        }
-        return ""+date.getDate() +"/" + correctedMonth + "/" +date.getFullYear();
+        var dia = String(date.getDate()).padStart(2, '0');
+        var mes = String(date.getMonth() + 1).padStart(2, '0');
+        var ano = date.getFullYear();
+        return dia +"/" + mes + "/" + ano;
     }
-    return "N/A";
+    return null;
 }
 
 /**
