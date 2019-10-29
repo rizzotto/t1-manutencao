@@ -1,5 +1,19 @@
 
 import RNFetchBlob from 'rn-fetch-blob';
+import uuid from 'react-native-uuid';
+
+/**
+ * @typedef {Object} ImageObject
+ * @property {"local"|"remote"} type tipo da imagem:
+ *   - `"local"`: imagem que está no dispositivo do usuário, ainda não persistida no firebase
+ *   - `"remote"`: imagem que está persistida no firebase
+ * @property {string} [name] nome da imagem (apenas imagens remotas)
+ * @property {"image/png"|"image/jpeg"} [mime] MIME type da imagem (apenas imagens locais)
+ * @property {string} [uri] localização da imagem
+ *   - imagens locais: URL da imagem no dispositivo, sempre disponível;
+ *   - imagens remotas: URL para download da imagem, disponível depois que a promise for concluída; disponível quando `promise == null` (ver abaixo)
+ * @property {Promise<string>} [promise] promise que completa com a URL de download da imagem (apenas imagens remotas); quando a promise completa, o valor no campo `uri` é atualizado e esse campo é setado para `null`
+ */
 
 /**
  * Serviço de persistência de anamneses no Firebase.
@@ -16,7 +30,7 @@ export default class ExamService {
     }
 
     /**
-     * Salva um exame com suas imagens  no Firebase.
+     * Cria um exame e salva suas imagens no Firebase.
      * 
      * Qualquer valor em `exam.images` será sobrescrito com a lista com o nome
      * das imagens cujo upload teve sucesso. Se o upload de uma imagem falha,
@@ -25,10 +39,10 @@ export default class ExamService {
      * 
      * @param {string} userId ID do usuário que está criando o exame
      * @param {any} exam estrutura com dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito
-     * @param {{ mime: "image/jpeg"|"image/png", path: string }[]} images imagens relacionadas ao exame; `path` deve ser o caminho da imagem no sistema de arquivos local
+     * @param {ImageObject[]} images imagens relacionadas ao exame; `uri` deve ser o caminho da imagem no sistema de arquivos local
      * @returns {Promise} promise que completa quando o upload de todas as imagens é concluído e o exame é persistido
      */
-    saveExam = async (userId, exam, images) => {
+    createExam = async (userId, exam, images) => {
         const imagesBasePath = this._buildBasePath(userId, exam)
 
         const creationDate = exam.creationDate
@@ -37,12 +51,15 @@ export default class ExamService {
         // começar com lista vazia e adicionar nome nas imagens cujo upload deu certo
         exam.images = []
 
-        for (const index in images) {
-            const image = images[index]
-            const filename = `img-${index}.${this._buildExtension(image.mime)}`
+        for (const image of images) {
+            if (image.type !== "local") {
+                throw "cannot create an exam with remote images"
+            }
+
+            const filename = `img-${uuid.v4()}.${this._buildExtension(image.mime)}`
 
             try {
-                await this.uploadImage(imagesBasePath, filename, image.path)
+                await this._uploadImage(imagesBasePath, filename, image.uri)
                 exam.images.push(filename)
             } catch (error) {
                 // ignorar erros
@@ -59,18 +76,42 @@ export default class ExamService {
     }
 
     /**
-     * Busca as URLs para download das imagens de um exame.
+     * Retorna as imagens de um exame.
      * 
      * @param {string} userId ID do usuário que criou o exame
      * @param {any} exam exame cujas URLs das imagens são requisitadas
-     * @returns {Promise<string>[]} array com promises que completam com uma URL de download de imagem, na mesma ordem das imagens em `exam.images`
+     * @return {ImageObject[]} array com informações das imagens do exame, na mesma order das imagens em `exam.images`
      */
-    getImagesDownloadURLs = (userId, exam) => {
+    getImages = (userId, exam) => {
         const basePath = this._buildBasePath(userId, exam)
+
         return exam.images.map(imageName => {
-            return this.storage.ref(`${basePath}/${imageName}`).getDownloadURL()
+            // promise da url de download da imagem
+            const promise = this.storage.ref(`${basePath}/${imageName}`).getDownloadURL()
+
+            // objeto que representa uma imagem
+            const imageObject = {
+                type: "remote",
+                name: imageName,
+                promise
+            }
+
+            // quando a promise completa, atualiza o objeto que representa a imagem para ter a url
+            // retornada, e remove a promise do objeto (porque não é mais necessária)
+            promise.then(url => {
+                imageObject.uri = url
+                imageObject.promise = null
+            })
+
+            return imageObject
         })
     }
+
+    // TODO: listExams, deleteExam, updateExam
+
+    //
+    // FUNÇÕES AUXILIARES
+    //
 
     /**
      * Persiste uma imagem no Firebase Storage.
@@ -80,7 +121,7 @@ export default class ExamService {
      * @param {string} path caminho da imagem no sistema de arquivos
      * @returns {Promise} promise que completa quando o upload é finalizado
      */
-    uploadImage = (basePath, filename, path) => {
+    _uploadImage = (basePath, filename, path) => {
         return RNFetchBlob.fs.readFile(path, "base64")
             .then(data => {
                 return this.storage.ref(`${basePath}/${filename}`).putString(data, "base64")
