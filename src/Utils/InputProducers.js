@@ -40,6 +40,11 @@ class TextInputInputProducer {
     intNumber(number) {
         return this.decimalNumber(number, 0);
     }
+
+    centimeterToMeter(number){
+        if(!number) return null;
+        return (number/100).toFixed(2).replace(".", ",");
+    }
 }
 
 /**

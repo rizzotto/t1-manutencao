@@ -70,7 +70,7 @@ export default class TextInputContainer extends React.Component {
       var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
       var reEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       var rePressure = /^([0-9][0-9])(\/)([0-9][0-9])/
-      var reHeight = /^([0-2])(\.)([0-9][0-9])/
+      var reHeight = /^([0-2])(\,)([0-9][0-9])/
 
       if (this.props.required && !this.state.text) {
         this.setState({

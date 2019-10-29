@@ -115,7 +115,7 @@ export default class AnamnesisFormCoordinator extends Component {
             this.anamnesisRecord.height = this.outputFilters.textInput.metersToCm(result[1]);
         }
 
-        const currentHeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.height, 2);
+        const currentHeight = this.inputProducers.textInput.centimeterToMeter(this.anamnesisRecord.height);
         const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
         console.log(this.currentHeight);
@@ -123,8 +123,8 @@ export default class AnamnesisFormCoordinator extends Component {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
             description: ["Peso", "Altura"],
-            placeholder: ["00,00kg", "1.50m"],
-            inputMask: [null,{maskType: "custom", options:{mask: "9.99"}}],
+            placeholder: ["00,00kg", "1,50m"],
+            inputMask: [null,{maskType: "custom", options:{mask: "9,99"}}],
             required:true,
             progress: 0.1818,
             keyboardType: ["numeric", "height"],

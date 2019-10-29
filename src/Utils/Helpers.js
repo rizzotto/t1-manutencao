@@ -25,7 +25,7 @@ export function formatHeight(height){
         if (height % 1 !== 0) {
             return height + " m";
         }
-        return (height/100).toLocaleString('pt-BR') + " m";
+        return (height/100).toFixed(2).replace(".", ",") + " m";
     }
     return "N/A";
 }
