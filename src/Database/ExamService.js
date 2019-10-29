@@ -107,7 +107,29 @@ export default class ExamService {
         })
     }
 
-    // TODO: listExams, deleteExam, updateExam
+    /**
+     * Retorna todos os exames de um usuário, junto às imagens (`imageObjects`).
+     * 
+     * @param {string} userId ID do usuário cujos exames devem ser listados
+     * @returns {any[]} exames do usuário, do mais recente ao mais antigo; cada exame também tem uma propriedade `imageObjects` com um array de `ImageObject`, com as promises para URL de download das imagens
+     */
+    listExams = async (userId) => {
+        const snap = await this.db.ref(`${userId}/exams`).orderByKey().once("value")
+        const value = snap.val()
+
+        return Object.keys(value)
+            .map(timestamp => {
+                const exam = value[timestamp]
+                exam.creationDate = new Date(parseInt(timestamp))
+
+                exam.imageObjects = this.getImages(userId, exam)
+
+                return exam
+            })
+            .sort((a, b) => a.creationDate < b.creationDate)
+    }
+
+    // TODO: deleteExam, updateExam
 
     //
     // FUNÇÕES AUXILIARES
