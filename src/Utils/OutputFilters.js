@@ -35,6 +35,16 @@ class TextInputOutputFilter {
     number(textInputResult) {
         return parseFloat(this.removeWhitespace(textInputResult).replace(",", "."));
     }
+
+
+    /**
+     * Tranforsma o resultado da tela em metros para centimetros para guardar no banco.
+     * @param {string} textInputResult resultado da tela em metros
+     * @return {number} retorna a altura em centimetros
+     */
+    metersToCm(textInputResult) {
+        return parseFloat(this.removeWhitespace(textInputResult).replace(",", ".")) * 100;
+    }
 }
 
 /**

@@ -37,6 +37,7 @@ export default class MultiTextInputScreen extends Component{
         const content = this.getParam("content");
         const keyboardType = this.getParam("keyboardType");
         const required = this.getParam("required", false);
+        const inputMask = this.getParam("inputMask");
 
         return (
             <SafeAreaView style={styles.container}>
@@ -51,7 +52,8 @@ export default class MultiTextInputScreen extends Component{
                     keyboardType={keyboardType}
                     requiredInput={required}
                     callbackToScreen={this._onComplete}
-                />
+                    inputMask={inputMask}
+                /> 
             </SafeAreaView>
         );
     }
