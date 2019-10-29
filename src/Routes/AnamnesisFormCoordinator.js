@@ -112,13 +112,13 @@ export default class AnamnesisFormCoordinator extends Component {
     pushEmail = () => {
         const saveResult = (result) => {
             this.anamnesisRecord.weight = this.outputFilters.textInput.number(result[0]);
-            this.anamnesisRecord.height = this.outputFilters.textInput.number(result[1]);
+            this.anamnesisRecord.height = this.outputFilters.textInput.metersToCm(result[1]);
         }
 
         const currentHeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.height, 2);
         const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
-
+        console.log(this.currentHeight);
         this.props.navigation.push("MultiTextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
