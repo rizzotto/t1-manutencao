@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
 import RecordDetailContainer from '../Containers/RecordDetailContainer';
+import { Button, HeaderTitleComponent } from '../Components';
 import ExamsListContainer from '../Containers/ExamsListContainer';
 import SearchInputComponent from '../Components/SearchInputComponent';
 import EmptyStateContainer from '../Containers/EmptyStateContainer';
 
-//caso tu queira testar a screen, importa ela no RecordDetailContainer.js sem passar parametro algum!
-
-
-//tirar essa variavel daqui
-var isEmpty = false
 
 
 export default class ListExamsScreen extends Component {
@@ -30,7 +26,7 @@ export default class ListExamsScreen extends Component {
             {
                 title: "Dr. André",
                 description: "descrição de teste",
-                date: new Date("2019-10-10"),
+                date: new Date("2019-10-09"),
                 images: [{ sourceImage: require("../Resources/add.png") },
                 { sourceImage: require("../Resources/add.png") },
                 { sourceImage: require("../Resources/add.png") }
@@ -41,8 +37,6 @@ export default class ListExamsScreen extends Component {
             allExams: mock,
             visibleExams: mock,
         }
-
-
     }
 
     searchCallback = (text) => {
@@ -53,11 +47,6 @@ export default class ListExamsScreen extends Component {
         });
 
     }
-
-
-
-
-
 
     render() {
         if (this.state.allExams.length === 0) {
@@ -75,12 +64,13 @@ export default class ListExamsScreen extends Component {
             return (
                 <SafeAreaView>
                     <SearchInputComponent
-
                         placeholder={"Pesquisar"}
-                        callback={this.searchCallback}></SearchInputComponent>
-                    <View style={styles.textStyle}>
-                        <Text
-                        >Nenhum resultado da pesquisa</Text>
+                        callback={this.searchCallback}>
+                    </SearchInputComponent>
+
+                    <View style={styles.emptyStateViewText}>
+                        <Text style={styles.emptyStateText}
+                        >Nenhum exame encontrado</Text>
                     </View>
 
                 </SafeAreaView>
@@ -94,9 +84,10 @@ export default class ListExamsScreen extends Component {
             //Setar o Titulo da screen : Exames
 
             <SafeAreaView>
+                <HeaderTitleComponent title="Exames" />
                 <SearchInputComponent
                     //Arrumar o css do pesquisar
-                    //textStyle={styles.text}
+                    //emptyStateViewText={styles.text}
                     //viewStyle={styles.view}
                     placeholder={"Pesquisar"}
                     callback={this.searchCallback}></SearchInputComponent>
@@ -111,11 +102,12 @@ export default class ListExamsScreen extends Component {
 }
 const styles = StyleSheet.create({
     emptyStateText: {
-        
+        fontSize: 15
     },
-    textStyle:{
+    emptyStateViewText: {
         flex: 1,
-        alignItems:'center',
-        justifyContent:'center',
+        paddingTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });

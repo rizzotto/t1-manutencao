@@ -42,7 +42,7 @@ const AnamnesisForm = createStackNavigator({
 
 // TAB
 const AnamnesisTab = createStackNavigator({
-    AnamnesesRecords: ListExamsScreen,
+    AnamnesesRecords: AnamnesesRecordsScreen,
     AnamnesisDetail: AnamnesisDetailScreen
 }, {
     defaultNavigationOptions
@@ -81,6 +81,18 @@ JournalsTab.navigationOptions = {
     tabBarIcon: CreateTabBarIcon(require("../Resources/journalsTabBarIcon.png"))
 }
 
+// TAB
+const ExamsTab = createStackNavigator({
+    ExamsList: ListExamsScreen
+}, {
+    defaultNavigationOptions
+});
+
+ExamsTab.navigationOptions = {
+    title: "Exames",
+    tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png"))
+}
+
 //
 // APP
 //
@@ -88,7 +100,7 @@ JournalsTab.navigationOptions = {
 const TabNavigator = createBottomTabNavigator({
     Anamnesis: AnamnesisTab,
     Journals: JournalsTab,
-    // TODO: exames
+    Exames: ExamsTab
 }, {
     tabBarOptions: {
         activeTintColor: AppStyle.colors.main
