@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, StyleSheet, Platform } from 'react-native';
 import GallerySwiper from 'react-native-gallery-swiper';
 
 /**
@@ -59,6 +59,7 @@ export default class GalleryScreen extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
+                <StatusBar barStyle="light-content" backgroundColor="#000" />
                 <View style={styles.header}>
                     <View style={styles.headerLeftRightContainer}>
                         { this.getParam("showsDelete", false) &&
