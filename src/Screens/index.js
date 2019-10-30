@@ -21,3 +21,5 @@ export { default as GalleryScreen } from './GalleryScreen';
 // funções
 export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';
 export { default as CreateTabBarIcon } from './CreateTabBarIcon';
+
+export { default as ListExamsScreen } from './ListExamsScreen';

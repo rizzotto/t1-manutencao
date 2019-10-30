@@ -51,10 +51,11 @@ export default class SearchInputComponent extends Component {
 
 const styles = StyleSheet.create({
   searchImput: {
-    minHeight: 40,
-    fontSize: 20,
+    minHeight: 30,
+    fontSize: 15,
     textAlign: 'left',
-    color: AppStyle.colors.darkGray
+    color: AppStyle.colors.darkGray,
+    flex: 1
   },
   searchView: {
     marginHorizontal: 10,
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
-    width: 20,
-    height: 20
+    width: 15,
+    height: 15,
   }
 })

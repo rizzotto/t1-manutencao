@@ -1,12 +1,12 @@
 import React from 'react';
-import { HeaderButtonComponent } from "../Components";
+import { HeaderTextButtonComponent } from "../Components";
 
 /**
  * Cria as opções de navegação padrão usada nos fluxos de cadastro.
  * 
  * Parâmetros:
  *   - `{ navigation, screenProps }`: parâmetros passados pelo react-navigation na função definida como propriedade estática `navigationOptions`;
- *   - `headerRightHasColor`: passado para o componente `HeaderButtonComponent`, indica se o texto do botão à direita deve ser colorido (ver `HeaderButtonComponent`).
+ *   - `headerRightHasColor`: passado para o componente `HeaderTextButtonComponent`, indica se o texto do botão à direita deve ser colorido (ver `HeaderTextButtonComponent`).
  * 
  * Exemplo de uso:
  * 
@@ -32,7 +32,7 @@ const CreateDefaultNavigationOptions = ({ navigation, screenProps }, headerRight
 
     return {
         title: screenProps.title || navigation.getParam("title"),
-        headerRight: <HeaderButtonComponent text={headerRightTitle} onPress={headerRightOnPress} hasColor={headerRightHasColor} />
+        headerRight: <HeaderTextButtonComponent text={headerRightTitle} onPress={headerRightOnPress} hasColor={headerRightHasColor} />
     };
 }
 
