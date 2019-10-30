@@ -67,7 +67,8 @@ export default class ImageComponent extends Component {
     })
 
     // se rnImage não tiver sido definido (null ou undefined), e houver uma promise
-    if (!rnImage && urlPromise) {
+    const hasRNImage = rnImage !== null && rnImage !== undefined && rnImage.uri !== null && rnImage.uri !== undefined
+    if (!hasRNImage && urlPromise) {
       // esperar a promise completar e atualizar state para usar url obtida
       urlPromise.then(url => {
         this.setState({ ...this.state, source: { uri: url } })

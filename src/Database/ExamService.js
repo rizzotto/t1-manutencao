@@ -38,11 +38,10 @@ export default class ExamService {
      * Se o upload de todas as imagens falhar, o exame **não** é persistido.
      * 
      * @param {string} userId ID do usuário que está criando o exame
-     * @param {any} exam estrutura com dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito
-     * @param {ImageObject[]} images imagens relacionadas ao exame; `uri` deve ser o caminho da imagem no sistema de arquivos local
+     * @param {any} exam estrutura com dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito; as imagens devem estar no atributo `imageObjects`
      * @returns {Promise} promise que completa quando o upload de todas as imagens é concluído e o exame é persistido
      */
-    createExam = async (userId, exam, images) => {
+    createExam = async (userId, exam) => {
         const imagesBasePath = this._buildBasePath(userId, exam)
 
         const creationDate = exam.creationDate
@@ -51,7 +50,7 @@ export default class ExamService {
         // começar com lista vazia e adicionar nome nas imagens cujo upload deu certo
         exam.images = []
 
-        for (const image of images) {
+        for (const image of exam.imageObjects) {
             if (image.type !== "local") {
                 throw "cannot create an exam with remote images"
             }
@@ -129,7 +128,41 @@ export default class ExamService {
             .sort((a, b) => a.creationDate < b.creationDate)
     }
 
-    // TODO: deleteExam, updateExam
+    deleteExam = async (userId, exam) => {
+        // a API do Firebase Storage não possui a funcionalidade de deletar todas as imagens de um diretório
+        // (https://stackoverflow.com/questions/44988647/firebase-storage-folder-delete?rq=1)
+        // temos que deletar imagem por imagem; se pelo menos uma imagem não for deletada,
+        // cancelamos a deleção do exame e atualizamos a lista de imagens do exame com aquelas que não foram deletadas
+
+        const basePath = this._buildBasePath(userId, exam)
+        const remainingImages = []
+
+        for (const imageName of exam.images) {
+            try {
+                await this.storage.ref(`${basePath}/${imageName}`).delete()
+            } catch (error) {
+                // se, por algum motivo, a lista de imagens estiver errada e
+                // a imagem não existir no storage, desconsiderar o erro
+                if (error.code_ !== "storage/object-not-found") {
+                    remainingImages.push(imageName)
+                }
+            }
+        }
+
+        // se alguma imagem não foi deletada, parar a execução (não deletar o exame)
+        if (remainingImages.length > 0) {
+            // atualiza o exame com as imagens que faltam
+            exam.images = remainingImages
+            
+            // TODO: talvez atualizar `imageObjects` com as imagens que não foram deletadas? (fica domo deficit)
+            
+            throw "failed to delete some images"
+        }
+
+        return this.db.ref(`${userId}/exams/${exam.creationDate.getTime()}`).remove()
+    }
+
+    // TODO: updateExam
 
     //
     // FUNÇÕES AUXILIARES

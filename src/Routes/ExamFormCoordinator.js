@@ -33,7 +33,6 @@ export default class JournalEntryFormCoordinator extends Component {
         super(props);
 
         this.exam = props.navigation.getParam("exam", {})
-        this.images = props.navigation.getParam("images", [])
 
         this.textInputFilter = new InputProducers.TextInputInputProducer()
         this.textOutputFilter = new OutputFilters.TextInputOutputFilter()
@@ -51,7 +50,7 @@ export default class JournalEntryFormCoordinator extends Component {
 
     render() {
         const saveResult = (result) => {
-            this.images = result
+            this.exam.imageObjects = result
             this.props.navigation.setParams({ hasData: true })
         }
 
@@ -60,6 +59,7 @@ export default class JournalEntryFormCoordinator extends Component {
             progress: 0.25,
             title: "Adicione imagens",
             description: "Você deve adicionar pelo menos uma imagem para continuar, e pode adicionar quantas imagens quiser.",
+            images: this.exam.imageObjects,
             onComplete: composeSavePush(saveResult, this.pushTitle)
         }
 
@@ -106,7 +106,7 @@ export default class JournalEntryFormCoordinator extends Component {
             // criar
             this.exam.creationDate = new Date()
             
-            const save = examService.createExam(this.getParam("userId"), this.exam, this.images)
+            const save = examService.createExam(this.getParam("userId"), this.exam)
                 .then(() => this.props.navigation.navigate("Main"))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Não foi possível salvar seu exame. Tente novamente mais tarde." }
