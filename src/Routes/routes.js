@@ -1,11 +1,15 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import {
+    // ANAMNESE
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
-    JournalsScreen,
-    ListSubitemsScreen, ListScreen, TextInputScreen,
-    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen,
-    ListExamsScreen
-    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen, ImageSelectionScreen
+    // DIÁRIO
+    JournalsScreen, DiaryDetailScreen,
+    // EXAMES
+    ListExamsScreen,
+    // FORM
+    ListSubitemsScreen, ListScreen, TextInputScreen, EmojiScreen, MultiTextInputScreen, ImageSelectionScreen,
+    // AUXILIARES
+    GalleryScreen, LoadingScreen, CreateTabBarIcon
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
@@ -83,18 +87,6 @@ JournalsTab.navigationOptions = {
     tabBarIcon: CreateTabBarIcon(require("../Resources/journalsTabBarIcon.png"))
 }
 
-// TAB
-const ExamsTab = createStackNavigator({
-    ExamsList: ListExamsScreen
-}, {
-    defaultNavigationOptions
-});
-
-ExamsTab.navigationOptions = {
-    title: "Exames",
-    tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png"))
-}
-
 //
 // EXAMES
 //
@@ -110,7 +102,16 @@ const ExamForm = createStackNavigator({
 })
 
 // TAB
-// TODO: !!!
+const ExamsTab = createStackNavigator({
+    ExamsList: ListExamsScreen
+}, {
+    defaultNavigationOptions
+});
+
+ExamsTab.navigationOptions = {
+    title: "Exames",
+    tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png"))
+}
 
 //
 // APP
@@ -119,7 +120,7 @@ const ExamForm = createStackNavigator({
 const TabNavigator = createBottomTabNavigator({
     Anamnesis: AnamnesisTab,
     Journals: JournalsTab,
-    Exames: ExamsTab
+    Exams: ExamsTab
 }, {
     tabBarOptions: {
         activeTintColor: AppStyle.colors.main

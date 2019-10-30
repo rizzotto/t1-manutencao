@@ -91,7 +91,6 @@ export default class ImageComponent extends Component {
         <ImageBackground
           style={[styles.image, this.props.imageStyle]}
           source={source}
-          key={source}
           onLoad={this.onLoad}
         >
           { showsLoading && !isLoaded
