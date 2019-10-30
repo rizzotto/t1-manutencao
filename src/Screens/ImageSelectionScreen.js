@@ -1,59 +1,107 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Platform, ActionSheetIOS } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import ImagePicker from "react-native-image-crop-picker";
-import { Button } from '../Components';
-
-// TODO: remover quando tiver o componente de imagem
-import { FlatList, Image } from 'react-native';
+import { ProgressBar } from '../Components';
+import { ImageSelecionContainer } from '../Containers';
+import AppStyle from '../styles';
+import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
 
 /**
  * Screen para seleção de imagens de exames.
  * 
  * Parâmetros:
- * - ...
+ * - `progress`: porcentagem da barra de progresso
+ * - `title`: título da tela
+ * - `description`: descrição da tela
+ * - `images`: imagens inicialmente exibidas pela tela; pega apenas o valor inicial, não atualiza quando `props` for atualizado
+ * - `onComplete`: função chamada quando o usuário toca no botão "Continuar", com as imagens selecionadas
+ * 
+ * NOTA: essa screen depende do react-navigation, portanto a classe não é exportada na definição
+ * (ver `export default` abaixo da definição da classe).
  */
-export default class ImageSelectionScreen extends Component {
+class ImageSelectionScreen extends Component {
+    static navigationOptions = CreateDefaultNavigationOptions;
 
     constructor(props) {
         super(props)
 
         this.state = {
-            images: []
+            images: this.getParam("images", [])
         }
     }
 
-    selectPhotos = () => {
+    addImages = () => {
         selectImages()
-            .then(images => {
+            .then(newImages => {
                 // o react-native-image-crop-picker retorna um array de imagens ou uma única imagem
                 // temos que normalizar se ele retornar apenas uma imagem
-                if (!Array.isArray(images)) {
-                    images = [images]
+                if (!Array.isArray(newImages)) {
+                    newImages = [newImages]
                 }
 
-                images.forEach(img => img.uri = img.path)
-                this.setState({ ...this.state, images })
+                // se o usuário cancelou, fazer nada
+                if (newImages.length === 0) return;
 
-                console.warn("selecionou imagens", images)
+                // adicionar imagens selecionadas (todas são locais)
+                const allImages = this.state.images.slice()
+                newImages.forEach(img => {
+                    allImages.push({
+                        type: "local",
+                        mime: img.mime,
+                        uri: img.path
+                    })
+                })
+
+                this.setState({ ...this.state, images: allImages })
             })
     }
 
+    continue = () => {
+        const onComplete = this.getParam("onComplete")
+        if (!onComplete) return;
+        onComplete(this.state.images)
+    }
+
+    /**
+     * @param {number} index
+     */
+    selectImage = (index) => {
+        const { images } = this.state
+
+        this.props.navigation.navigate("Gallery", {
+            images,
+            page: index,
+            showsDelete: true,
+            deleteAction: this.deleteImage
+        })
+    }
+
+    /**
+     * @param {number} index
+     */
+    deleteImage = (index) => {
+        const images = this.state.images.slice()
+        images.splice(index, 1)
+        this.setState({ ...this.state, images })
+    }
+
     render() {
+        const progress = this.getParam("progress", 0)
+        const title = this.getParam("title", "")
+        const description = this.getParam("description", "")
+        const { images } = this.state
+
         return (
-            <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#fff" }}>
-                <Button text="Adicionar fotos" action={this.selectPhotos} />
-                {/* TODO: remover quando o container de lista de imagens estiver pronto */}
-                <FlatList
-                    style={{ flex: 1 }}
-                    data={this.state.images}
-                    renderItem={({ item: image }) => {
-                        return <Image
-                            source={{url: image.path}}
-                            style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                    }}
-                    extraData={this.state.images}
-                    keyExtractor={(item, index) => "loc-" + index.toString()}
+            <SafeAreaView style={styles.container}>
+                <ProgressBar width={progress} />
+                <ImageSelecionContainer
+                    title={title}
+                    description={description}
+                    onSelectImage={this.selectImage}
+                    onAdd={this.addImages}
+                    onComplete={this.continue}
+                    images={images}
                 />
             </SafeAreaView>
         )
@@ -61,11 +109,27 @@ export default class ImageSelectionScreen extends Component {
 }
 
 /**
+ * Precisamos usar o react-navigation para ter acesso ao `navigation` quando essa screen é
+ * renderizada como um componente (no `render`).
+ */
+export default withNavigation(ImageSelectionScreen);
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: AppStyle.colors.background
+    },
+    titleDescription: {
+        marginBottom: 30
+    }
+})
+
+/**
  * Mostra ao usuário uma interface para seleção de imagens, a partir da câmera ou da galeria.
  * 
  * Mostra um alerta pedindo de onde selecionar fotos (câmera ou galeria), e depois exibe a interface adequada.
  * 
- * @returns {Promise<{ data: string, mime: string }[]>} promise que completa com uma lista com as imagens selecionadas
+ * @returns {Promise<{ path: string, mime: string }[]>} promise que completa com uma lista com as imagens selecionadas
  */
 const selectImages = () => {
     const options = {

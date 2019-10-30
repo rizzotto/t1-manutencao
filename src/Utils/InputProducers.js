@@ -1,4 +1,5 @@
 import { mapToFrequencyDescriptions, frequencyCodes } from './frequencies';
+import {formatDate} from '../Utils/Helpers';
 
 /**
  * Gera as strings da tela de entrada de texto.
@@ -14,11 +15,7 @@ class TextInputInputProducer {
             return "";
         }
 
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-
-        return `${day}/${month}/${year}`;
+        return formatDate(date);
     }
 
     /**
@@ -39,6 +36,11 @@ class TextInputInputProducer {
      */
     intNumber(number) {
         return this.decimalNumber(number, 0);
+    }
+
+    centimeterToMeter(number){
+        if(!number) return null;
+        return (number/100).toFixed(2).replace(".", ",");
     }
 }
 

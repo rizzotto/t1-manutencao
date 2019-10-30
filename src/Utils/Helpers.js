@@ -5,14 +5,14 @@ import {getFrequencyDescription} from './frequencies';
  * @returns {String}
  */
 export function formatDate(date){
+    console.warn(date.getDate());
     if(!_isEmpty(date)){
-        let correctedMonth = date.getMonth()+1;
-        if(correctedMonth < 10){
-            correctedMonth = "0"+correctedMonth;
-        }
-        return ""+date.getDate() +"/" + correctedMonth + "/" +date.getFullYear();
+        var dia = String(date.getDate()).padStart(2, '0');
+        var mes = String(date.getMonth() + 1).padStart(2, '0');
+        var ano = date.getFullYear();
+        return dia +"/" + mes + "/" + ano;
     }
-    return "N/A";
+    return null;
 }
 
 /**
@@ -25,7 +25,7 @@ export function formatHeight(height){
         if (height % 1 !== 0) {
             return height + " m";
         }
-        return (height/100).toLocaleString('pt-BR') + " m";
+        return (height/100).toFixed(2).replace(".", ",") + " m";
     }
     return "N/A";
 }

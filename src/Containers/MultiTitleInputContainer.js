@@ -116,6 +116,7 @@ export default class MultiTitleInputContainer extends Component{
                         description={this.props.inputDescription[i]}
                         type={this.props.keyboardType[i]}
                         index={i}
+                        inputMask={this.props.inputMask[i]}
                         />
                 </View>
                 )

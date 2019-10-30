@@ -5,9 +5,11 @@ import {
     ListSubitemsScreen, ListScreen, TextInputScreen,
     LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen,
     ListExamsScreen
+    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen, ImageSelectionScreen
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
+import ExamFormCoordinator from './ExamFormCoordinator';
 import AppStyle from '../styles';
 
 const defaultNavigationOptions = {
@@ -94,6 +96,23 @@ ExamsTab.navigationOptions = {
 }
 
 //
+// EXAMES
+//
+
+// FORM
+const ExamForm = createStackNavigator({
+    Coordinator: ExamFormCoordinator,
+    ImageSelection: ImageSelectionScreen,
+    TextInput: TextInputScreen
+}, {
+    defaultNavigationOptions,
+    initialRouteName: "Coordinator"
+})
+
+// TAB
+// TODO: !!!
+
+//
 // APP
 //
 
@@ -118,6 +137,7 @@ const AppNavigator = createStackNavigator({
     // as demais são os fluxos de cadastro/edição
     AnamnesisForm: AnamnesisForm,
     JournalEntryForm: JournalEntryForm,
+    ExamForm: ExamForm,
 
     // telas auxiliares
     Loading: LoadingScreen,
