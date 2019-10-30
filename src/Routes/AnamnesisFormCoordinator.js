@@ -80,6 +80,7 @@ export default class AnamnesisFormCoordinator extends Component {
             callout: "Informe seus dados pessoais",
             description: ["Nome", "E-mail", "Data de Nascimento"],
             placeholder: ["Insira seu nome...", "email@exemplo.com", "DD/MM/AAAA"],
+            inputMask: [null, null, {maskType: 'datetime', options:{format: 'DD/MM/YYYY'}}],
             progress: 0.0909,
             required: true,
             content: [this.anamnesisRecord.name, this.anamnesisRecord.email, currentDate],
@@ -111,21 +112,22 @@ export default class AnamnesisFormCoordinator extends Component {
     pushEmail = () => {
         const saveResult = (result) => {
             this.anamnesisRecord.weight = this.outputFilters.textInput.number(result[0]);
-            this.anamnesisRecord.height = this.outputFilters.textInput.number(result[1]);
+            this.anamnesisRecord.height = this.outputFilters.textInput.metersToCm(result[1]);
         }
 
-        const currentHeight = this.inputProducers.textInput.intNumber(this.anamnesisRecord.height);
+        const currentHeight = this.inputProducers.textInput.centimeterToMeter(this.anamnesisRecord.height);
         const currentWeight = this.inputProducers.textInput.decimalNumber(this.anamnesisRecord.weight, 2);
 
-
+        console.log(this.currentHeight);
         this.props.navigation.push("MultiTextInput", {
             ...this.defaultParams,
             callout: "Informe seu peso e altura",
             description: ["Peso", "Altura"],
-            placeholder: ["00,00kg", "1.50m"],
+            placeholder: ["00,00kg", "1,50m"],
+            inputMask: [null,{maskType: "custom", options:{mask: "9,99"}}],
             required:true,
             progress: 0.1818,
-            keyboardType: ["numeric", "numeric"],
+            keyboardType: ["numeric", "height"],
             content: [currentWeight, currentHeight],
             onComplete: composeSavePush(saveResult, this.pushSymptoms)
         })

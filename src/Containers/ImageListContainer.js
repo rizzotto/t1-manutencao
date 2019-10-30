@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, FlatList, Image} from 'react-native';
 import ImageComponent from '../Components/ImageComponent';
 
-
+// imagens exibidas por linha
+const IMAGES_PER_LINE = 3
 
 /**
  * @author Guilherme Rizzotto, Lucas Justo
@@ -25,81 +26,94 @@ import ImageComponent from '../Components/ImageComponent';
 
 export default class ImageListContainer extends Component {
     constructor(props) {
-        super(props);
-        add = this.props.add
-        this.format()
-    }
-    state = {
-        data: this.props.data
-    };
+        super(props)
 
-    
-    format = () =>{
-        if(add){
-            this.state.data.unshift({id:0,sourceImage:require("../Resources/add.png")});
-            for(var i=1;i<this.state.data.length;i++){
-                this.state.data[i].id += 1
+        const state = this.normalizeData(props)
+        this.state = {
+            ...state
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const newState = this.normalizeData(nextProps)
+        this.setState({ ...this.state, ...newState })
+    }
+
+    normalizeData = ({ data, add }) => {
+        const finalImages = data.slice()
+
+        if (add) {
+            finalImages.unshift({ add: true })
+        }
+
+        const imagesOnLastLine = finalImages.length % IMAGES_PER_LINE
+        if (imagesOnLastLine !== 0) {
+            let whitespaceToAdd = IMAGES_PER_LINE - imagesOnLastLine
+            while (whitespaceToAdd > 0) {
+                finalImages.push({ white: true })
+                whitespaceToAdd = whitespaceToAdd - 1
             }
         }
-        
-        whiteImages = 3-(this.state.data.length%3)
-        for(var i=1;i<=whiteImages;i++){
-            this.state.data.push({id:this.state.data.length-1+i, sourceImage: require("../Resources/whiteImage.png"), white: true})
+
+        return {
+            add,
+            data: finalImages
         }
     }
 
     onClickItem = (index) => {
-        if (add) {
-            if (index === 0) {
-                this.props.addAction()
-            } else {
-                this.props.onSelectItem(index - 1)
-            }
-        } 
-        else {
-            this.props.onSelectItem(index)
-        }
+        const onSelectItem = this.props.onSelectItem
+        if (!onSelectItem) return;
+
+        // se tiver o botão de adicionar no início, normalizar índice
+        onSelectItem(this.state.add ? index - 1 : index)
+    }
+
+    onClickAdd = () => {
+        const addAction = this.props.addAction
+        if (!addAction) return;
+        addAction()
     }
 
     render(){
         return(
-            <View style = {styles.container}>
-                <FlatList
-                    style={styles.list}
-                    numColumns={3}
-                    initialNumToRender={5}
-                    data={this.state.data}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item, index }) => {
+            <FlatList style={this.props.style}
+                numColumns={IMAGES_PER_LINE}
+                data={this.state.data}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => {
+                    if (item.add) {
                         return (
-                            <View style={styles.item}>
-                                {item.white?<Image source={item.sourceImage} style={styles.image}></Image>
-                                :<ImageComponent onClick={() => this.onClickItem(index)} isTouch={this.props.isTouchable} style = {styles.image} {...item}/>}
-                            </View>
-                        );   
-                    }}
-                />
-            </View>
+                            <ImageComponent imageStyle={styles.item}
+                                sourceImage={require("../Resources/add.png")}
+                                isTouch={this.props.isTouchable}
+                                onClick={this.onClickAdd}
+                            />
+                        )
+                    } else if (item.white) {
+                        return <View style={styles.item} />
+                    } else {
+                        return (
+                            <ImageComponent imageStyle={styles.item}
+                                onClick={() => this.onClickItem(index)}
+                                isTouch={this.props.isTouchable}
+                                {...item}
+                            />
+                        )
+                    }
+                }}
+            />
         )
         
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: "3%",
-        
-    },
     item: {
-        flexBasis: 0,
-        alignItems: "center",
         flexGrow: 1,
-        margin: 5,
-        minWidth: 100,
-        minHeight: 100
-    },
-    image:{
-        width: "100%",
-        height: 125
-    },
+        flexBasis: 0,
+        margin: 1,
+        width: 110,
+        height: 110
+    }
 })

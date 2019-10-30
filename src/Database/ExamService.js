@@ -1,5 +1,19 @@
 
 import RNFetchBlob from 'rn-fetch-blob';
+import uuid from 'react-native-uuid';
+
+/**
+ * @typedef {Object} ImageObject
+ * @property {"local"|"remote"} type tipo da imagem:
+ *   - `"local"`: imagem que está no dispositivo do usuário, ainda não persistida no firebase
+ *   - `"remote"`: imagem que está persistida no firebase
+ * @property {string} [name] nome da imagem (apenas imagens remotas)
+ * @property {"image/png"|"image/jpeg"} [mime] MIME type da imagem (apenas imagens locais)
+ * @property {string} [uri] localização da imagem
+ *   - imagens locais: URL da imagem no dispositivo, sempre disponível;
+ *   - imagens remotas: URL para download da imagem, disponível depois que a promise for concluída; disponível quando `promise == null` (ver abaixo)
+ * @property {Promise<string>} [promise] promise que completa com a URL de download da imagem (apenas imagens remotas); quando a promise completa, o valor no campo `uri` é atualizado e esse campo é setado para `null`
+ */
 
 /**
  * Serviço de persistência de anamneses no Firebase.
@@ -16,7 +30,7 @@ export default class ExamService {
     }
 
     /**
-     * Salva um exame com suas imagens  no Firebase.
+     * Cria um exame e salva suas imagens no Firebase.
      * 
      * Qualquer valor em `exam.images` será sobrescrito com a lista com o nome
      * das imagens cujo upload teve sucesso. Se o upload de uma imagem falha,
@@ -24,11 +38,10 @@ export default class ExamService {
      * Se o upload de todas as imagens falhar, o exame **não** é persistido.
      * 
      * @param {string} userId ID do usuário que está criando o exame
-     * @param {any} exam estrutura com dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito
-     * @param {{ mime: "image/jpeg"|"image/png", path: string }[]} images imagens relacionadas ao exame; `path` deve ser o caminho da imagem no sistema de arquivos local
+     * @param {any} exam estrutura com dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito; as imagens devem estar no atributo `imageObjects`
      * @returns {Promise} promise que completa quando o upload de todas as imagens é concluído e o exame é persistido
      */
-    saveExam = async (userId, exam, images) => {
+    createExam = async (userId, exam) => {
         const imagesBasePath = this._buildBasePath(userId, exam)
 
         const creationDate = exam.creationDate
@@ -37,12 +50,15 @@ export default class ExamService {
         // começar com lista vazia e adicionar nome nas imagens cujo upload deu certo
         exam.images = []
 
-        for (const index in images) {
-            const image = images[index]
-            const filename = `img-${index}.${this._buildExtension(image.mime)}`
+        for (const image of exam.imageObjects) {
+            if (image.type !== "local") {
+                throw "cannot create an exam with remote images"
+            }
+
+            const filename = `img-${uuid.v4()}.${this._buildExtension(image.mime)}`
 
             try {
-                await this.uploadImage(imagesBasePath, filename, image.path)
+                await this._uploadImage(imagesBasePath, filename, image.uri)
                 exam.images.push(filename)
             } catch (error) {
                 // ignorar erros
@@ -59,18 +75,98 @@ export default class ExamService {
     }
 
     /**
-     * Busca as URLs para download das imagens de um exame.
+     * Retorna as imagens de um exame.
      * 
      * @param {string} userId ID do usuário que criou o exame
      * @param {any} exam exame cujas URLs das imagens são requisitadas
-     * @returns {Promise<string>[]} array com promises que completam com uma URL de download de imagem, na mesma ordem das imagens em `exam.images`
+     * @return {ImageObject[]} array com informações das imagens do exame, na mesma order das imagens em `exam.images`
      */
-    getImagesDownloadURLs = (userId, exam) => {
+    getImages = (userId, exam) => {
         const basePath = this._buildBasePath(userId, exam)
+
         return exam.images.map(imageName => {
-            return this.storage.ref(`${basePath}/${imageName}`).getDownloadURL()
+            // promise da url de download da imagem
+            const promise = this.storage.ref(`${basePath}/${imageName}`).getDownloadURL()
+
+            // objeto que representa uma imagem
+            const imageObject = {
+                type: "remote",
+                name: imageName,
+                promise
+            }
+
+            // quando a promise completa, atualiza o objeto que representa a imagem para ter a url
+            // retornada, e remove a promise do objeto (porque não é mais necessária)
+            promise.then(url => {
+                imageObject.uri = url
+                imageObject.promise = null
+            })
+
+            return imageObject
         })
     }
+
+    /**
+     * Retorna todos os exames de um usuário, junto às imagens (`imageObjects`).
+     * 
+     * @param {string} userId ID do usuário cujos exames devem ser listados
+     * @returns {any[]} exames do usuário, do mais recente ao mais antigo; cada exame também tem uma propriedade `imageObjects` com um array de `ImageObject`, com as promises para URL de download das imagens
+     */
+    listExams = async (userId) => {
+        const snap = await this.db.ref(`${userId}/exams`).orderByKey().once("value")
+        const value = snap.val()
+
+        return Object.keys(value)
+            .map(timestamp => {
+                const exam = value[timestamp]
+                exam.creationDate = new Date(parseInt(timestamp))
+
+                exam.imageObjects = this.getImages(userId, exam)
+
+                return exam
+            })
+            .sort((a, b) => a.creationDate < b.creationDate)
+    }
+
+    deleteExam = async (userId, exam) => {
+        // a API do Firebase Storage não possui a funcionalidade de deletar todas as imagens de um diretório
+        // (https://stackoverflow.com/questions/44988647/firebase-storage-folder-delete?rq=1)
+        // temos que deletar imagem por imagem; se pelo menos uma imagem não for deletada,
+        // cancelamos a deleção do exame e atualizamos a lista de imagens do exame com aquelas que não foram deletadas
+
+        const basePath = this._buildBasePath(userId, exam)
+        const remainingImages = []
+
+        for (const imageName of exam.images) {
+            try {
+                await this.storage.ref(`${basePath}/${imageName}`).delete()
+            } catch (error) {
+                // se, por algum motivo, a lista de imagens estiver errada e
+                // a imagem não existir no storage, desconsiderar o erro
+                if (error.code_ !== "storage/object-not-found") {
+                    remainingImages.push(imageName)
+                }
+            }
+        }
+
+        // se alguma imagem não foi deletada, parar a execução (não deletar o exame)
+        if (remainingImages.length > 0) {
+            // atualiza o exame com as imagens que faltam
+            exam.images = remainingImages
+            
+            // TODO: talvez atualizar `imageObjects` com as imagens que não foram deletadas? (fica domo deficit)
+            
+            throw "failed to delete some images"
+        }
+
+        return this.db.ref(`${userId}/exams/${exam.creationDate.getTime()}`).remove()
+    }
+
+    // TODO: updateExam
+
+    //
+    // FUNÇÕES AUXILIARES
+    //
 
     /**
      * Persiste uma imagem no Firebase Storage.
@@ -80,7 +176,7 @@ export default class ExamService {
      * @param {string} path caminho da imagem no sistema de arquivos
      * @returns {Promise} promise que completa quando o upload é finalizado
      */
-    uploadImage = (basePath, filename, path) => {
+    _uploadImage = (basePath, filename, path) => {
         return RNFetchBlob.fs.readFile(path, "base64")
             .then(data => {
                 return this.storage.ref(`${basePath}/${filename}`).putString(data, "base64")

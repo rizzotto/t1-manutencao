@@ -69,6 +69,17 @@ export default class JournalsScreen extends Component {
         this.props.navigation.navigate("JournalEntryForm", {emoji: item, userId: this.userId})
     }
 
+    componentDidUpdate(prevProps){
+        if(!this.props.navigation.getParam('updatedData') && this.props.navigation.getParam('date')){
+            this.onSelectEntry(this.props.navigation.getParam('date'));
+        }
+        if(this.props.navigation.getParam('updatedData')){
+            this.setState({isLoading: true})
+            this.props.navigation.state.params.updatedData = false;
+            journalService.listEntries(this.userId).then(dataDB => this.updateUI(dataDB))
+        }
+    }
+
     render() {
         const { sections, hasItems, isLoading } = this.state;
 

@@ -89,7 +89,15 @@ export default class JournalEntryFormCoordinator extends Component {
             placeholder: "00/00 mmHg",
             progress: 0.2,
             required: true,
+            inputMask: {
+                maskType: 'custom', 
+                options: {
+                    mask: "99/99"
+                }
+            },
             content: this.journalEntry.bloodPressure,
+            keyboardType: "pressure",
+
             onComplete: composeSavePush(saveResult, this.pushStressLevel)
         })
 
@@ -152,7 +160,10 @@ export default class JournalEntryFormCoordinator extends Component {
         //Se já possui creationDate, atualiza o registro com os novos dados (não troca a data).
         if(this.journalEntry.creationDate){
             const update = journalService.updateEntry(this.getParam("userId"), this.journalEntry, this.journalEntry.creationDate)
-                .then(() => this.props.navigation.navigate("Main"))
+                .then((x) => this.props.navigation.navigate("JournalsHistory", {
+                    updatedData: true,
+                    date: this.journalEntry.creationDate
+                }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
                 })
@@ -166,7 +177,10 @@ export default class JournalEntryFormCoordinator extends Component {
             this.journalEntry.creationDate = new Date();
 
             const save = journalService.saveEntry(this.getParam("userId"), this.journalEntry)
-                .then(() => this.props.navigation.navigate("Main"))
+                .then((x) => this.props.navigation.navigate("JournalsHistory", {
+                    updatedData: true,
+                    date: false
+                }))
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Tente novamente mais tarde." }
                 })

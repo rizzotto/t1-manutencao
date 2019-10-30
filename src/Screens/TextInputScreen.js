@@ -17,6 +17,7 @@ import { ProgressBar } from '../Components';
  *   - `required`: se é requerido que o usuário entre com alguma informação na tela;
  *   - `onComplete`: função chamada quando o usuário confirma o dado inserido;
  *   - `onCancel`: função chamada quando o usuário clica no botão `Cancelar` no header;
+ *   - `inputMask`: (opcional) tipo da mascara do input
  *   - `title`: título exibido no header.
  */
 export default class TextInputScreen extends Component{
@@ -37,6 +38,7 @@ export default class TextInputScreen extends Component{
         const content = this.getParam("content");
         const keyboardType = this.getParam("keyboardType");
         const required = this.getParam("required", false);
+        const mask = this.getParam("inputMask");
 
         return (
             <SafeAreaView style={styles.container}>
@@ -51,6 +53,7 @@ export default class TextInputScreen extends Component{
                     keyboardType={keyboardType}
                     requiredInput={required}
                     callbackToScreen={this._onComplete}
+                    maskType={mask}
                 />
             </SafeAreaView>
         );
