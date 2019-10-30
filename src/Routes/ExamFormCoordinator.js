@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButtonComponent } from '../Components';
+import { HeaderTextButtonComponent } from '../Components';
 import { ImageSelectionScreen } from '../Screens';
 import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
@@ -25,7 +25,7 @@ export default class JournalEntryFormCoordinator extends Component {
 
         return {
             title: "Exame",
-            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderTextButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 

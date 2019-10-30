@@ -1,4 +1,4 @@
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions } from 'react-navigation';
 import {
     // ANAMNESE
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
@@ -108,9 +108,18 @@ const ExamsTab = createStackNavigator({
     defaultNavigationOptions
 });
 
-ExamsTab.navigationOptions = {
-    title: "Exames",
-    tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png"))
+ExamsTab.navigationOptions = ({ navigation, screenProps }) => {
+    // usar a navigationOptions da primeira tela exibida pela stack
+    let activeRouteOptions = {}
+    if (navigation.state.index === 0) {
+        activeRouteOptions = getActiveChildNavigationOptions(navigation, screenProps)
+    }
+
+    return {
+        title: "Exames",
+        tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png")),
+        ...activeRouteOptions
+    }
 }
 
 //

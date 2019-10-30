@@ -1,32 +1,22 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, ActivityIndicator, Platform } from 'react-native';
-import { HeaderTitleComponent, SearchInputComponent } from '../Components';
+import { HeaderTitleComponent, SearchInputComponent, HeaderImageButtonComponent } from '../Components';
 import { EmptyStateContainer, ExamsListContainer } from '../Containers';
 import { examService } from '../Database';
 import AppStyle from '../styles';
 
-const MOCK = [
-    {
-        title: "Dr. Carlos",
-        description: "Exame de sangue, cardiograma, hemograma, mais texto",
-        date: new Date("2019-10-10"),
-        images: [{ sourceImage: require("../Resources/add.png") },
-        { sourceImage: require("../Resources/add.png") },
-        { sourceImage: require("../Resources/add.png") }
-        ]
-    },
-    {
-        title: "Dr. André",
-        description: "descrição de teste",
-        date: new Date("2019-10-09"),
-        images: [{ sourceImage: require("../Resources/add.png") },
-        { sourceImage: require("../Resources/add.png") },
-        { sourceImage: require("../Resources/add.png") }
-        ]
-    }
-]
-
 export default class ListExamsScreen extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: (
+                <HeaderImageButtonComponent
+                    image={require("../Resources/headerAdd.png")}
+                    onPress={navigation.getParam("createExamAction")}
+                />
+            )
+        }
+    }
+
     // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
     userId = "user-id-001"
 
@@ -43,6 +33,8 @@ export default class ListExamsScreen extends Component {
         examService.listExams(this.userId)
             .then(exams => this.setExams(exams))
             .catch(() => this.setExams([]))
+        
+        props.navigation.setParams({ createExamAction: this.createExam })
     }
 
     setExams = (exams) => {
