@@ -5,7 +5,6 @@ import {getFrequencyDescription} from './frequencies';
  * @returns {String}
  */
 export function formatDate(date){
-    console.warn(date.getDate());
     if(!_isEmpty(date)){
         var dia = String(date.getDate()).padStart(2, '0');
         var mes = String(date.getMonth() + 1).padStart(2, '0');

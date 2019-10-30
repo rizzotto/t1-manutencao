@@ -23,3 +23,4 @@ export { default as CreateDefaultNavigationOptions } from './CreateDefaultNaviga
 export { default as CreateTabBarIcon } from './CreateTabBarIcon';
 
 export { default as ListExamsScreen } from './ListExamsScreen';
+export { default as DetailExamScreen } from './ExamVisualizationScreen'

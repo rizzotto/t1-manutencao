@@ -5,7 +5,7 @@ import {
     // DIÁRIO
     JournalsScreen, DiaryDetailScreen,
     // EXAMES
-    ListExamsScreen,
+    ListExamsScreen, DetailExamScreen,
     // FORM
     ListSubitemsScreen, ListScreen, TextInputScreen, EmojiScreen, MultiTextInputScreen, ImageSelectionScreen,
     // AUXILIARES
@@ -103,7 +103,8 @@ const ExamForm = createStackNavigator({
 
 // TAB
 const ExamsTab = createStackNavigator({
-    ExamsList: ListExamsScreen
+    ExamsList: ListExamsScreen,
+    ExamDetail: DetailExamScreen
 }, {
     defaultNavigationOptions
 });

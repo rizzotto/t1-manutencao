@@ -30,27 +30,37 @@ const IMAGES_PER_PAGE = 3
  * @return Container do Item dos Exames
  */
 
+
+
+ /*
+    TODO
+    Passar os dados corretamente
+    Mostrar as imagens recebidas 
+    Ao clicar abrir a imagem em FU screen
+    Ao clicar em editar, navegar para o fluxo de edição
+
+ */
 export default class ExamContainer2 extends Component {
 
     constructor(props) {
-        super(props)
-
-        const images = props.images.slice()
-        const imageCount = images.length
-
+        super(props) 
         // Preenche o restante da linha com vazios
         // Deve mostrar todas as imagens
-        let remaining = IMAGES_PER_PAGE - (imageCount % IMAGES_PER_PAGE)
-        while (remaining > 0) {
-            images.push({ empty: true })
-            remaining = remaining - 1
-        }
+        // let remaining = IMAGES_PER_PAGE - (imageCount % IMAGES_PER_PAGE)
+        // while (remaining > 0) {
+        //     images.push({ empty: true })
+        //     remaining = remaining - 1
+        // }
 
         this.state = {
-            images
+            images: props.exame.images
         }
     }
 
+
+    componentDidMount(){
+        console.log(this.props);
+    }
     /**
      * @param {Date} date
      * @return {string}
@@ -63,15 +73,16 @@ export default class ExamContainer2 extends Component {
     }
 
     render() {
-        const date = this.props.date
+        const date = this.props.exame.creationDate;
 
         return (
             <TouchableOpacity onPress={this.props.onPress} style={this.props.style} activeOpacity={0.7}>
                 <View style={styles.titleDateContainer}>
-                    <Text numberOfLines={1} style={styles.title}>{this.props.title}</Text> 
+                    <Text style={styles.title}>Dr. Carlos</Text> 
                 </View>
                 <Text style={styles.date}>{this.formatDate(date)}</Text>
-                <Text numberOfLines={1} style={styles.description}>{this.props.description}</Text>
+                <Text style={styles.descriptionTitle}>Descrição:</Text>
+                <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
                 {/*Meter um TitleDescription??*/}
                 
                 <FlatList
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     title: {
         flex: 1,
         marginRight: 5,
-        fontSize: 17,
+        fontSize: 24,
         fontWeight: Platform.OS === "ios" ? "600" : "bold",
         color: AppStyle.colors.darkText
     },
@@ -116,8 +127,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: AppStyle.colors.darkGray
     },
-    description: {
-        marginTop: 5,
+    descriptionTitle: {
+        marginTop: 10,
+        fontSize: 16,
+        color: AppStyle.colors.darkGray
+    },
+    descriptionText: {
         marginBottom: 10,
         fontSize: 14,
         color: AppStyle.colors.darkGray
@@ -127,7 +142,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexBasis: 0,
         margin: 1,
-        backgroundColor: AppStyle.colors.background
+        backgroundColor: "#000"
     },
 
     darkOverlay: {

@@ -11,11 +11,13 @@ export default class ExamVisualizationScreen extends Component {
         }
     }
 
+    
     render() {
+        const exame = this.props.navigation.state.params.exam;
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
-                    <ExamContainer2 >
+                    <ExamContainer2 exame={exame}>
 
                     </ExamContainer2>
                 </View>
@@ -27,7 +29,6 @@ export default class ExamVisualizationScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#000"
     },
     header: {
         flexDirection: "row",
