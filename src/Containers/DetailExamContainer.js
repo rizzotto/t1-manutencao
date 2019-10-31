@@ -40,27 +40,16 @@ const IMAGES_PER_PAGE = 3
     Ao clicar em editar, navegar para o fluxo de edição
 
  */
-export default class ExamContainer2 extends Component {
+export default class DetailExamContainer extends Component {
 
     constructor(props) {
         super(props) 
-        // Preenche o restante da linha com vazios
-        // Deve mostrar todas as imagens
-        // let remaining = IMAGES_PER_PAGE - (imageCount % IMAGES_PER_PAGE)
-        // while (remaining > 0) {
-        //     images.push({ empty: true })
-        //     remaining = remaining - 1
-        // }
 
         this.state = {
             images: props.exame.images
         }
     }
 
-
-    componentDidMount(){
-        console.log(this.props);
-    }
     /**
      * @param {Date} date
      * @return {string}
@@ -76,14 +65,13 @@ export default class ExamContainer2 extends Component {
         const date = this.props.exame.creationDate;
 
         return (
-            <TouchableOpacity onPress={this.props.onPress} style={this.props.style} activeOpacity={0.7}>
+            <View style={this.props.style}>
                 <View style={styles.titleDateContainer}>
                     <Text style={styles.title}>Dr. Carlos</Text> 
                 </View>
                 <Text style={styles.date}>{this.formatDate(date)}</Text>
                 <Text style={styles.descriptionTitle}>Descrição:</Text>
                 <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
-                {/*Meter um TitleDescription??*/}
                 
                 <FlatList
                     numColumns={IMAGES_PER_PAGE}
@@ -95,18 +83,18 @@ export default class ExamContainer2 extends Component {
                             return <View style={styles.item} />
                         } else if (item.multiple) {
                             return (
-                                <ImageComponent imageStyle={styles.item} { ...item }>
+                                <ImageComponent imageStyle={styles.item} { ...item } isTouch={true}>
                                     <View style={styles.darkOverlay}>
                                         <Text style={styles.darkOverlayText}>+{item.count}</Text>
                                     </View>
                                 </ImageComponent>
                             )
                         } else {
-                            return <ImageComponent imageStyle={styles.item} { ...item } />
+                            return <ImageComponent imageStyle={styles.item} { ...item } isTouch={true}/>
                         }
                     }}
                 />
-            </TouchableOpacity>
+            </View>
         )
     }
 }
@@ -130,7 +118,7 @@ const styles = StyleSheet.create({
     descriptionTitle: {
         marginTop: 10,
         fontSize: 16,
-        color: AppStyle.colors.darkGray
+        color: AppStyle.colors.darkerGray
     },
     descriptionText: {
         marginBottom: 10,

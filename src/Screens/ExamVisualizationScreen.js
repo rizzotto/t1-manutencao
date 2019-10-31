@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Platform } from 'react-native';
-import ExamContainer2 from '../Containers/ExamContainer2';
+import DetailExamContainer from '../Containers/DetailExamContainer';
 
 export default class ExamVisualizationScreen extends Component {
     constructor(props) {
@@ -17,9 +17,9 @@ export default class ExamVisualizationScreen extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
-                    <ExamContainer2 exame={exame}>
+                    <DetailExamContainer exame={exame}>
 
-                    </ExamContainer2>
+                    </DetailExamContainer>
                 </View>
             </SafeAreaView>
         )

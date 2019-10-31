@@ -8,6 +8,7 @@ const AppStyle = {
         lightText: "#FFFFFF",
 
         darkGray: "#999999",
+        darkerGray: "#888888",
         mediumGray: "#BFBFBF",
         lightGray: "#E5E5E5",
 
