@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimensions,} from 'react-native';
 import { ImageComponent, Button } from '../Components';
 import AppStyle from '../styles';
 
@@ -70,7 +70,7 @@ export default class DetailExamContainer extends Component {
         const date = this.props.exame.creationDate;
 
         return (
-            <View style={this.props.style}>
+            <View style={styles.container} >
                 <View style={styles.titleDateContainer}>
                     <Text style={styles.title}>Dr. Carlos</Text> 
                 </View>
@@ -84,19 +84,9 @@ export default class DetailExamContainer extends Component {
                     listKey={() => `exam#${date.getTime()}#list`}
                     keyExtractor={(item, index) => `exam#${date.getTime()}image#${index}#key`}
                     renderItem={({ item }) => {
-                        if (item.empty) {
-                            return <View style={styles.item} />
-                        } else if (item.multiple) {
-                            return (
-                                <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}>
-                                    <View style={styles.darkOverlay}>
-                                        <Text style={styles.darkOverlayText}>+{item.count}</Text>
-                                    </View>
-                                </ImageComponent>
-                            )
-                        } else {
-                            return <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}/>
-                        }
+                        return (
+                            <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}/>
+                        )
                     }}
                 />
                 <View style={styles.buttonContainer}>
@@ -115,11 +105,14 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     title: {
-        flex: 1,
         marginRight: 5,
         fontSize: 24,
         fontWeight: Platform.OS === "ios" ? "600" : "bold",
         color: AppStyle.colors.darkText
+    },
+    container:{
+        flex: 1,
+        
     },
     date: {
         fontSize: 14,
@@ -135,41 +128,33 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: AppStyle.colors.darkGray
     },
-
     item: {
         flexGrow: 1,
         flexBasis: 0,
         margin: 1,
         backgroundColor: "#000"
     },
-
-    darkOverlay: {
-        flex: 1,
-        alignSelf: "stretch",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
-    },
-    darkOverlayText: {
-        fontSize: 20,
-        fontWeight: Platform.OS === "ios" ? "600" : "bold",
-        color: AppStyle.colors.lightText
-    },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        position: "absolute",
+        bottom: 0,
+        paddingVertical:20,
+        backgroundColor:AppStyle.colors.background,
     },
     btnEdit: {
-        width: Dimensions.get("window").width / 2 - 50
-
+        margin: 0,
+        marginLeft: 20,
+        width: Dimensions.get("window").width / 2 -40
     },
     btnExport: {
-        width: Dimensions.get("window").width / 2 - 50,
+        margin: 0,
+        marginRight: 20,
+        width: Dimensions.get("window").width / 2 -40,
         backgroundColor: "#FFFFFF",
         borderWidth: 2,
-        borderColor: AppStyle.colors.main
+        borderColor: AppStyle.colors.main,
     },
     btnExportText: {
         color: AppStyle.colors.main
-    }
+    },
 })

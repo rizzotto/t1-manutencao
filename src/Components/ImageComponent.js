@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import deepDiffer from 'react-native/lib/deepDiffer';
 
 /**
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
   image: {
     justifyContent: "center",
     alignItems: "center",
-    width: 110,
-    height: 110
+    width: (Dimensions.get("window").width /3) -16,
+    height: (Dimensions.get("window").width /3) -16,
   },
   overlay: {
     position: "absolute",
