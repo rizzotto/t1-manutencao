@@ -8,15 +8,14 @@ export default class ExamVisualizationScreen extends Component {
     constructor(props) {
         super(props)
         
-        this.state = {
-            selectedImage: false
-        }
     }
 
 
     imageSelected = (image) => {
         this.props.navigation.navigate("Gallery", {
-            image: image
+            images: [{
+                uri: image.uri
+            }] 
         })
     }
     
@@ -27,8 +26,7 @@ export default class ExamVisualizationScreen extends Component {
                 <View style={styles.header}>
                     <DetailExamContainer 
                         exame={exame} 
-                        imageToScreen={this.imageSelected}
-                        
+                        imageToScreen={this.imageSelected} 
                     />
 
                 </View>
