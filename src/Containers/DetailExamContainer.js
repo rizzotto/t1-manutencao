@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform } from 'react-native';
-import { ImageComponent } from '../Components';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import { ImageComponent, Button } from '../Components';
 import AppStyle from '../styles';
 
 // imagens exibidas por linha
@@ -50,6 +50,11 @@ export default class DetailExamContainer extends Component {
         }
     }
 
+
+    selectedImage = (image) => {
+        console.warn(image);
+        this.props.imageToScreen(image);
+    }
     /**
      * @param {Date} date
      * @return {string}
@@ -83,21 +88,26 @@ export default class DetailExamContainer extends Component {
                             return <View style={styles.item} />
                         } else if (item.multiple) {
                             return (
-                                <ImageComponent imageStyle={styles.item} { ...item } isTouch={true}>
+                                <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}>
                                     <View style={styles.darkOverlay}>
                                         <Text style={styles.darkOverlayText}>+{item.count}</Text>
                                     </View>
                                 </ImageComponent>
                             )
                         } else {
-                            return <ImageComponent imageStyle={styles.item} { ...item } isTouch={true}/>
+                            return <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}/>
                         }
                     }}
                 />
+                <View style={styles.buttonContainer}>
+                    <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText}/>
+                    <Button text={"Editar"} style={styles.btnEdit} />
+                </View>
             </View>
         )
     }
 }
+
 
 const styles = StyleSheet.create({
     titleDateContainer: {
@@ -144,5 +154,22 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: Platform.OS === "ios" ? "600" : "bold",
         color: AppStyle.colors.lightText
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    btnEdit: {
+        width: Dimensions.get("window").width / 2 - 50
+
+    },
+    btnExport: {
+        width: Dimensions.get("window").width / 2 - 50,
+        backgroundColor: "#FFFFFF",
+        borderWidth: 2,
+        borderColor: AppStyle.colors.main
+    },
+    btnExportText: {
+        color: AppStyle.colors.main
     }
 })
