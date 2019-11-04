@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { ImageComponent } from '../Components';
 import AppStyle from '../styles';
 
@@ -118,6 +118,10 @@ export default class ExamItemContainer extends Component {
     }
 }
 
+const screenWidth = Math.round(Dimensions.get("window").width)
+// 40 de margem horizontal e 2 de margem entre as imagens
+const itemWidth = (screenWidth - 40 - 2 * IMAGES_PER_PAGE) / IMAGES_PER_PAGE
+
 const styles = StyleSheet.create({
     titleDateContainer: {
         flexDirection: "row",
@@ -145,6 +149,8 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexBasis: 0,
         margin: 1,
+        width: itemWidth,
+        height: itemWidth,
         backgroundColor: AppStyle.colors.background
     },
 
