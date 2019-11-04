@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimensions,} from 'react-native';
 import { ImageComponent, Button } from '../Components';
 import AppStyle from '../styles';
+import { SafeAreaView } from 'react-navigation';
 
 // imagens exibidas por linha
 const IMAGES_PER_PAGE = 3
@@ -16,43 +17,24 @@ const IMAGES_PER_PAGE = 3
  * @param onPress função chamada quando um item é clicado
  * @param style estilo aplicado ao componente
  * 
- * Exemplo de uso:
- * 
- * ```
- *      <ExamContainer2
- *          title="Dr. Carlos"
- *          description="Exame de sangue, cardiograma, hemograma, mais texto"
- *          date={new Date("2019-10-10")}
- *          images={[{ promise: Promise.value("...url") }, { sourceImage: require("...path") }]}
- *      />
- * ```
  * 
  * @return Container do Item dos Exames
- */
+
+*/
 
 
-
- /*
-    TODO
-    Passar os dados corretamente
-    Mostrar as imagens recebidas 
-    Ao clicar abrir a imagem em FU screen
-    Ao clicar em editar, navegar para o fluxo de edição
-
- */
 export default class DetailExamContainer extends Component {
 
     constructor(props) {
-        super(props) 
+        super(props)
 
         this.state = {
-            images: props.exame.images
+            images: props.exame.imageObjects
         }
     }
 
 
     selectedImage = (image) => {
-        console.warn(image);
         this.props.imageToScreen(image);
     }
     /**
@@ -70,27 +52,31 @@ export default class DetailExamContainer extends Component {
         const date = this.props.exame.creationDate;
 
         return (
+
             <View style={styles.container} >
+
                 <View style={styles.titleDateContainer}>
-                    <Text style={styles.title}>Dr. Carlos</Text> 
+                    <Text style={styles.title}>{this.props.exame.name}</Text>
                 </View>
                 <Text style={styles.date}>{this.formatDate(date)}</Text>
                 <Text style={styles.descriptionTitle}>Descrição:</Text>
                 <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
-                
                 <FlatList
+                    style={styles.list}
                     numColumns={IMAGES_PER_PAGE}
                     data={this.state.images}
                     listKey={() => `exam#${date.getTime()}#list`}
                     keyExtractor={(item, index) => `exam#${date.getTime()}image#${index}#key`}
                     renderItem={({ item }) => {
+
                         return (
                             <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}/>
                         )
+
                     }}
                 />
                 <View style={styles.buttonContainer}>
-                    <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText}/>
+                    <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText} />
                     <Button text={"Editar"} style={styles.btnEdit} />
                 </View>
             </View>
