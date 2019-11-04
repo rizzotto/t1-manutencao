@@ -29,7 +29,7 @@ export default class ListExamsScreen extends Component {
             visibleExams: []
         }
 
-        // TODO: tratar erro
+        // TODO: tratar error
         examService.listExams(this.userId)
             .then(exams => this.setExams(exams))
             .catch(() => this.setExams([]))
@@ -78,8 +78,12 @@ export default class ListExamsScreen extends Component {
     }
 
     selectExam = (index) => {
-        const exam = this.state.visibleExams[index]
-        console.log("selected", index, exam)
+        const exam = this.state.visibleExams[index];
+
+        this.props.navigation.navigate("ExamDetail", {
+            exam: exam,
+            userId: this.userId
+        });
     }
 
     render() {
