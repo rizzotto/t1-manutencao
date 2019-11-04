@@ -11,11 +11,10 @@ export default class ExamVisualizationScreen extends Component {
     }
 
 
-    imageSelected = (image) => {
+    imageSelected = (index) => {
         this.props.navigation.navigate("Gallery", {
-            images: [{
-                uri: image.uri
-            }] 
+            page: index,
+            images: this.props.navigation.getParam("exam").imageObjects
         })
     }
     

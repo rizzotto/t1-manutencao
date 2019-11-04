@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimensions,} from 'react-native';
-import { ImageComponent, Button } from '../Components';
+import { StyleSheet, View, Text, Platform, Dimensions,} from 'react-native';
+import { Button } from '../Components';
+import ImageListContainer from './ImageListContainer';
 import AppStyle from '../styles';
 import { SafeAreaView } from 'react-navigation';
 import TitleDescComponent from '../Components/TitleDescComponent';
@@ -35,8 +36,8 @@ export default class DetailExamContainer extends Component {
     }
 
 
-    selectedImage = (image) => {
-        this.props.imageToScreen(image);
+    selectedImage = (index) => {
+        this.props.imageToScreen(index);
     }
 
     /**
@@ -52,6 +53,9 @@ export default class DetailExamContainer extends Component {
 
     render() {
         const date = this.props.exame.creationDate;
+        const images = this.state.images.map(imageObject => {
+            return { imageObject }
+        })
 
         return (
             
@@ -65,19 +69,11 @@ export default class DetailExamContainer extends Component {
                 /> 
                 <Text style={styles.descriptionTitle}>Descrição:</Text>
                 <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
-                <FlatList
-                    style={styles.list}
-                    numColumns={IMAGES_PER_PAGE}
-                    data={this.state.images}
-                    listKey={() => `exam#${date.getTime()}#list`}
-                    keyExtractor={(item, index) => `exam#${date.getTime()}image#${index}#key`}
-                    renderItem={({ item }) => {
-
-                        return (
-                            <ImageComponent imageStyle={styles.item} { ...item } isTouch={true} onClick={() => this.selectedImage(item)}/>
-                        )
-
-                    }}
+                <ImageListContainer
+                    add={false}
+                    isTouchable={true}
+                    onSelectItem={this.selectedImage}
+                    data={images}
                 />
                 <View style={styles.buttonContainer}>
                     <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText} />
@@ -120,12 +116,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 14,
         color: AppStyle.colors.darkGray
-    },
-    item: {
-        flexGrow: 1,
-        flexBasis: 0,
-        margin: 1,
-        backgroundColor: "#000"
     },
     buttonContainer: {
         flexDirection: 'row',
