@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, FlatList, Image} from 'react-native';
+import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import ImageComponent from '../Components/ImageComponent';
 
 // imagens exibidas por linha
@@ -108,12 +108,16 @@ export default class ImageListContainer extends Component {
     }
 }
 
+const screenWidth = Math.round(Dimensions.get("window").width)
+// 40 de margem horizontal e 2 de margem entre as imagens
+const itemWidth = (screenWidth - 40 - 2 * IMAGES_PER_LINE) / IMAGES_PER_LINE
+
 const styles = StyleSheet.create({
     item: {
         flexGrow: 1,
         flexBasis: 0,
         margin: 1,
-        width: 110,
-        height: 110
+        width: itemWidth,
+        height: itemWidth
     }
 })

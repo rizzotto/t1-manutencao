@@ -88,6 +88,7 @@ export default class ListExamsScreen extends Component {
 
     render() {
         const { uiState, visibleExams } = this.state
+        let hasSearch = false
         let content
 
         if (uiState === "LOADING") {
@@ -103,10 +104,11 @@ export default class ListExamsScreen extends Component {
                 </View>
             )
         } else if (uiState === "LIST") {
+            hasSearch = true
             if (visibleExams.length === 0) {
                 content = (
-                    <View>
-                        <SearchInputComponent
+                    <View style={styles.contentContainer}>
+                        <SearchInputComponent viewStyle={styles.search}
                             placeholder={"Pesquisar"}
                             callback={this.search} />
                         <View style={styles.containerCenter}>
@@ -118,8 +120,8 @@ export default class ListExamsScreen extends Component {
             } else {
                 const data = this._mapExams(visibleExams)
                 content = (
-                    <View style={styles.listContainer}>
-                        <SearchInputComponent
+                    <View style={styles.contentContainer}>
+                        <SearchInputComponent viewStyle={styles.search}
                             placeholder={"Pesquisar"}
                             callback={this.search} />
                         <ExamsListContainer
@@ -136,7 +138,7 @@ export default class ListExamsScreen extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
-                <HeaderTitleComponent title="Exames" />
+                <HeaderTitleComponent title="Exames" hasBottomDivider={!hasSearch} />
                 { content }
             </SafeAreaView>
         )
@@ -173,7 +175,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: AppStyle.colors.darkGray
     },
-    listContainer: {
+    search: {
+        borderBottomWidth: 1,
+        borderBottomColor: AppStyle.colors.mediumGray
+    },
+    contentContainer: {
         flex: 1
     }
 });
