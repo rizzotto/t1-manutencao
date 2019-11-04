@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import deepDiffer from 'react-native/lib/deepDiffer';
 
 /**
@@ -58,7 +58,11 @@ export default class ImageComponent extends Component {
     // se a imagem atualmente exibida e a que estamos setando não são iguals;
     // se forem a mesma, poupamos a re-renderização do componente
     const { source: currentSource } = this.state
-    if (!deepDiffer(currentSource, rnImage)) return;
+
+    // se há uma imagem em exibição e ela é igual à imagem que queremos exibir
+    if (currentSource !== null && currentSource !== undefined && !deepDiffer(currentSource, rnImage)) {
+      return
+    }
 
     this.setState({
       ...this.state,
@@ -91,7 +95,6 @@ export default class ImageComponent extends Component {
         <ImageBackground
           style={[styles.image, this.props.imageStyle]}
           source={source}
-          key={source}
           onLoad={this.onLoad}
         >
           { showsLoading && !isLoaded
@@ -104,12 +107,17 @@ export default class ImageComponent extends Component {
   }
 }
 
+const IMAGES_PER_LINE = 3
+const screenWidth = Math.round(Dimensions.get("window").width)
+// 40 de margem horizontal e 2 de margem entre as imagens
+const itemWidth = (screenWidth - 40 - 2 * IMAGES_PER_LINE) / IMAGES_PER_LINE
+
 const styles = StyleSheet.create({
   image: {
     justifyContent: "center",
     alignItems: "center",
-    width: 110,
-    height: 110
+    width: itemWidth,
+    height: itemWidth
   },
   overlay: {
     position: "absolute",

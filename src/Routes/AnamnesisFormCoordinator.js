@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButtonComponent } from '../Components';
+import { HeaderTextButtonComponent } from '../Components';
 import CreateCancelAlert from './CreateCancelAlert';
 import { MultiTextInputScreen } from '../Screens';
 import { frequencyCodes } from '../Utils/frequencies';
@@ -28,7 +28,7 @@ export default class AnamnesisFormCoordinator extends Component {
 
         return {
             title: "Ficha",
-            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderTextButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 

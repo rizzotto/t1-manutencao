@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButtonComponent } from '../Components';
+import { HeaderTextButtonComponent } from '../Components';
 import { ImageSelectionScreen } from '../Screens';
 import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
@@ -25,7 +25,7 @@ export default class JournalEntryFormCoordinator extends Component {
 
         return {
             title: "Exame",
-            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderTextButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 
@@ -107,7 +107,12 @@ export default class JournalEntryFormCoordinator extends Component {
             this.exam.creationDate = new Date()
             
             const save = examService.createExam(this.getParam("userId"), this.exam)
-                .then(() => this.props.navigation.navigate("Main"))
+                .then(() => {
+                    const onCreate = this.getParam("onCreate")
+                    if (onCreate) onCreate(this.exam)
+                    
+                    this.props.navigation.navigate("Main")
+                })
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Não foi possível salvar seu exame. Tente novamente mais tarde." }
                 })

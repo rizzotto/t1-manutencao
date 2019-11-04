@@ -128,6 +128,13 @@ export default class ExamService {
             .sort((a, b) => a.creationDate < b.creationDate)
     }
 
+    /**
+     * Deleta um exame e suas imagens.
+     * 
+     * @param {string} userId ID do usuário que criou o exame
+     * @param {any} exam exame a ser deletado
+     * @returns {Promise} promise que completa quando o exame e *todas* as imagens relacionadas são deletadas
+     */
     deleteExam = async (userId, exam) => {
         // a API do Firebase Storage não possui a funcionalidade de deletar todas as imagens de um diretório
         // (https://stackoverflow.com/questions/44988647/firebase-storage-folder-delete?rq=1)

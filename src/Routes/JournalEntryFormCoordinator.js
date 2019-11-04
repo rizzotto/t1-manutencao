@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
-import { HeaderButtonComponent } from '../Components';
-import { TextInputScreen, EmojiScreen } from '../Screens';
+import { HeaderTextButtonComponent } from '../Components';
+import { EmojiScreen } from '../Screens';
 import CreateCancelAlert from './CreateCancelAlert';
 import * as InputProducers from '../Utils/InputProducers';
 import * as OutputFilters from '../Utils/OutputFilters';
@@ -22,7 +22,7 @@ export default class JournalEntryFormCoordinator extends Component {
 
         return {
             title: "Diário",
-            headerRight: <HeaderButtonComponent text="Cancelar" onPress={onCancel} />
+            headerRight: <HeaderTextButtonComponent text="Cancelar" onPress={onCancel} />
         };
     }
 

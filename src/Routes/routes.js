@@ -1,9 +1,15 @@
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions } from 'react-navigation';
 import {
+    // ANAMNESE
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
-    JournalsScreen,
-    ListSubitemsScreen, ListScreen, TextInputScreen,
-    LoadingScreen, CreateTabBarIcon, EmojiScreen, MultiTextInputScreen, DiaryDetailScreen, GalleryScreen, ImageSelectionScreen
+    // DIÁRIO
+    JournalsScreen, DiaryDetailScreen,
+    // EXAMES
+    ListExamsScreen,
+    // FORM
+    ListSubitemsScreen, ListScreen, TextInputScreen, EmojiScreen, MultiTextInputScreen, ImageSelectionScreen,
+    // AUXILIARES
+    GalleryScreen, LoadingScreen, CreateTabBarIcon
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
 import JournalEntryFormCoordinator from './JournalEntryFormCoordinator';
@@ -96,7 +102,25 @@ const ExamForm = createStackNavigator({
 })
 
 // TAB
-// TODO: !!!
+const ExamsTab = createStackNavigator({
+    ExamsList: ListExamsScreen
+}, {
+    defaultNavigationOptions
+});
+
+ExamsTab.navigationOptions = ({ navigation, screenProps }) => {
+    // usar a navigationOptions da primeira tela exibida pela stack
+    let activeRouteOptions = {}
+    if (navigation.state.index === 0) {
+        activeRouteOptions = getActiveChildNavigationOptions(navigation, screenProps)
+    }
+
+    return {
+        title: "Exames",
+        tabBarIcon: CreateTabBarIcon(require("../Resources/examsTabBarIcon.png")),
+        ...activeRouteOptions
+    }
+}
 
 //
 // APP
@@ -105,7 +129,7 @@ const ExamForm = createStackNavigator({
 const TabNavigator = createBottomTabNavigator({
     Anamnesis: AnamnesisTab,
     Journals: JournalsTab,
-    // TODO: exames
+    Exams: ExamsTab
 }, {
     tabBarOptions: {
         activeTintColor: AppStyle.colors.main

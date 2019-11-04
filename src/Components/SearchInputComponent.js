@@ -36,13 +36,15 @@ export default class SearchInputComponent extends Component {
     render() {
       return (
         <View style={[styles.searchView, this.props.viewStyle]}>
-          <Image style={styles.image} source={require('../Resources/search.png')} />
-          <TextInput
-            style={[styles.searchImput, this.props.textStyle]}
-            placeholder={this.props.placeholder || 'Pesquisar'}
-            onChangeText={(text) => this.textCallback(text)}
-            value={this.state.text}
-          />
+          <View style={styles.searchContainer}>
+            <Image style={styles.image} source={require('../Resources/search.png')} />
+            <TextInput
+              style={[styles.searchInput, this.props.textStyle]}
+              placeholder={this.props.placeholder || 'Pesquisar'}
+              onChangeText={(text) => this.textCallback(text)}
+              value={this.state.text}
+            />
+          </View>
         </View>
       );
     }
@@ -50,22 +52,27 @@ export default class SearchInputComponent extends Component {
 
 
 const styles = StyleSheet.create({
-  searchImput: {
-    minHeight: 40,
-    fontSize: 20,
+  searchInput: {
+    fontSize: 17,
     textAlign: 'left',
-    color: AppStyle.colors.darkGray
+    color: AppStyle.colors.darkGray,
+    flex: 1,
   },
   searchView: {
-    marginHorizontal: 10,
-    paddingLeft: 15,
-    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  searchContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
     backgroundColor: AppStyle.colors.lightGray,
     flexDirection: 'row',
     alignItems: 'center'
   },
   image: {
-    width: 20,
-    height: 20
+    width: 15,
+    height: 15,
+    marginRight: 10
   }
 })
