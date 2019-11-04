@@ -3,11 +3,7 @@ import { StyleSheet, View, Text, Platform, Dimensions,} from 'react-native';
 import { Button } from '../Components';
 import ImageListContainer from './ImageListContainer';
 import AppStyle from '../styles';
-import { SafeAreaView } from 'react-navigation';
 import TitleDescComponent from '../Components/TitleDescComponent';
-
-// imagens exibidas por linha
-const IMAGES_PER_PAGE = 3
 
 /**
  * @author Felipe Boff, Gabriel Franzoni, Gabriel Paul
@@ -62,6 +58,7 @@ export default class DetailExamContainer extends Component {
             <View style={styles.container} >
                 
                 <TitleDescComponent 
+                    styleView={styles.titleView}
                     styleTitle={styles.titleStyle}
                     styleDescription={styles.dateStyle}
                     titleText={this.props.exame.name} 
@@ -99,6 +96,9 @@ const styles = StyleSheet.create({
         fontWeight: Platform.OS === "ios" ? "600" : "bold",
         color: AppStyle.colors.darkText
     },
+    titleView:{
+        paddingBottom: 5
+    },  
     container:{
         flex: 1,
         
@@ -109,13 +109,14 @@ const styles = StyleSheet.create({
     },
     descriptionTitle: {
         marginTop: 10,
-        fontSize: 16,
-        color: AppStyle.colors.darkerGray
+        fontSize: 17,
+        color: "#000000"
     },
     descriptionText: {
         marginBottom: 10,
         fontSize: 14,
-        color: AppStyle.colors.darkGray
+        color: "#000000",
+        paddingBottom: 10
     },
     buttonContainer: {
         flexDirection: 'row',
