@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, Platform, Dimension
 import { ImageComponent, Button } from '../Components';
 import AppStyle from '../styles';
 import { SafeAreaView } from 'react-navigation';
+import TitleDescComponent from '../Components/TitleDescComponent';
 
 // imagens exibidas por linha
 const IMAGES_PER_PAGE = 3
@@ -29,7 +30,7 @@ export default class DetailExamContainer extends Component {
         super(props)
 
         this.state = {
-            images: props.exame.imageObjects
+            images: props.exame.imageObjects 
         }
     }
 
@@ -37,6 +38,7 @@ export default class DetailExamContainer extends Component {
     selectedImage = (image) => {
         this.props.imageToScreen(image);
     }
+
     /**
      * @param {Date} date
      * @return {string}
@@ -52,13 +54,15 @@ export default class DetailExamContainer extends Component {
         const date = this.props.exame.creationDate;
 
         return (
-
+            
             <View style={styles.container} >
-
-                <View style={styles.titleDateContainer}>
-                    <Text style={styles.title}>{this.props.exame.name}</Text>
-                </View>
-                <Text style={styles.date}>{this.formatDate(date)}</Text>
+                
+                <TitleDescComponent 
+                    styleTitle={styles.titleStyle}
+                    styleDescription={styles.dateStyle}
+                    titleText={this.props.exame.name} 
+                    descriptionText={"Adicionado em: "+this.formatDate(date)}
+                /> 
                 <Text style={styles.descriptionTitle}>Descrição:</Text>
                 <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
                 <FlatList
@@ -86,9 +90,12 @@ export default class DetailExamContainer extends Component {
 
 
 const styles = StyleSheet.create({
-    titleDateContainer: {
-        flexDirection: "row",
-        alignItems: "center"
+    titleStyle:{
+        marginTop: 20,
+        marginLeft: 0
+    },
+    dateStyle:{
+        marginLeft: 0
     },
     title: {
         marginRight: 5,
