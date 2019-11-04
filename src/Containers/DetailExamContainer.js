@@ -47,7 +47,9 @@ export default class DetailExamContainer extends Component {
 
     render() {
         const date = this.props.exame.creationDate;
-        const images = this.state.images
+        const images = this.state.images.map(imageObject => {
+            return { imageObject }
+        })
 
         return (
 
