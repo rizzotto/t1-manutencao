@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Platform, ActionSheetIOS } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, ActionSheetIOS, Alert } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import ImagePicker from "react-native-image-crop-picker";
 import { ProgressBar } from '../Components';
