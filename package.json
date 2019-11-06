@@ -12,6 +12,7 @@
     "firebase": "^6.5.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
+    "react-native-fast-image": "^7.0.2",
     "react-native-gallery-swiper": "^1.23.1",
     "react-native-gesture-handler": "^1.4.0",
     "react-native-image-crop-picker": "0.25.3",
