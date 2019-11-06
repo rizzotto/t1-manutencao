@@ -136,7 +136,9 @@ const selectImages = () => {
         mediaType: "photo",
         multiple: true,
         maxSelected: 10, // setar `0` ou `-1` volta para valor padrão, que é `5`
-        compressImageQuality: 0.7,
+        compressImageMaxWidth: 2048,
+        compressImageMaxHeight: 2048,
+        compressImageQuality: 0.5,
         forceJpg: true,
         loadingLabelText: "Carregando imagens...",
         waitAnimationEnd: true,

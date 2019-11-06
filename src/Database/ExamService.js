@@ -43,9 +43,7 @@ export default class ExamService {
      */
     createExam = async (userId, exam) => {
         const imagesBasePath = this._buildBasePath(userId, exam)
-
         const creationDate = exam.creationDate
-        exam.creationDate = null
 
         // começar com lista vazia e adicionar nome nas imagens cujo upload deu certo
         exam.images = []
@@ -70,8 +68,15 @@ export default class ExamService {
             throw "failed to upload all images"
         }
 
+        // exame apenas com os campos que devem ser persistidos
+        const examToSend = {
+            name: exam.name,
+            description: exam.description,
+            images: exam.images
+        }
+
         // só depois de pelo menos um upload de imagem ter dado certo, salvamos o exame no database
-        return this.db.ref(`${userId}/exams/${creationDate.getTime()}`).set(exam)
+        return this.db.ref(`${userId}/exams/${creationDate.getTime()}`).set(examToSend)
     }
 
     /**
