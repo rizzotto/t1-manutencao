@@ -55,25 +55,25 @@ export default class ListExamsScreen extends Component {
             ...this.state,
             visibleExams: filteredExams
         });
-
     }
 
     createExam = () => {
-        const didCreateExam = (exam) => {
-            const exams = this.state.exams.slice()
-            exams.unshift(exam)
-
-            this.setState({
-                ...this.state,
-                uiState: "LIST",
-                allExams: exams,
-                visibleExams: exams
-            })
-        }
-
         this.props.navigation.navigate("ExamForm", {
             userId: this.userId,
-            onCreate: didCreateExam
+            previousRouteName: this.props.navigation.state.routeName,
+            onCreate: this.didCreateExam.bind(this)
+        })
+    }
+
+    didCreateExam = (exam) => {
+        const exams = this.state.allExams.slice()
+        exams.unshift(exam)
+
+        this.setState({
+            ...this.state,
+            uiState: "LIST",
+            allExams: exams,
+            visibleExams: exams
         })
     }
 

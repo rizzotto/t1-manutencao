@@ -105,13 +105,14 @@ export default class JournalEntryFormCoordinator extends Component {
         } else {
             // criar
             this.exam.creationDate = new Date()
-            
+
             const save = examService.createExam(this.getParam("userId"), this.exam)
                 .then(() => {
-                    const onCreate = this.getParam("onCreate")
+                    const onCreate = this.props.navigation.getParam("onCreate")
                     if (onCreate) onCreate(this.exam)
-                    
-                    this.props.navigation.navigate("Main")
+
+                    // navegar duas telas para trás: loading e coordinator
+                    this.props.navigation.pop(2)
                 })
                 .catch(() => {
                     return { title: "Algo deu errado", description: "Não foi possível salvar seu exame. Tente novamente mais tarde." }
