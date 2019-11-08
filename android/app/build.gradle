@@ -136,6 +136,7 @@ android {
         
         // react-native-image-crop-picker
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     splits {
         abi {
