@@ -3,35 +3,9 @@ import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DetailedRecordComponent from '../Components/DetailedRecordComponent';
 import { formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam, textWhenEmpty } from '../Utils/Helpers';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import RNFetchBlob from 'rn-fetch-blob';
+
 
 export default class RecordDetailContainer extends Component {
-
-
-  componentDidMount(){
-    this.createPDF();
-  }
-
-
-  async createPDF() {
-    let options = {
-      html: '<h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>',
-      fileName: 'test',
-      base64: true
-    };
-
-    const file = await RNHTMLtoPDF.convert(options)
-    let filePath = RNFetchBlob.fs.dirs.DownloadDir + '/testPDF.pdf';
-
-    RNFetchBlob.fs.writeFile(filePath, file.base64, 'base64')
-
-    alert(filePath);
-  }
-
-
-
-
 
   render() {
     return (
