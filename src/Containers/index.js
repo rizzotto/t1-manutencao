@@ -8,3 +8,4 @@ export { default as CarouselContainer } from './CarouselContainer';
 export { default as ImageListContainer } from './ImageListContainer';
 export { default as ExamsListContainer } from './ExamsListContainer';
 export { default as ImageSelecionContainer } from './ImageSelectionContainer';
+export { default as DetailExamContainer } from './DetailExamContainer';
