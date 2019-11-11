@@ -13,12 +13,14 @@ import uuid from 'react-native-uuid';
  *   - imagens locais: URL da imagem no dispositivo, sempre disponível;
  *   - imagens remotas: URL para download da imagem, disponível depois que a promise for concluída; disponível quando `promise == null` (ver abaixo)
  * @property {Promise<string>} [promise] promise que completa com a URL de download da imagem (apenas imagens remotas); quando a promise completa, o valor no campo `uri` é atualizado e esse campo é setado para `null`
+ * 
+ * Documentação extra em `docs/ImageObject.js`
  */
 
 /**
  * Serviço de persistência de exames no Firebase.
  * 
- * Ver documentação associada em `docs/Exam.js`.
+ * Ver documentação associada em `docs/Exam.js`. Documentação sobre imagens em `docs/ImageObject.js`.
  */
 export default class ExamService {
     /**

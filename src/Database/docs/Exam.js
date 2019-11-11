@@ -16,6 +16,7 @@
  *      name: string
  *      description: string
  *      images: string[] // nomes dos arquivos de imagem salvos no Firebase Storage
+ *      imageObjects: ImageObject[] // imagens "exibíveis" pelo app (aceitas pelo `ImageComponent`)
  * }
  * 
  * O atributo `images` contém uma lista com o nome das imagens do exame conforme
@@ -50,6 +51,7 @@
  *      name: "Dr. Carlos"
  *      description: "Visita ao cardiologista para check-up de rotina."
  *      images: ["img1.jpg", "img2.jpg", "img3.jpg"]
+ *      imageObjects: [{ type: "remote", name: "img1.jpg", uri: "https://..." }, { type: "remote", name: "img2.jpg", promise: ... }, ...]
  * }
  */
 
