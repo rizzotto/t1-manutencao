@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Alert } from 'react-native';
 import { DetailExamContainer } from '../Containers';
 import { HeaderTextButtonComponent } from '../Components';
 import { examService } from '../Database';
@@ -28,7 +28,23 @@ export default class ExamVisualizationScreen extends Component {
     }
 
     deleteExam = () => {
-        examService.deleteExam(this.getParam("userId"), this.state.exam)
+        Alert.alert(
+            "Tem certeza?",
+            "Todas as fotos serão perdidas. Não é possível desfazer essa ação.",
+            [
+                { text: "Voltar", style: "cancel" },
+                { text: "Excluir", style: "destructive", onPress: this.onDeleteConfirmed}
+            ]
+        )
+    }
+
+    onDeleteConfirmed = () => {
+        const operation = examService.deleteExam(this.getParam("userId"), this.state.exam)
+            .then(() => {
+                this.props.navigation.goBack()
+            })
+        
+        this.props.navigation.push("Loading", { operation })
     }
 
     imageSelected = (index) => {
