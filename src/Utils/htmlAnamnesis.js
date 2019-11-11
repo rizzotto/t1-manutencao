@@ -1,7 +1,12 @@
 import { formatDate, formatHeight, formatArrayWithSeparator, textWhenEmpty } from '../Utils/Helpers';
 import {getFrequencyDescription} from './frequencies';
 
-
+/**
+ * Retorna uma string formatada com os objetos de um array contendo frequencia e nome.
+ * @param {Array} arr
+ * @returns {String}
+ * Mesma da file Helper.js, com uma modificação
+ */
 export function formatArrayObjectsAnam(arr){
     if(!_isEmpty(arr)){
         let str = "";
