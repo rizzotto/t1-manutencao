@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import deepDiffer from 'react-native/lib/deepDiffer';
+import FastImage from 'react-native-fast-image';
 
 /**
  * @param onClick ação ao clickar na imagem.
@@ -92,16 +93,17 @@ export default class ImageComponent extends Component {
 
     return (
       <TouchableOpacity disabled={!this.props.isTouch} onPress={this.props.onClick}>
-        <ImageBackground
-          style={[styles.image, this.props.imageStyle]}
+        <FastImage
+          style={[StyleSheet.absoluteFill, styles.image, this.props.imageStyle]}
           source={source}
           onLoad={this.onLoad}
-        >
+        />
+        <View style={styles.additionalContentContainer}>
           { showsLoading && !isLoaded
               ? <ActivityIndicator />
               : this.props.children
           }
-        </ImageBackground>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -114,18 +116,13 @@ const itemWidth = (screenWidth - 40 - 2 * IMAGES_PER_LINE) / IMAGES_PER_LINE
 
 const styles = StyleSheet.create({
   image: {
-    justifyContent: "center",
-    alignItems: "center",
     width: itemWidth,
     height: itemWidth
   },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+  additionalContentContainer: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    width: itemWidth,
+    height: itemWidth
   }
 })

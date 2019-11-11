@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, StyleSheet, Platform } from 'react-native';
 import GallerySwiper from 'react-native-gallery-swiper';
+import FastImage from 'react-native-fast-image';
 
 /**
  * Tela de visualização de múltiplas imagens.
@@ -79,6 +80,7 @@ export default class GalleryScreen extends Component {
                 </View>
                 
                 <GallerySwiper style={styles.swiper}
+                    imageComponent={(props) => <FastImage { ...props } />}
                     images={images}
                     initialPage={currentPage}
                     sensitiveScroll={false}

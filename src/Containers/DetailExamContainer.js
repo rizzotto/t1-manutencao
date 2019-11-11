@@ -14,6 +14,7 @@ import TitleDescComponent from '../Components/TitleDescComponent';
  * @param images imagens do exame; lista de objetos com promises ou imagens locais (ver exemplo abaixo)
  * @param onPress função chamada quando um item é clicado
  * @param style estilo aplicado ao componente
+ * @param onEdit função chamada quando o botão "Editar" é clicado
  * 
  * 
  * @return Container do Item dos Exames
@@ -22,14 +23,6 @@ import TitleDescComponent from '../Components/TitleDescComponent';
 
 
 export default class DetailExamContainer extends Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            images: props.exame.imageObjects 
-        }
-    }
 
 
     selectedImage = (index) => {
@@ -49,7 +42,7 @@ export default class DetailExamContainer extends Component {
 
     render() {
         const date = this.props.exame.creationDate;
-        const images = this.state.images.map(imageObject => {
+        const images = this.props.exame.imageObjects.map(imageObject => {
             return { imageObject }
         })
 
@@ -74,7 +67,7 @@ export default class DetailExamContainer extends Component {
                 />
                 <View style={styles.buttonContainer}>
                     <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText} />
-                    <Button text={"Editar"} style={styles.btnEdit} />
+                    <Button text={"Editar"} style={styles.btnEdit} action={this.props.onEdit} />
                 </View>
             </View>
         )

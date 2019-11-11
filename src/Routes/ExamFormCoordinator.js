@@ -100,27 +100,36 @@ export default class JournalEntryFormCoordinator extends Component {
     }
 
     endFlow = () => {
+        let operation
+        let callbackName
+
         if (this.exam.creationDate) {
             // atualizar
+            operation = examService.updateExam(this.getParam("userId"), this.exam)
+            callbackName = "onUpdate"
         } else {
             // criar
             this.exam.creationDate = new Date()
-            
-            const save = examService.createExam(this.getParam("userId"), this.exam)
-                .then(() => {
-                    const onCreate = this.getParam("onCreate")
-                    if (onCreate) onCreate(this.exam)
-                    
-                    this.props.navigation.navigate("Main")
-                })
-                .catch(() => {
-                    return { title: "Algo deu errado", description: "Não foi possível salvar seu exame. Tente novamente mais tarde." }
-                })
-            
-            this.props.navigation.push("Loading", {
-                operation: save
-            })
+
+            operation = examService.createExam(this.getParam("userId"), this.exam)
+            callbackName = "onCreate"
         }
+
+        operation = operation
+            .then(() => {
+                const callback = this.props.navigation.getParam(callbackName)
+                if (callback) callback(this.exam)
+
+                // navegar duas telas para trás: loading e coordinator
+                this.props.navigation.pop(2)
+            })
+            .catch(() => {
+                return { title: "Algo deu errado", description: "Não foi possível salvar seu exame. Tente novamente." }
+            })
+
+        this.props.navigation.push("Loading", {
+            operation
+        })
     }
 }
 
