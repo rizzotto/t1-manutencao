@@ -13,12 +13,19 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon-launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="ohJ-Q1-Xq3">
-                    <rect key="frame" x="87" y="233" width="200" height="200"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="ohJ-Q1-Xq3">
+                    <rect key="frame" x="85" y="231" width="205" height="205"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="205" id="5AP-B7-djm"/>
+                        <constraint firstAttribute="width" secondItem="ohJ-Q1-Xq3" secondAttribute="height" multiplier="1:1" id="Hee-01-Tgq"/>
+                    </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ohJ-Q1-Xq3" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="dG9-37-B9V"/>
+                <constraint firstItem="ohJ-Q1-Xq3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="djC-LM-wZ6"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="548" y="454.72263868065971"/>
         </view>
