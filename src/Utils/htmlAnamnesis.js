@@ -2,17 +2,6 @@ import { formatDate, formatHeight, formatArrayWithSeparator, textWhenEmpty } fro
 import {getFrequencyDescription} from './frequencies';
 
 
-
-/**
- * 
- * @param {String} anamnese 
- * 
- * Função responsável por criar um HTML correspondente à anamnese.
- * A variável msg corresponde à este HTML, e toda a mesma deve ser tratada como uma String, logo
- * todas as tags devem estar dentro dos ` ` para que seja possível o uso de variáveis e funções.
- */
-
-
 export function formatArrayObjectsAnam(arr){
     if(!_isEmpty(arr)){
         let str = "";
@@ -30,6 +19,15 @@ export function formatArrayObjectsAnam(arr){
     return "N/A";
 }
 
+
+/**
+ * 
+ * @param {String} anamnese 
+ * 
+ * Função responsável por criar um HTML correspondente à anamnese.
+ * A variável msg corresponde à este HTML, e toda a mesma deve ser tratada como uma String, logo
+ * todas as tags devem estar dentro dos ` ` para que seja possível o uso de variáveis e funções.
+ */
 export function anamnesisToHtml(anamnese) {
     const msg =
         `
