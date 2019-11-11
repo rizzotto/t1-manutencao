@@ -96,6 +96,9 @@ export function anamnesisToHtml(anamnese) {
  * pois o modo em que a dependencia funciona, não é aceito um link à um arquivo css separado.
  */
 const style = `
+    * {
+        font-family: Arial
+    }
     p#title { 
         font-Weight: bold;
         font-size: 16
