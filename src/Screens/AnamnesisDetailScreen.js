@@ -26,18 +26,18 @@ export default class AnamnesisDetailScreen extends Component {
     static createPDF = async (anamnese) => {
         const options = {
             html: anamnesisToHtml(anamnese),
-            fileName: 'anamnesePDF',
+            fileName: 'anamnese',
             base64: true
         };
 
         const file = await RNHTMLtoPDF.convert(options)
-        const filePath = RNFetchBlob.fs.dirs.DownloadDir + '/anamnesePDF.pdf';
-
+        
+        const filePath = RNFetchBlob.fs.dirs.DownloadDir + '/anamnese.pdf';
         await RNFetchBlob.fs.writeFile(filePath, file.base64, 'base64')
 
         await Share.open({
             url: `file://${filePath}`,
-            title: "Compartilhe sua ficha!",
+            title: "Compartilhe sua ficha",
             message: "Esta é a minha anamnese.",
         })
     }
