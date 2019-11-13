@@ -1,14 +1,53 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Alert } from 'react-native';
 import { DetailExamContainer } from '../Containers';
+import { HeaderTextButtonComponent } from '../Components';
+import { examService } from '../Database';
 
 export default class ExamVisualizationScreen extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerRight: (
+                <HeaderTextButtonComponent
+                    text={"Excluir"}
+                    onPress={navigation.getParam("deleteExam")}
+                />
+            )
+        }
+    }
+
     constructor(props) {
         super(props)
 
         this.state = {
             exam: props.exam || props.navigation.getParam("exam")
         }
+
+        props.navigation.setParams({deleteExam:this.deleteExam})
+    }
+
+    deleteExam = () => {
+        Alert.alert(
+            "Tem certeza?",
+            "Todas as fotos serão perdidas. Não é possível desfazer essa ação.",
+            [
+                { text: "Voltar", style: "cancel" },
+                { text: "Excluir", style: "destructive", onPress: this.onDeleteConfirmed}
+            ]
+        )
+    }
+
+    onDeleteConfirmed = () => {
+        const operation = examService.deleteExam(this.getParam("userId"), this.state.exam)
+            .then(() => {
+                const onDelete = this.props.navigation.getParam("onDelete")
+                if (onDelete) onDelete(this.state.exam)
+
+                this.props.navigation.goBack()
+            })
+        
+        this.props.navigation.push("Loading", { operation })
     }
 
     imageSelected = (index) => {
@@ -41,7 +80,7 @@ export default class ExamVisualizationScreen extends Component {
                 <DetailExamContainer 
                     exame={exame} 
                     imageToScreen={this.imageSelected}
-                    onEdit={this.editExam}
+                    action={this.editExam}
                 />
 
             </SafeAreaView>
@@ -52,6 +91,5 @@ export default class ExamVisualizationScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 20
     },
 })

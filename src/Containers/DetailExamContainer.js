@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Platform, Dimensions,} from 'react-native';
-import { Button } from '../Components';
+import { StyleSheet, View, Text, Platform, Dimensions, ScrollView } from 'react-native';
+import { Button, TitleDescription } from '../Components';
 import ImageListContainer from './ImageListContainer';
 import AppStyle from '../styles';
-import TitleDescComponent from '../Components/TitleDescComponent';
 
 /**
  * @author Felipe Boff, Gabriel Franzoni, Gabriel Paul
@@ -14,8 +13,7 @@ import TitleDescComponent from '../Components/TitleDescComponent';
  * @param images imagens do exame; lista de objetos com promises ou imagens locais (ver exemplo abaixo)
  * @param onPress função chamada quando um item é clicado
  * @param style estilo aplicado ao componente
- * @param onEdit função chamada quando o botão "Editar" é clicado
- * 
+ * @param action função repassada para action do Button (DefaultButtonComponent)
  * 
  * @return Container do Item dos Exames
 
@@ -47,28 +45,27 @@ export default class DetailExamContainer extends Component {
         })
 
         return (
-            
             <View style={styles.container} >
-                
-                <TitleDescComponent 
-                    styleView={styles.titleView}
-                    styleTitle={styles.titleStyle}
-                    styleDescription={styles.dateStyle}
-                    titleText={this.props.exame.name} 
-                    descriptionText={"Adicionado em: "+this.formatDate(date)}
-                /> 
-                <Text style={styles.descriptionTitle}>Descrição:</Text>
-                <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
-                <ImageListContainer
-                    add={false}
-                    isTouchable={true}
-                    onSelectItem={this.selectedImage}
-                    data={images}
-                />
-                <View style={styles.buttonContainer}>
-                    <Button text={"Exportar"} style={styles.btnExport} textStyle={styles.btnExportText} />
-                    <Button text={"Editar"} style={styles.btnEdit} action={this.props.onEdit} />
-                </View>
+                <ScrollView >
+                    <View style={styles.contentContainer}>
+                        <TitleDescription
+                            styleView={styles.titleView}
+                            styleTitle={styles.titleStyle}
+                            styleDescription={styles.dateStyle}
+                            titleText={this.props.exame.name} 
+                            descriptionText={"Adicionado em: "+this.formatDate(date)}
+                        /> 
+                        <Text style={styles.descriptionTitle}>Descrição:</Text>
+                        <Text style={styles.descriptionText}>{this.props.exame.description}</Text>
+                        <ImageListContainer
+                            add={false}
+                            isTouchable={true}
+                            onSelectItem={this.selectedImage}
+                            data={images}
+                        />
+                    </View>
+                </ScrollView>
+                <Button viewStyle={styles.buttonContainer} text="Editar" action={this.props.action}/>
             </View>
         )
     }
@@ -76,6 +73,9 @@ export default class DetailExamContainer extends Component {
 
 
 const styles = StyleSheet.create({
+    contentContainer:{
+        marginHorizontal: 20
+    },
     titleStyle:{
         marginTop: 20,
         marginLeft: 0
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     },  
     container:{
         flex: 1,
-        
     },
     date: {
         fontSize: 14,
@@ -110,13 +109,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#000000",
         paddingBottom: 10
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        position: "absolute",
-        bottom: 0,
-        paddingVertical:20,
-        backgroundColor:AppStyle.colors.background,
     },
     btnEdit: {
         margin: 0,

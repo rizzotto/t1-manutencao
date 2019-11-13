@@ -99,8 +99,25 @@ export default class ListExamsScreen extends Component {
         this.props.navigation.navigate("ExamDetail", {
             exam: exam,
             userId: this.userId,
-            onUpdate: this.didUpdateExam.bind(this)
+            onUpdate: this.didUpdateExam.bind(this),
+            onDelete: this.didDeleteExam.bind(this)
         });
+    }
+
+    didDeleteExam = (exam) => {
+        const allExams = this.state.allExams.slice()
+        const visibleExams = this.state.visibleExams.slice()
+        
+        // atualiza as listas com todos os exames e os exames visíveis comparando pela data de criação
+        const findExam = ex => ex.creationDate.getTime() === exam.creationDate.getTime()
+        allExams.splice(allExams.findIndex(findExam), 1)
+        visibleExams.splice(visibleExams.findIndex(findExam), 1)
+
+        this.setState({
+            ...this.state,
+            allExams,
+            visibleExams
+        })
     }
 
     render() {
