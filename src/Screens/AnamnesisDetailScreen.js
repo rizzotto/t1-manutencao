@@ -8,15 +8,24 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFetchBlob from 'rn-fetch-blob';
 import Share from 'react-native-share';
 
+
 export default class AnamnesisDetailScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
+        const onExport = () => {
+            const operation = this.createPDF(navigation.getParam("anamnesisRecord")).then(() => {
+                this.sharePDF().then(() => navigation.navigate("Main"));
+                
+            })
+
+            navigation.push("Loading", {operation})
+        }
         return {
             headerRight: (
                 <HeaderTextButtonComponent
                     text='Exportar'
                     hasColor="true"
-                    onPress={() => this.createPDF(navigation.getParam("anamnesisRecord"))}
+                    onPress={onExport}
                 />
             )
         }
@@ -37,18 +46,27 @@ export default class AnamnesisDetailScreen extends Component {
         };
 
         const file = await RNHTMLtoPDF.convert(options)
-        const filePath = RNFetchBlob.fs.dirs.DownloadDir + '/anamnesePDF.pdf';
 
+        const filePath = RNFetchBlob.fs.dirs.DownloadDir + '/anamnesePDF.pdf';
         await RNFetchBlob.fs.writeFile(filePath, file.base64, 'base64')
 
-        await Share.open({
-            url: `file://${filePath}`,
-            title: "Compartilhe sua ficha",
-            message: "Esta é a minha anamnese.",
-        })
+    }
+
+    static sharePDF = async () => {
+        const filePath = RNFetchBlob.fs.dirs.DownloadDir + '/anamnesePDF.pdf';
+        try {
+            await Share.open({
+                url: `file://${filePath}`,
+                title: "Compartilhe sua ficha",
+                message: "Esta é a minha anamnese.",
+            })
+        } catch (error) {
+            // usuário cancelou
+        }
     }
 
     render() {
+
         return (
             <SafeAreaView>
                 <RecordDetailContainer anamnese={this.getParam("anamnesisRecord")} />
