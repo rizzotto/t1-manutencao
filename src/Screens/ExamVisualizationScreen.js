@@ -41,6 +41,9 @@ export default class ExamVisualizationScreen extends Component {
     onDeleteConfirmed = () => {
         const operation = examService.deleteExam(this.getParam("userId"), this.state.exam)
             .then(() => {
+                const onDelete = this.props.navigation.getParam("onDelete")
+                if (onDelete) onDelete(this.state.exam)
+
                 this.props.navigation.goBack()
             })
         
