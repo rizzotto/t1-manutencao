@@ -55,25 +55,41 @@ export default class ListExamsScreen extends Component {
             ...this.state,
             visibleExams: filteredExams
         });
-
     }
 
     createExam = () => {
-        const didCreateExam = (exam) => {
-            const exams = this.state.exams.slice()
-            exams.unshift(exam)
-
-            this.setState({
-                ...this.state,
-                uiState: "LIST",
-                allExams: exams,
-                visibleExams: exams
-            })
-        }
-
         this.props.navigation.navigate("ExamForm", {
             userId: this.userId,
-            onCreate: didCreateExam
+            previousRouteName: this.props.navigation.state.routeName,
+            onCreate: this.didCreateExam.bind(this)
+        })
+    }
+
+    didCreateExam = (exam) => {
+        const exams = this.state.allExams.slice()
+        exams.unshift(exam)
+
+        this.setState({
+            ...this.state,
+            uiState: "LIST",
+            allExams: exams,
+            visibleExams: exams
+        })
+    }
+
+    didUpdateExam = (exam) => {
+        const allExams = this.state.allExams.slice()
+        const visibleExams = this.state.visibleExams.slice()
+
+        // atualiza as listas com todos os exames e os exames visíveis comparando pela data de criação
+        const findExam = ex => ex.creationDate.getTime() === exam.creationDate.getTime()
+        allExams[allExams.findIndex(findExam)] = exam
+        visibleExams[visibleExams.findIndex(findExam)] = exam
+
+        this.setState({
+            ...this.state,
+            allExams,
+            visibleExams
         })
     }
 
@@ -82,8 +98,26 @@ export default class ListExamsScreen extends Component {
 
         this.props.navigation.navigate("ExamDetail", {
             exam: exam,
-            userId: this.userId
+            userId: this.userId,
+            onUpdate: this.didUpdateExam.bind(this),
+            onDelete: this.didDeleteExam.bind(this)
         });
+    }
+
+    didDeleteExam = (exam) => {
+        const allExams = this.state.allExams.slice()
+        const visibleExams = this.state.visibleExams.slice()
+        
+        // atualiza as listas com todos os exames e os exames visíveis comparando pela data de criação
+        const findExam = ex => ex.creationDate.getTime() === exam.creationDate.getTime()
+        allExams.splice(allExams.findIndex(findExam), 1)
+        visibleExams.splice(visibleExams.findIndex(findExam), 1)
+
+        this.setState({
+            ...this.state,
+            allExams,
+            visibleExams
+        })
     }
 
     render() {

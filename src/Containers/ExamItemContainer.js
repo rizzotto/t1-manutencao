@@ -35,10 +35,8 @@ const IMAGES_PER_PAGE = 3
 
 export default class ExamItemContainer extends Component {
 
-    constructor(props) {
-        super(props)
-
-        const images = props.images.slice()
+    normalizeImages = (originalImages) => {
+        const images = originalImages.slice()
         const imageCount = images.length
 
         // se há mais imagens do que o que deve ser exibido
@@ -65,9 +63,7 @@ export default class ExamItemContainer extends Component {
             }
         }
 
-        this.state = {
-            images
-        }
+        return images
     }
 
     /**
@@ -83,6 +79,7 @@ export default class ExamItemContainer extends Component {
 
     render() {
         const date = this.props.date
+        const images = this.normalizeImages(this.props.images)
 
         return (
             <TouchableOpacity onPress={this.props.onPress} style={this.props.style} activeOpacity={0.7}>
@@ -94,7 +91,7 @@ export default class ExamItemContainer extends Component {
                 
                 <FlatList
                     numColumns={IMAGES_PER_PAGE}
-                    data={this.state.images}
+                    data={images}
                     listKey={() => `exam#${date.getTime()}#list`}
                     keyExtractor={(item, index) => `exam#${date.getTime()}image#${index}#key`}
                     renderItem={({ item }) => {

@@ -13,12 +13,14 @@ import uuid from 'react-native-uuid';
  *   - imagens locais: URL da imagem no dispositivo, sempre disponível;
  *   - imagens remotas: URL para download da imagem, disponível depois que a promise for concluída; disponível quando `promise == null` (ver abaixo)
  * @property {Promise<string>} [promise] promise que completa com a URL de download da imagem (apenas imagens remotas); quando a promise completa, o valor no campo `uri` é atualizado e esse campo é setado para `null`
+ * 
+ * Documentação extra em `docs/ImageObject.js`
  */
 
 /**
- * Serviço de persistência de anamneses no Firebase.
+ * Serviço de persistência de exames no Firebase.
  * 
- * Ver documentação associada em `docs/Exam.js`.
+ * Ver documentação associada em `docs/Exam.js`. Documentação sobre imagens em `docs/ImageObject.js`.
  */
 export default class ExamService {
     /**
@@ -43,9 +45,7 @@ export default class ExamService {
      */
     createExam = async (userId, exam) => {
         const imagesBasePath = this._buildBasePath(userId, exam)
-
         const creationDate = exam.creationDate
-        exam.creationDate = null
 
         // começar com lista vazia e adicionar nome nas imagens cujo upload deu certo
         exam.images = []
@@ -70,8 +70,97 @@ export default class ExamService {
             throw "failed to upload all images"
         }
 
+        // exame apenas com os campos que devem ser persistidos
+        const examToSend = {
+            name: exam.name,
+            description: exam.description,
+            images: exam.images
+        }
+
         // só depois de pelo menos um upload de imagem ter dado certo, salvamos o exame no database
-        return this.db.ref(`${userId}/exams/${creationDate.getTime()}`).set(exam)
+        return this.db.ref(`${userId}/exams/${creationDate.getTime()}`).set(examToSend).then(() => {
+            // se o exame foi salvo, atualiza o imageObjects para usar imagens remotas
+            exam.imageObjects = this.getImages(userId, exam)
+        })
+    }
+
+    /**
+     * Atualiza um exame existente, salvando as novas imagens e excluindo as descartadas do Firebase.
+     * 
+     * @param {string} userId ID do usuário que está atualizando o exame
+     * @param {any} exam estrutura com os dados do exame (ver `docs/Exam.js`); o atributo `images` é sobrescrito; as imagens devem estar no atributo `imageObjects`
+     * @returns {Promise} promise que completa quando o upload e remoção de todas as imagens é concluído e o exame é persistido
+     */
+    updateExam = async (userId, exam) => {
+        // ao atualizar um exame, temos que upar as novas imagens (locais) e excluir as imagens que foram removidas (remotas)
+
+        const imagesBasePath = this._buildBasePath(userId, exam)
+
+        // nomes das imagens remotas que devem ser excluídas (de início, todas as imagens remotas)
+        const remoteImagesToDelete = exam.images.slice()
+
+        // nomes das imagens do exame após a edição
+        const finalImages = []
+
+        for (const image of exam.imageObjects) {
+            if (image.type === "local") {
+                // imagem local: mandar para o Firebase
+
+                const filename = `img-${uuid.v4()}.${this._buildExtension(image.mime)}`
+
+                try {
+                    await this._uploadImage(imagesBasePath, filename, image.uri)
+
+                    // adicionar na lista de imagens finais do exame
+                    finalImages.push(filename)
+                } catch (error) {
+                    // se não der para upar a imagem, não adicioná-la na lista de imagens do exame
+                }
+            } else if (image.type === "remote") {
+                // imagem remota: mantida
+
+                // remover da lista das remotas que devem ser excluídas
+                remoteImagesToDelete.splice(remoteImagesToDelete.indexOf(image.name), 1)
+
+                // adicionar na lista de imagens finais do exame
+                finalImages.push(image.name)
+            }
+        }
+
+        // se o usuário tiver removido todas as imagens remotas e adicionado imagens locais,
+        // e o upload de todas as imagens locais tiver falhado,
+        // abortar a deleção das imagens remotas e a persistência do exame
+        if (finalImages.length === 0) {
+            throw "failed to upload local images"
+        }
+
+        // deletar as imagens remotas que foram removidas do exame
+        for (const filename of remoteImagesToDelete) {
+            try {
+                await this.storage.ref(`${imagesBasePath}/${filename}`).delete()
+            } catch (error) {
+                // se deletar uma imagem não der certo, adicioná-la novamente na lista de imagens do exame
+                finalImages.push(filename)
+            }
+        }
+
+        // atualizar exame com nova lista com nome das imagens
+        exam.images = finalImages
+
+        // TODO: atualizar exam.imageObjects apenas com imagens remotas, para evitar que um segundo update exclua e salve a mesma imagem novamente
+
+        // exame apenas com os campos que devem ser persistidos
+        const examToSend = {
+            name: exam.name,
+            description: exam.description,
+            images: exam.images
+        }
+
+        // atualizar exame
+        return this.db.ref(`${userId}/exams/${exam.creationDate.getTime()}`).update(examToSend).then(() => {
+            // se o exame foi atualizado, atualiza o imageObjects para usar imagens remotas
+            exam.imageObjects = this.getImages(userId, exam)
+        })
     }
 
     /**
@@ -168,8 +257,6 @@ export default class ExamService {
 
         return this.db.ref(`${userId}/exams/${exam.creationDate.getTime()}`).remove()
     }
-
-    // TODO: updateExam
 
     //
     // FUNÇÕES AUXILIARES
