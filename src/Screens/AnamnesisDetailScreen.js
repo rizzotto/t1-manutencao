@@ -14,7 +14,7 @@ export default class AnamnesisDetailScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         const onExport = () => {
             const operation = this.createPDF(navigation.getParam("anamnesisRecord")).then(() => {
-                this.sharePDF().then(() => navigation.navigate("Main"));
+                this.sharePDF().then(() => navigation.pop(1));
                 
             })
 
