@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
         // (o que não temos tempo para fazer no momento);
         // ainda não fica perfeito em telas de qualquer tamanho,
         // mas é o que dá para fazer com o tempo que temos
-        width: Dimensions.get("window").width * 0.25
+        
+        // width: Dimensions.get("window").width * 0.25
     }
 });

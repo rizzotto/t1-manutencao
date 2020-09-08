@@ -44,7 +44,7 @@ export default class AnamnesesRecordsScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Sua ficha" />
                 <View style={styles.content}>
-                    <Text style={{textAlign: "center"}}>Anamnese</Text>
+                    {/* <Text style={{textAlign: "center"}}>Anamnese</Text> */}
                     <Button text="Nova ficha" action={this._newRecord} />
                     <Button text="Editar última ficha" action={this._editLast} />
                     <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
