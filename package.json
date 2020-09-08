@@ -20,6 +20,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-masked-text": "^1.13.0",
     "react-native-reanimated": "^1.2.0",
+    "react-native-screens": "^2.10.1",
     "react-native-share": "^2.0.0",
     "react-native-uuid": "^1.4.9",
     "react-navigation": "^3.11.1",
