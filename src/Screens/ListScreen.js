@@ -15,7 +15,7 @@ import CreateDefaultNavigationOptions from './CreateDefaultNavigationOptions';
      * 
      * @return Tela com barra de progresso, titulo, descricao, lista fechada e botao de ir para proxima pagina
      */
-export default class ClosedListScreen extends Component {
+export default class ListScreen extends Component {
     static navigationOptions = CreateDefaultNavigationOptions;
 
     dataFromContainer = (data) => {
