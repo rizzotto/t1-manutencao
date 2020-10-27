@@ -27,10 +27,10 @@ export default class ItemListComponent extends Component {
         this.state = { text: '' };
     }
     render(){
-        const { selected, pressDisabled } = this.props;
+        const { selected } = this.props;
         const styles = createStyles(selected);
 
-        dataToAdd = () => {
+        let dataToAdd = () => {
             this.props.dataToAdd(this.state.text);
             this.setState({
             text: ''
