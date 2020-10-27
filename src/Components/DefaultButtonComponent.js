@@ -3,7 +3,6 @@ import {
     TouchableOpacity, 
     StyleSheet,
     Text,
-    Dimensions,
     View
 } from "react-native";
 import AppStyle from '../styles';
