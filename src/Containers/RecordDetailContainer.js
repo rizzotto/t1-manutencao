@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DetailedRecordComponent from '../Components/DetailedRecordComponent';
 import { formatDate, formatHeight, formatArrayWithSeparator, formatArrayObjectsAnam, textWhenEmpty } from '../Utils/Helpers';
