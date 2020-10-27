@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import CardEmojiComponent from '../Components/CardEmojiComponent'; 
 import { Arrow } from '../Components';
 
