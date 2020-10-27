@@ -64,20 +64,19 @@ export default class TextInputContainer extends React.Component {
       if (this.props.textCallback !== undefined) {
         this.textCallback();
       }
-      var reNumeric = /^\d+(?:[\.,]\d+)?$/
-      var reAlphNum = /^[a-z0-9 ]+$/i
-      var reAlph = /^[a-zA-Z ]+$/
-      var reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
-      var reEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-      var rePressure = /^([0-9][0-9])(\/)([0-9][0-9])/
-      var reHeight = /^([0-2])(\,)([0-9][0-9])/
+      const reNumeric = /^\d+(?:[.,]\d+)?$/
+      const reAlphNum = /^[a-z0-9 ]+$/i
+      const reAlph = /^[a-zA-Z ]+$/
+      const reDate = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
+      const reEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      const rePressure = /^([0-9][0-9])(\/)([0-9][0-9])/
+      const reHeight = /^([0-2])(,)([0-9][0-9])/
 
       if (this.props.required && !this.state.text) {
         this.setState({
           validate: false
         })
       }
-
       else if (type === 'numeric') {
         if (reNumeric.test(this.state.text)) {
           this.setState({
@@ -90,11 +89,10 @@ export default class TextInputContainer extends React.Component {
           })
         }
       }
-
       else if (type === 'date') {
         if (reDate.test(this.state.text)) {
-          var dateFormat = textInput.date(this.state.text);
-          var dateToday = new Date();
+          const dateFormat = textInput.date(this.state.text);
+          const dateToday = new Date();
           if (dateFormat < dateToday) {
             this.setState({
               validate: true
@@ -107,8 +105,6 @@ export default class TextInputContainer extends React.Component {
           })
         }
       }
-
-
       else if (type === 'email') {
         if (reEmail.test(this.state.text)) {
           this.setState({
@@ -128,7 +124,6 @@ export default class TextInputContainer extends React.Component {
           this.setState({ validate: false })
         }
       }
-
       else if (type === 'pressure') {
         if (rePressure.test(this.state.text)) {
           this.setState({ validate: true })
@@ -136,7 +131,6 @@ export default class TextInputContainer extends React.Component {
           this.setState({ validate: false })
         }
       }
-
       else if (type === 'alphanumeric') {
         if (reAlphNum.test(this.state.text)) {
           this.setState({
@@ -149,7 +143,6 @@ export default class TextInputContainer extends React.Component {
           })
         }
       }
-
       else if (type === 'alpha') {
         if (reAlph.test(this.state.text)) {
           this.setState({
@@ -162,7 +155,6 @@ export default class TextInputContainer extends React.Component {
           })
         }
       }
-
       else {
         this.setState({
           validate: true
