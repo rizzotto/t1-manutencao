@@ -18,6 +18,10 @@ export { default as EmojiScreen } from './EmojiScreen'
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as GalleryScreen } from './GalleryScreen';
 
+//config
+
+export { default as ConfigScreen } from './ConfigScreen';
+
 // funções
 export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';
 export { default as CreateTabBarIcon } from './CreateTabBarIcon';

@@ -1,14 +1,10 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions } from 'react-navigation';
 import {
-    // ANAMNESE
     AnamnesesRecordsScreen, AnamnesisDetailScreen,
-    // DIÁRIO
     JournalsScreen, DiaryDetailScreen,
-    // EXAMES
     ListExamsScreen, DetailExamScreen,
-    // FORM
+    ConfigScreen,
     ListSubitemsScreen, ListScreen, TextInputScreen, EmojiScreen, MultiTextInputScreen, ImageSelectionScreen,
-    // AUXILIARES
     GalleryScreen, LoadingScreen, CreateTabBarIcon
 } from '../Screens';
 import AnamnesisFormCoordinator from './AnamnesisFormCoordinator';
@@ -123,6 +119,27 @@ ExamsTab.navigationOptions = ({ navigation, screenProps }) => {
     }
 }
 
+// TAB
+const ConfigTab = createStackNavigator({
+    Config: ConfigScreen,
+}, {
+    defaultNavigationOptions
+});
+
+ConfigTab.navigationOptions = ({ navigation, screenProps }) => {
+    // usar a navigationOptions da primeira tela exibida pela stack
+    let activeRouteOptions = {}
+    if (navigation.state.index === 0) {
+        activeRouteOptions = getActiveChildNavigationOptions(navigation, screenProps)
+    }
+
+    return {
+        title: "Configurações",
+        tabBarIcon: CreateTabBarIcon(require("../Resources/cog.png")),
+        ...activeRouteOptions
+    }
+}
+
 //
 // APP
 //
@@ -130,7 +147,8 @@ ExamsTab.navigationOptions = ({ navigation, screenProps }) => {
 const TabNavigator = createBottomTabNavigator({
     Anamnesis: AnamnesisTab,
     Journals: JournalsTab,
-    Exams: ExamsTab
+    Exams: ExamsTab,
+    Config: ConfigTab
 }, {
     tabBarOptions: {
         activeTintColor: AppStyle.colors.main

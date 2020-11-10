@@ -8,6 +8,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/google-signin": "^5.0.0",
     "buffer": "^5.4.3",
     "firebase": "^6.5.0",
     "react": "16.8.6",
