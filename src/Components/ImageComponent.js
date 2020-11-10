@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
-import deepDiffer from 'react-native/lib/deepDiffer';
+import deepDiffer from 'react-native/Libraries/Utilities/differ/deepDiffer'
 import FastImage from 'react-native-fast-image';
 
 /**
