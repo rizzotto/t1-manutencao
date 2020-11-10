@@ -14,7 +14,8 @@ import AppStyle from '../styles';
 
 export default class EmptyStateContainer extends Component {
     render() {
-        buttonAction = this.props.buttonAction
+        let buttonAction = this.props.buttonAction
+        let title, description, buttonTitle;
         if (this.props.local === 'diario') {
             title = 'Acompanhe seu\ndia-a-dia'
             description = 'Com o HiperBem, você consegue\nacompanhar seu humor, medicação e\nsintomas diariamente.'

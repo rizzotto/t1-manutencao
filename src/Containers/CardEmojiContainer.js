@@ -42,7 +42,7 @@ export default class CardEmojiContainer extends Component {
         const index = this.state.DATA.indexOf(item);
         const wasSelected = this.state.DATA[index].isSelected;
 
-        this.state.DATA.forEach(item => item.isSelected = false);
+        this.state.DATA.forEach(elem => elem.isSelected = false);
 
         this.state.DATA[index].isSelected = !wasSelected;
 

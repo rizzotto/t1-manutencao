@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, View, StyleSheet, Alert } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Alert } from 'react-native';
 import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
 import AppStyle from '../styles';

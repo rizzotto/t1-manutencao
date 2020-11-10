@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, ScrollView, SectionList} from 'react-native';
+import {StyleSheet, View, Text, SectionList} from 'react-native';
 import ItemHistoryComponent from '../Components/ItemHistoryComponent';
 import AppStyle from '../styles';
 /**

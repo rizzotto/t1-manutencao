@@ -10,7 +10,7 @@ import { examService } from '../Database';
 /**
  * Coordinator de criação/edição de exames.
  */
-export default class JournalEntryFormCoordinator extends Component {
+export default class ExamFormCoordinator extends Component {
     static navigationOptions = ({ navigation }) => {
         const dismiss = () => navigation.navigate("Main"); // voltar para tabbar (dismiss no modal)
         const onCancel = () => {

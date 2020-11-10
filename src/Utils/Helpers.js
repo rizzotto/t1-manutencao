@@ -92,9 +92,7 @@ export function textWhenEmpty(s, text){
  * @param {*} v
  * @returns {Boolean}
  */
-_isEmpty = (v) => {
-    if(!v || v == null || v == undefined || v == ""){
-        return true;
-    }
-    return false; 
+const _isEmpty = (v) => {
+    return !v || v === "";
+
 }

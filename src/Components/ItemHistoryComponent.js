@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text, FlatList, Dimensions } from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Arrow from './Arrow';
 import AppStyle from '../styles';
 /**

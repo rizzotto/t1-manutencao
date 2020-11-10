@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
  *   - `onPress: function`: função chamada quando o subitem é clicado
  */
 const Subitem = ({ text, selected, onPress }) => {
-    const styles = createSubitemStyles(selected);
+    const subitemStyles = createSubitemStyles(selected);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <Text style={styles.text}>{text}</Text>
+        <TouchableOpacity style={subitemStyles.container} onPress={onPress}>
+            <Text style={subitemStyles.text}>{text}</Text>
             { selected && <CheckImage /> }
         </TouchableOpacity>
     );

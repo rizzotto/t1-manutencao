@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View, Image, ScrollView } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 import AppStyle from '../styles';
 import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 
