@@ -19,7 +19,6 @@ export { default as LoadingScreen } from './LoadingScreen';
 export { default as GalleryScreen } from './GalleryScreen';
 
 //config
-
 export { default as ConfigScreen } from './ConfigScreen';
 
 // funções
