@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Button, HeaderTitleComponent } from '../Components';
+import { withUserContext } from '../Context/UserContext';
 import AppStyle from '../styles';
 
-export default class ConfigScreen extends Component {
+export class ConfigScreen extends Component {
+
+    _signOut = async () =>{
+        await this.props.user.signOut();
+        this.props.navigation.navigate("Auth");
+    }
 
     render() {
         return (
@@ -11,8 +17,7 @@ export default class ConfigScreen extends Component {
                 <HeaderTitleComponent title="Configurações" />
                 <View style={styles.content}>
                     {/* <Text style={{textAlign: "center"}}>Anamnese</Text> */}
-                    <Button text="Realizar login"/>
-                    <Button text="Realizar logout"/>
+                    <Button text="Realizar logout" action={() => this._signOut()}/>
                     <Button text="Deletar meus dados"/>
                 </View>
             </SafeAreaView>
@@ -31,3 +36,5 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
+
+export default withUserContext(ConfigScreen);

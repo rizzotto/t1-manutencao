@@ -3,9 +3,10 @@ import { SafeAreaView, Text, StyleSheet, View, ActivityIndicator, Platform } fro
 import { HeaderTitleComponent, SearchInputComponent, HeaderImageButtonComponent } from '../Components';
 import { EmptyStateContainer, ExamsListContainer } from '../Containers';
 import { examService } from '../Database';
+import { withUserContext } from '../Context/UserContext';
 import AppStyle from '../styles';
 
-export default class ListExamsScreen extends Component {
+class ListExamsScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             headerRight: (
@@ -18,8 +19,6 @@ export default class ListExamsScreen extends Component {
     }
 
     // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
-    userId = "user-id-001"
-
     constructor(props) {
         super(props);
 
@@ -36,6 +35,8 @@ export default class ListExamsScreen extends Component {
         
         props.navigation.setParams({ createExamAction: this.createExam })
     }
+
+    userId = this.props.user.user.uid;
 
     setExams = (exams) => {
         this.setState({
@@ -217,3 +218,5 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
+export default withUserContext(ListExamsScreen);

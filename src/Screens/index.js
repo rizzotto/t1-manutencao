@@ -1,6 +1,6 @@
 
 // anamnese
-export { default as AnamnesesRecordsScreen } from './AnamnesesRecordsScreen';
+export { default as MainScreen } from './MainScreen';
 export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen';
 
 // diário
@@ -19,8 +19,10 @@ export { default as LoadingScreen } from './LoadingScreen';
 export { default as GalleryScreen } from './GalleryScreen';
 
 //config
-
 export { default as ConfigScreen } from './ConfigScreen';
+
+//login
+export { default as LoginScreen } from './LoginScreen';
 
 // funções
 export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';

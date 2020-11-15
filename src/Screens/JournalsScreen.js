@@ -4,11 +4,11 @@ import { HeaderTitleComponent } from '../Components';
 import { HistoryContainer, EmptyStateContainer, CarouselContainer } from '../Containers';
 import JournalEntryFormatter from '../Utils/JournalEntryFormatter';
 import { journalService } from '../Database';
+import { withUserContext } from '../Context/UserContext';
 import AppStyle from '../styles';
 
-export default class JournalsScreen extends Component {
-    // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
-    userId = "user-id-001"
+class JournalsScreen extends Component {
+    userId = this.props.user.user.uid;
 
     constructor(props) {
         super(props);
@@ -144,3 +144,5 @@ const styles = StyleSheet.create({
         borderBottomColor: AppStyle.colors.mediumGray
     }
 });
+
+export default withUserContext(JournalsScreen);

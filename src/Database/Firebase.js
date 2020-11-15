@@ -2,10 +2,13 @@
 // apenas o que é usado (apenas Realtime Database, por enquanto)
 
 import * as firebase from 'firebase';
-import firebaseConfig from '../firebaseConfig';
+import firebaseConfig from '../Config/firebaseConfig';
 
 firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
 const storage = firebase.storage();
-export { database, storage };
+const auth = firebase.auth();
+const authProvider = firebase.auth.GoogleAuthProvider;
+
+export {database, storage, auth, authProvider};

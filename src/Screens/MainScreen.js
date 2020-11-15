@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, StyleSheet, Alert } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Alert, Text } from 'react-native';
 import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
+import { withUserContext } from '../Context/UserContext';
 import AppStyle from '../styles';
 
 /**
@@ -9,20 +10,25 @@ import AppStyle from '../styles';
  * 
  * Construída apenas para fazer o fluxo funcionar.
  */
-export default class AnamnesesRecordsScreen extends Component {
-    // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
-    userId = "user-id-001"
+class MainScreen extends Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            userId: this.props.user.user.uid
+        }
+    }
 
     _newRecord = () => {
         this.props.navigation.navigate("AnamnesisForm", {
-            userId: this.userId
+            userId: this.state.userId
         });
     }
 
     _editLast = () => {
-        anamnesisService.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.state.userId)
             .then(anamnesisRecord => {
-                this.props.navigation.navigate("AnamnesisForm", { anamnesisRecord, userId: this.userId });
+                this.props.navigation.navigate("AnamnesisForm", { anamnesisRecord, userId: this.state.userId });
             })
             .catch(() => {
                 Alert.alert("Sem fichas antigas", "Nenhuma ficha antiga foi encontrada. Crie uma ficha primeiro.");
@@ -30,9 +36,9 @@ export default class AnamnesesRecordsScreen extends Component {
     }
 
     _viewDetailsLast = () => {
-        anamnesisService.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.state.userId)
             .then(anamnesisRecord => {
-                this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.userId });
+                this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.state.userId });
             })
             .catch(() => {
                 Alert.alert("Sem fichas antigas", "Nenhuma ficha antiga foi encontrada. Crie uma ficha primeiro.");
@@ -44,7 +50,6 @@ export default class AnamnesesRecordsScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Sua ficha" />
                 <View style={styles.content}>
-                    {/* <Text style={{textAlign: "center"}}>Anamnese</Text> */}
                     <Button text="Nova ficha" action={this._newRecord} />
                     <Button text="Editar última ficha" action={this._editLast} />
                     <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
@@ -65,3 +70,5 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
+
+export default withUserContext(MainScreen);

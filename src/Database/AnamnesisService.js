@@ -18,6 +18,7 @@ export default class AnamnesisService {
      * @returns Object
      */
     getLastAnamnesis = async (userId) => {
+        console.log(userId)
         const snapshot = await this.db.ref(`${userId}/anamneses`).orderByKey().limitToLast(1).once("value");
         const value = snapshot.val();
 

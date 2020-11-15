@@ -61,7 +61,7 @@ export default class ExamService {
                 await this._uploadImage(imagesBasePath, filename, image.uri)
                 exam.images.push(filename)
             } catch (error) {
-                // ignorar erros
+                console.log(error)
             }
         }
 
