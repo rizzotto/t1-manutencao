@@ -3,7 +3,6 @@ import { SafeAreaView, View, StyleSheet, Alert, Text } from 'react-native';
 import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
 import { withUserContext } from '../Context/UserContext';
-import { GoogleSigninButton } from '@react-native-community/google-signin';
 import AppStyle from '../styles';
 
 /**
@@ -12,17 +11,24 @@ import AppStyle from '../styles';
  * Construída apenas para fazer o fluxo funcionar.
  */
 class MainScreen extends Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            userId: props.user.userInfo.user.id
+        }
+    }
 
     _newRecord = () => {
         this.props.navigation.navigate("AnamnesisForm", {
-            userId: this.userId
+            userId: this.state.userId
         });
     }
 
     _editLast = () => {
-        anamnesisService.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.state.userId)
             .then(anamnesisRecord => {
-                this.props.navigation.navigate("AnamnesisForm", { anamnesisRecord, userId: this.userId });
+                this.props.navigation.navigate("AnamnesisForm", { anamnesisRecord, userId: this.state.userId });
             })
             .catch(() => {
                 Alert.alert("Sem fichas antigas", "Nenhuma ficha antiga foi encontrada. Crie uma ficha primeiro.");
@@ -32,7 +38,7 @@ class MainScreen extends Component {
     _viewDetailsLast = () => {
         anamnesisService.getLastAnamnesis(this.userId)
             .then(anamnesisRecord => {
-                this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.userId });
+                this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.state.userId });
             })
             .catch(() => {
                 Alert.alert("Sem fichas antigas", "Nenhuma ficha antiga foi encontrada. Crie uma ficha primeiro.");

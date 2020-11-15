@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import DiaryDetailContainer from '../Containers/DiaryDetailContainer';
+import { withUserContext } from '../Context/UserContext';
 
-export default class DiaryDetailScreen extends Component{
-    userId = "user-id-001"
+class DiaryDetailScreen extends Component{
+    userId = this.props.user.userInfo.user.id;
+    
     render(){
         const item = this.props.navigation.state.params.journalEntry;
         const action  = () => {
@@ -17,3 +19,5 @@ export default class DiaryDetailScreen extends Component{
         )
     }
 }
+
+export default withUserContext(DiaryDetailScreen);
