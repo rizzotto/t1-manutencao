@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, FlatList } from "react-native";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import TitleDescComponent from '../Components/TitleDescComponent';
 import DefaultButtonComponent from '../Components/DefaultButtonComponent';
 import ItemListComponent from '../Components/ItemListComponent';
@@ -116,13 +115,7 @@ export default class ListContainer extends Component {
 
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView style={styles.content}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                    innerRef={ref => this.scrollView = ref}
-                    onKeyboardDidHide={() => this.scrollView.scrollToEnd()}
-                    enableOnAndroid={true}
-                >
+                <>
                     <TitleDescComponent styleView={styles.header}
                         titleText={this.state.titleText} 
                         descriptionText={this.state.descriptionText}
@@ -149,7 +142,7 @@ export default class ListContainer extends Component {
                             dataToAdd={this._onPressAdd}
                         />
                     }
-                </KeyboardAwareScrollView>
+                </>
                 
                 <DefaultButtonComponent 
                     text={!hasSelected && !isRequired ? "Pular" : "Continuar"}

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions } from 'react-navigation';
 import {
-    AnamnesesRecordsScreen, AnamnesisDetailScreen,
+    MainScreen, AnamnesisDetailScreen,
     JournalsScreen, DiaryDetailScreen,
     ListExamsScreen, DetailExamScreen,
     ConfigScreen,
@@ -44,7 +44,7 @@ const AnamnesisForm = createStackNavigator({
 
 // TAB
 const AnamnesisTab = createStackNavigator({
-    AnamnesesRecords: AnamnesesRecordsScreen,
+    Main: MainScreen,
     AnamnesisDetail: AnamnesisDetailScreen
 }, {
     defaultNavigationOptions

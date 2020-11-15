@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, StyleSheet, Alert } from 'react-native';
+import { SafeAreaView, View, StyleSheet, Alert, Text } from 'react-native';
 import { Button, HeaderTitleComponent } from '../Components';
 import { anamnesisService } from '../Database';
+import { withUserContext } from '../Context/UserContext';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
 import AppStyle from '../styles';
 
 /**
@@ -9,9 +11,7 @@ import AppStyle from '../styles';
  * 
  * Construída apenas para fazer o fluxo funcionar.
  */
-export default class AnamnesesRecordsScreen extends Component {
-    // TODO: mudar para pegar isso do Firebase, quando login estiver pronto
-    userId = "user-id-001"
+class MainScreen extends Component {
 
     _newRecord = () => {
         this.props.navigation.navigate("AnamnesisForm", {
@@ -40,11 +40,19 @@ export default class AnamnesesRecordsScreen extends Component {
     }
 
     render() {
+        if(this.props.user.userInfo === null){
+            return (
+                <>
+                    <GoogleSigninButton
+                        onPress={() => this.props.user.signIn()}
+                    />
+                </>
+            )
+        }
         return (
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Sua ficha" />
                 <View style={styles.content}>
-                    {/* <Text style={{textAlign: "center"}}>Anamnese</Text> */}
                     <Button text="Nova ficha" action={this._newRecord} />
                     <Button text="Editar última ficha" action={this._editLast} />
                     <Button text="Detalhes da última ficha" action={this._viewDetailsLast} />
@@ -65,3 +73,5 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
+
+export default withUserContext(MainScreen);

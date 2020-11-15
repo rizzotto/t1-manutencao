@@ -1,5 +1,6 @@
 
 firebaseConfig.js
+keys.js
 
 # Created by https://www.gitignore.io/api/node,buck,xcode,linux,macos,windows,android,intellij,firebase,cocoapods,reactnative,androidstudio
 # Edit at https://www.gitignore.io/?templates=node,buck,xcode,linux,macos,windows,android,intellij,firebase,cocoapods,reactnative,androidstudio
@@ -631,3 +632,4 @@ hs_err_pid*
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.gitignore.io/api/node,buck,xcode,linux,macos,windows,android,intellij,firebase,cocoapods,reactnative,androidstudio
+

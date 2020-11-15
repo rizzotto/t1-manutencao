@@ -1,6 +1,6 @@
 
 // anamnese
-export { default as AnamnesesRecordsScreen } from './AnamnesesRecordsScreen';
+export { default as MainScreen } from './MainScreen';
 export { default as AnamnesisDetailScreen } from './AnamnesisDetailScreen';
 
 // diário

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from "react-native";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { TitleDescription, Button } from '../Components';
 import TextInputContainer from './TextInputContainer';
 
@@ -94,11 +93,7 @@ export default class TitleInputContainer extends Component{
     render(){
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView style={styles.content}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                    enableOnAndroid={true}
-                >
+                <>
                     <TitleDescription
                         titleText={this.props.title}
                         descriptionText={this.props.description}
@@ -113,7 +108,7 @@ export default class TitleInputContainer extends Component{
                         type={this.props.keyboardType}
                         inputMask={this.props.maskType}
                     />
-                </KeyboardAwareScrollView>
+                </>
                 <Button
                     isDisabled={this.state.disabledButton}
                     text={this.state.btnText}
