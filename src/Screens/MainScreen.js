@@ -36,7 +36,7 @@ class MainScreen extends Component {
     }
 
     _viewDetailsLast = () => {
-        anamnesisService.getLastAnamnesis(this.userId)
+        anamnesisService.getLastAnamnesis(this.state.userId)
             .then(anamnesisRecord => {
                 this.props.navigation.navigate("AnamnesisDetail", { anamnesisRecord, userId: this.state.userId });
             })
