@@ -4,9 +4,11 @@ import { database as firebaseDatabase, storage as firebaseStorage } from './Fire
 import AnamnesisService from "./AnamnesisService";
 import JournalService from './JournalService';
 import ExamService from './ExamService';
+import UserService from './UserService';
 
 const anamnesisService = new AnamnesisService(firebaseDatabase);
 const journalService = new JournalService(firebaseDatabase);
+const userService = new UserService(firebaseDatabase, firebaseStorage);
 const examService = new ExamService(firebaseDatabase, firebaseStorage);
 
-export { anamnesisService, journalService, examService };
+export { anamnesisService, journalService, examService, userService };
