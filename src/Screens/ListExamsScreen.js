@@ -36,7 +36,7 @@ class ListExamsScreen extends Component {
         props.navigation.setParams({ createExamAction: this.createExam })
     }
 
-    userId = this.props.user.userInfo.user.id
+    userId = this.props.user.user.uid;
 
     setExams = (exams) => {
         this.setState({

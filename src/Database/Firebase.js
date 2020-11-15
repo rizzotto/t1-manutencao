@@ -8,4 +8,7 @@ firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
 const storage = firebase.storage();
-export { database, storage };
+const auth = firebase.auth();
+const authProvider = firebase.auth.GoogleAuthProvider;
+
+export {database, storage, auth, authProvider};

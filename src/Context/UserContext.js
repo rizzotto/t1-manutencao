@@ -1,18 +1,26 @@
 import React from 'react';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import { auth, authProvider } from '../Database/Firebase';
 import keys from '../Config/keys';
 
 const UserContext = React.createContext({});
 
 export class UserContextProvider extends React.Component {
     state = {
-        userInfo: null
+        user: [],
+        loggedIn: false,
+        fetching: true
     }
 
-    constructor(){
-        super();
-        this._configureGoogleSign();
-        this._isSignedIn();
+    componentDidMount(){
+        this._configureGoogleSignin();
+        const subscriber = auth.onAuthStateChanged(this._onAuthChange);
+        return subscriber;
+    }
+
+    _onAuthChange = (user) => {
+        this.setState({user: user, fetching: false});
+        if(user) this.setState({loggedIn: true});
     }
 
     _signIn = async () => {
@@ -21,41 +29,27 @@ export class UserContextProvider extends React.Component {
                 showPlayServicesUpdateDialog: true,
             });
             const user = await GoogleSignin.signIn();
-            this.setState({
-                userInfo: user
-            });
+            this.setState({ fetching: true });
+            const {accessToken, idToken} = user;
+            const credential = authProvider.credential(idToken, accessToken);
+            await auth.signInWithCredential(credential);
         } catch (error) { }
     };
     
-    _configureGoogleSign = () => {
+    _configureGoogleSignin = () => {
         GoogleSignin.configure({
           webClientId: keys.WEB_CLIENT_ID,
           offlineAccess: false
         });
     };
 
-    _isSignedIn = async () => {
-        const isSignedIn = await GoogleSignin.isSignedIn();
-        if (isSignedIn) {
-            this._getCurrentUserInfo();
-        }
-    };
-
-    _getCurrentUserInfo = async () => {
-        try {
-            const info = await GoogleSignin.signInSilently();
-            this.setState({
-                userInfo: info
-            });
-        } catch (error) { }
-    };
-
     _signOut = async () => {
         try {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
+            await auth.signOut();
             this.setState({
-                userInfo: null
+                loggedIn: false
             })
         } catch (error) { }
     };
@@ -65,11 +59,8 @@ export class UserContextProvider extends React.Component {
             <UserContext.Provider
                 value={{
                     ...this.state,
-                    isSignedIn: this._isSignedIn,
-                    getCurrentUserInfo: this._getCurrentUserInfo,
                     signIn: this._signIn,
                     signOut: this._signOut,
-                    configureAuth: this._configureGoogleSign
                 }}
             >
                 {this.props.children}

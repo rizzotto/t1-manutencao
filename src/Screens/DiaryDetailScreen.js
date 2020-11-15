@@ -3,7 +3,7 @@ import DiaryDetailContainer from '../Containers/DiaryDetailContainer';
 import { withUserContext } from '../Context/UserContext';
 
 class DiaryDetailScreen extends Component{
-    userId = this.props.user.userInfo.user.id;
+    userId = this.props.user.user.uid;
     
     render(){
         const item = this.props.navigation.state.params.journalEntry;

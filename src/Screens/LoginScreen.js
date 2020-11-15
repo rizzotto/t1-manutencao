@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { withUserContext } from '../Context/UserContext';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
-import AppStyle from '../styles';
 
 class LoginScreen extends Component {
 
@@ -15,7 +14,7 @@ class LoginScreen extends Component {
     }
 
     _navigateIfAuth = () => {
-        if(this.props.user.userInfo !== null){
+        if(this.props.user.loggedIn === true){
             this.props.navigation.navigate("App");
         }
     }
@@ -26,7 +25,7 @@ class LoginScreen extends Component {
     }
 
     render() {
-        if(this.props.user.userInfo === null){
+        if(this.props.user.loggedIn === false && !this.props.user.fetching){
             return (
                 <View style={styles.container}>
                     <Image style={styles.image} source={require('../Resources/logo.png')} />
@@ -39,7 +38,11 @@ class LoginScreen extends Component {
             )
         }
         else{
-            return <></>
+            return (
+                <View style={styles.container}>
+                    <Image style={styles.image} source={require('../Resources/logo.png')} />
+                </View>
+            )
         }
     }
 }

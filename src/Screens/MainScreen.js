@@ -15,7 +15,7 @@ class MainScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
-            userId: props.user.userInfo.user.id
+            userId: this.props.user.user.uid
         }
     }
 

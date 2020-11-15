@@ -8,7 +8,7 @@ import { withUserContext } from '../Context/UserContext';
 import AppStyle from '../styles';
 
 class JournalsScreen extends Component {
-    userId = this.props.user.userInfo.user.id;
+    userId = this.props.user.user.uid;
 
     constructor(props) {
         super(props);
