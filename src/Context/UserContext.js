@@ -54,7 +54,9 @@ export class UserContextProvider extends React.Component {
         try {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
-            setUserInfo(null)
+            this.setState({
+                userInfo: null
+            })
         } catch (error) { }
     };
 

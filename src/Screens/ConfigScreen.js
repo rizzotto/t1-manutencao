@@ -6,9 +6,9 @@ import AppStyle from '../styles';
 
 export class ConfigScreen extends Component {
 
-    _signOut = () =>{
-        this.props.user.signOut();
-        this.props.navigation.navigate("Main", {checkLogin: true});
+    _signOut = async () =>{
+        await this.props.user.signOut();
+        this.props.navigation.navigate("Main");
     }
 
     render() {
