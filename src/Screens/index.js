@@ -21,6 +21,9 @@ export { default as GalleryScreen } from './GalleryScreen';
 //config
 export { default as ConfigScreen } from './ConfigScreen';
 
+//login
+export { default as LoginScreen } from './LoginScreen';
+
 // funções
 export { default as CreateDefaultNavigationOptions } from './CreateDefaultNavigationOptions';
 export { default as CreateTabBarIcon } from './CreateTabBarIcon';

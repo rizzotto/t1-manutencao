@@ -40,15 +40,6 @@ class MainScreen extends Component {
     }
 
     render() {
-        if(this.props.user.userInfo === null){
-            return (
-                <>
-                    <GoogleSigninButton
-                        onPress={() => this.props.user.signIn()}
-                    />
-                </>
-            )
-        }
         return (
             <SafeAreaView style={styles.container}>
                 <HeaderTitleComponent title="Sua ficha" />

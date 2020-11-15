@@ -8,7 +8,7 @@ export class ConfigScreen extends Component {
 
     _signOut = async () =>{
         await this.props.user.signOut();
-        this.props.navigation.navigate("Main");
+        this.props.navigation.navigate("Auth");
     }
 
     render() {

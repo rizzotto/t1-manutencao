@@ -1,9 +1,10 @@
-import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer, createStackNavigator, getActiveChildNavigationOptions, createSwitchNavigator } from 'react-navigation';
 import {
     MainScreen, AnamnesisDetailScreen,
     JournalsScreen, DiaryDetailScreen,
     ListExamsScreen, DetailExamScreen,
     ConfigScreen,
+    LoginScreen,
     ListSubitemsScreen, ListScreen, TextInputScreen, EmojiScreen, MultiTextInputScreen, ImageSelectionScreen,
     GalleryScreen, LoadingScreen, CreateTabBarIcon
 } from '../Screens';
@@ -155,6 +156,14 @@ const TabNavigator = createBottomTabNavigator({
     }
 });
 
+const AuthStack = createStackNavigator({
+    Login: LoginScreen,
+}, {
+    tabBarOptions: {
+        activeTintColor: AppStyle.colors.main
+    }
+});
+
 // todo o app está dentro de um stack navigator para ter a animação e comportamento do botão
 // "Voltar" corretos quando abre um fluxo de cadastro/edição (anamnese, exames ou diário)
 // se não fizer isso, quando o usuário navegar para um fluxo de cadastro/edição, a tabbar
@@ -179,4 +188,12 @@ const AppNavigator = createStackNavigator({
     transparentCard: true
 });
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(createSwitchNavigator(
+    {
+        App: AppNavigator,
+        Auth: AuthStack,
+    },
+    {
+        initialRouteName: 'Auth'
+    }
+));
