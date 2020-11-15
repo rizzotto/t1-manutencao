@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { withUserContext } from '../Context/UserContext';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 import AppStyle from '../styles';
 
-/**
- * Tela de histórico de anamneses. (MOCK)
- * 
- * Construída apenas para fazer o fluxo funcionar.
- */
 class LoginScreen extends Component {
 
     componentDidMount(){
@@ -33,11 +28,14 @@ class LoginScreen extends Component {
     render() {
         if(this.props.user.userInfo === null){
             return (
-                <>
+                <View style={styles.container}>
+                    <Image style={styles.image} source={require('../Resources/logo.png')} />
                     <GoogleSigninButton
+                        style={styles.button}
+                        size={GoogleSigninButton.Size.Wide}
                         onPress={() => this._signIn()}
                     />
-                </>
+                </View>
             )
         }
         else{
@@ -49,12 +47,15 @@ class LoginScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: AppStyle.colors.background
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    content: {
-        flex: 1,
-        alignItems: "stretch",
-        justifyContent: "center"
+    image: {
+        marginBottom: 90,
+    },
+    button: {
+        width: 290, 
+        height: 60, 
     }
 });
 
