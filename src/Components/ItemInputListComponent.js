@@ -21,7 +21,7 @@ import AppStyle from '../styles';
      *       styleButtonText={styles.buttonTextStyle}
      *   />
      */
-export default class ItemListComponent extends Component {
+export default class ItemInputListComponent extends Component {
     constructor(props) {
         super(props);
         this.state = { text: '' };

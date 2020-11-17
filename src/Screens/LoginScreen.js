@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { withUserContext } from '../Context/UserContext';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
